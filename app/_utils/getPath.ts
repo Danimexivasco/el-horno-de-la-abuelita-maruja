@@ -1,8 +1,7 @@
 import { ROUTES } from "@/routes";
 
-export function getPath(pageName: string) {
-  if (!pageName) return "/"
+export function getPath(pageName: string): string {
   return (
-    ROUTES.find((route) => route.name === pageName)?.path
+    ROUTES.find((route) => route.name === pageName)?.path ?? "/"
   )
 }

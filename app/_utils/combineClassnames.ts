@@ -1,3 +1,3 @@
-export function combine(...classNames: string[]): string {
+export function combine(...classNames: (string|boolean)[]): string {
   return classNames?.filter(Boolean).join(" ");
 }

@@ -1,5 +1,4 @@
 import { default as NextLink }  from "next/link";
-import { getPath } from "@/utils/getPath";
 import { combine } from "../_utils/combineClassnames";
 
 type LinkProps = {
@@ -16,7 +15,7 @@ export default function Link({ href, children, external, asButton=false, classNa
   if (external) return (<a href={href} className={combine("dark:text-cake-400 dark:active:text-cake-600 text-cake-600 active:text-cake-700", className, buttonClasses)} target="_blank">{children}</a>)
   return (
     <NextLink
-      href={getPath(href) ?? "/"}
+      href={href}
       className={combine("dark:text-cake-400 dark:active:text-cake-600 text-cake-600 active:text-cake-700", className, buttonClasses)}
     >
       {children}

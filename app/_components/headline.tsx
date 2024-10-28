@@ -7,12 +7,12 @@ type HeadlineProps = {
 }
 export default function Headline({ children, as = "h1", className="" }: HeadlineProps) {
   const generateClasses = (as: HeadlineProps["as"]): string => {
-    if (as === "h2") return "text-3xl mb-2"
-    if (as === "h3") return "text-2xl mb-2"
-    if (as === "h4") return "text-xl mb-2"
-    if (as === "h5") return "text-lg mb-2"
-    if (as === "h6") return "text-md mb-2"
-    return "text-4xl mb-2"
+    if (as === "h2") return "text-3xl mb-4"
+    if (as === "h3") return "text-2xl mb-4"
+    if (as === "h4") return "text-xl mb-4"
+    if (as === "h5") return "text-lg mb-4"
+    if (as === "h6") return "text-md mb-4"
+    return "text-4xl mb-4"
   }
   const defaultClasses = generateClasses(as)
   const HeadlineType = as

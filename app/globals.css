@@ -2,20 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer components {
+  .button {
+    @apply dark:!text-white dark:bg-cake-500 dark:hover:bg-cake-600 dark:active:bg-cake-700 !text-white bg-cake-600 hover:bg-cake-700 active:bg-cake-800 px-4 py-2 rounded-lg transition-all
   }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+ 
 }

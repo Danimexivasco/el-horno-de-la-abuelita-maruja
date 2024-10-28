@@ -8,14 +8,13 @@ const protectedRoutes = ROUTES.filter((route) => route.protected)?.map((route) =
 const authRoutes = ROUTES.filter((route) => route.authRoute)?.map((route) => route.path);
 
 export function middleware(request: NextRequest) {
-  const session = request.cookies.get(SESSION_COOKIE_NAME)?.value || "";
-  
-  if (!session && protectedRoutes.includes(request.nextUrl.pathname)) {
+  const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME)?.value || "";
+  if (!sessionCookie  && protectedRoutes.includes(request.nextUrl.pathname)) {
     const absoluteURL = request.nextUrl.clone()
     absoluteURL.pathname = LOGIN_ROUTE_PATH
     return NextResponse.redirect(absoluteURL)
   }
-  if (session && authRoutes.includes(request.nextUrl.pathname)) {
+  if (sessionCookie  && authRoutes.includes(request.nextUrl.pathname)) {
     const absoluteURL = request.nextUrl.clone()
     absoluteURL.pathname = HOME_ROUTE_PATH
     return NextResponse.redirect(absoluteURL)

@@ -4,13 +4,10 @@ import Container from "@/components/container";
 import Link from "@/components/link";
 import Button from "@/components/button";
 import { MoonIcon, SunIcon } from "@/app/_icons";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function ComponentsPreview() {
-  const handleTheme = (theme: string) => {
-    // document.documentElement.classList.toggle("dark");
-    if (theme === "dark") return document.documentElement.classList.add("dark");
-    return document.documentElement.classList.remove("dark")
-  }
+  const { handleTheme } = useTheme();
 
   return (
     <Container>

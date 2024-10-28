@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import AuthPageContent from "@/components/authPageContent"
 
 export const metadata: Metadata = {
   title: "Sign Up"
@@ -6,6 +7,6 @@ export const metadata: Metadata = {
 
 export default function SignUpPage() {
   return (
-    <h1>SIGN UP</h1>
+    <AuthPageContent type="signUp"/>
   )
 }

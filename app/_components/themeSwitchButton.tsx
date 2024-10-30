@@ -12,6 +12,7 @@ type ThemeSwitchButtonProps = {
 export default function ThemeSwitchButton({ className="" }: ThemeSwitchButtonProps) {
   const { theme, handleTheme } = useTheme()
   
+  if (!theme) return null
   return (
     <Button
       onClick={() => handleTheme(theme === "light" ? "dark" : "light")}

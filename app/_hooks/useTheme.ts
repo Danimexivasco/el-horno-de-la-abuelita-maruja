@@ -3,7 +3,7 @@ import { DEFAULT_THEME } from "@/constants";
 import { Theme } from "@/types";
 
 export function useTheme() {
-  const [ theme, setTheme ] = useState<Theme>(DEFAULT_THEME);
+  const [ theme, setTheme ] = useState<Theme | null>(null);
 
   useEffect(() => {
     const initialTheme : Theme = localStorage.getItem("theme") as Theme ?? DEFAULT_THEME;

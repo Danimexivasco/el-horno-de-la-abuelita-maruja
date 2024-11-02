@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { SESSION_COOKIE_NAME } from "@/constants";
+import { ONE_DAY, SESSION_COOKIE_NAME, USER_CHECKED_COOKIE_NAME } from "@/constants";
 import { ROUTES } from "@/routes";
 
 const HOME_ROUTE_PATH = ROUTES.find((route) => route.name === "Home")?.path || "/";
@@ -9,6 +9,7 @@ const authRoutes = ROUTES.filter((route) => route.authRoute)?.map((route) => rou
 
 export async function middleware(request: NextRequest) {
   const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME)?.value || "";
+  const userCheckedCookie = request.cookies.get(USER_CHECKED_COOKIE_NAME)?.value || "";
 
   if (!sessionCookie && !authRoutes.includes(request.nextUrl.pathname)) {
     const absoluteURL = request.nextUrl.clone()
@@ -23,39 +24,52 @@ export async function middleware(request: NextRequest) {
   }
 
   if (sessionCookie && protectedRoutes.includes(request.nextUrl.pathname)) {
-    const baseUrl = process.env.NODE_ENV === "production" ?
-      process.env.NEXT_PUBLIC_API_BASE_URL_PROD
-      :
-      process.env.NEXT_PUBLIC_API_BASE_URL_DEV;
-    const url = `${baseUrl}/api/user/sessionCookie?userId=${sessionCookie}`;
-
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        next: {
-          revalidate: 60
+    if (userCheckedCookie !== "true") {
+      const baseUrl = process.env.NODE_ENV === "production" ?
+        process.env.NEXT_PUBLIC_API_BASE_URL_PROD
+        :
+        process.env.NEXT_PUBLIC_API_BASE_URL_DEV;
+      const url = `${baseUrl}/api/user?userId=${sessionCookie}`;
+  
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          next: {
+            revalidate: 60
+          }
+        });
+  
+        if (!response.ok) {
+          return NextResponse.json({ error: "Failed to fetch user" }, { status: response.status });
         }
-      });
+  
+        const userData = await response.json();
+        const { role } = userData.data
+        const notAuthorized = role !== "admin";
+  
+        if (notAuthorized) {
+          const absoluteURL = request.nextUrl.clone()
+          absoluteURL.pathname = HOME_ROUTE_PATH
+          return NextResponse.redirect(absoluteURL)
+        }
+        const responseNext = NextResponse.next();
+        responseNext.cookies.set({
+          name: USER_CHECKED_COOKIE_NAME,
+          value: "true",
+          path: HOME_ROUTE_PATH,
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          maxAge: ONE_DAY,
+          sameSite: "lax",
+        });
 
-      if (!response.ok) {
-        return NextResponse.json({ error: "Failed to fetch user" }, { status: response.status });
+        return responseNext;
+        
+      } catch (error) {
+        console.error("Error in middleware:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
       }
-
-      const userData = await response.json();
-      const { role } = userData.data
-      const notAuthorized = role !== "admin";
-
-      if (notAuthorized) {
-        const absoluteURL = request.nextUrl.clone()
-        absoluteURL.pathname = HOME_ROUTE_PATH
-        return NextResponse.redirect(absoluteURL)
-      }
-
-      return NextResponse.next();
-    } catch (error) {
-      console.error("Error in middleware:", error);
-      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
   }
 }

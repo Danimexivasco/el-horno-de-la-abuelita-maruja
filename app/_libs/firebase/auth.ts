@@ -6,10 +6,15 @@ import {
   signInWithEmailAndPassword as _signInWithEmailAndPassword,
   createUserWithEmailAndPassword as _createUserWithEmailAndPassword
 } from "firebase/auth";
+import { useAuthState as _useAuthState } from "react-firebase-hooks/auth";
 
-import { firebaseAuth } from "./config";
+import { db, firebaseAuth } from "./config";
 import { showMsg } from "@/utils/showMsg";
 import { createSession, removeSession } from "@/actions/authActions";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+
+// returns [user, loading, error]
+export const useAuthState = () => _useAuthState(firebaseAuth);
 
 export function onAuthStateChanged(callback: (authUser: User | null) => void) {
   return _onAuthStateChanged(firebaseAuth, callback);
@@ -20,10 +25,30 @@ export async function signInWithGoogle() {
 
   try {
     const userCredential = await signInWithPopup(firebaseAuth, provider);
+    const { user: { uid, email, displayName, photoURL, emailVerified } } = userCredential
+    const existingUser = await (await getDoc(doc(db, "users", uid))).data()
+    
+    if (!existingUser) {
+      try {
+        await setDoc(doc(db, "users", uid), {
+          id: uid,
+          email: email ?? "",
+          username: displayName ?? "",
+          createdAt: new Date(),
+          photoURL: photoURL ?? "",
+          emailVerified,
+          role: "customer"
+        })
+        showMsg("User created", "success")
+      } catch {
+        showMsg("Something went wrong", "error")
+      }
+    }
 
     if (!userCredential || !userCredential.user) {
       throw new Error("Google sign in failed");
     }
+
     return userCredential.user.uid;
   } catch (error) {
     console.error("Error signing in with Google", error);
@@ -35,6 +60,24 @@ export const signUpWithEmailAndPassword = async (formData: { email: string; pass
   if (!email || !password) throw new Error("Email and password are required");
   try {
     const userCredential = await _createUserWithEmailAndPassword(firebaseAuth, email, password);
+    const { user: { uid, email: _email, displayName, photoURL, emailVerified } } = userCredential
+    const existingUser = await (await getDoc(doc(db, "users", uid))).data()
+    
+    if (!existingUser) {
+      try {
+        await setDoc(doc(db, "users", uid), {
+          id: uid,
+          email: _email ?? "",
+          username: displayName ?? "",
+          createdAt: new Date(),
+          photoURL: photoURL ?? "",
+          emailVerified
+        })
+        showMsg("User created", "success")
+      } catch {
+        showMsg("Something went wrong", "error")
+      }
+    }
     if (!userCredential || !userCredential.user) {
       throw new Error("Something failed during sign up");
     }

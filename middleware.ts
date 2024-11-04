@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { ONE_DAY, SESSION_COOKIE_NAME, USER_CHECKED_COOKIE_NAME } from "@/constants";
+import { SESSION_COOKIE_NAME, USER_CHECKED_COOKIE_NAME } from "@/constants";
 import { ROUTES } from "@/routes";
+import { setAdminUserCheck } from "./actions/authActions";
 
 const HOME_ROUTE_PATH = ROUTES.find((route) => route.name === "Home")?.path || "/";
 const LOGIN_ROUTE_PATH = ROUTES.find((route) => route.name === "SignIn")?.path || "/signIn";
@@ -29,6 +30,7 @@ export async function middleware(request: NextRequest) {
         process.env.NEXT_PUBLIC_API_BASE_URL_PROD
         :
         process.env.NEXT_PUBLIC_API_BASE_URL_DEV;
+
       const url = `${baseUrl}/api/user?userId=${sessionCookie}`;
   
       try {
@@ -53,18 +55,10 @@ export async function middleware(request: NextRequest) {
           absoluteURL.pathname = HOME_ROUTE_PATH
           return NextResponse.redirect(absoluteURL)
         }
-        const responseNext = NextResponse.next();
-        responseNext.cookies.set({
-          name: USER_CHECKED_COOKIE_NAME,
-          value: "true",
-          path: HOME_ROUTE_PATH,
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          maxAge: ONE_DAY,
-          sameSite: "lax",
-        });
 
-        return responseNext;
+        await setAdminUserCheck()
+
+        return NextResponse.next();
         
       } catch (error) {
         console.error("Error in middleware:", error);

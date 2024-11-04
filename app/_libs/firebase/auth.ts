@@ -10,7 +10,7 @@ import { useAuthState as _useAuthState } from "react-firebase-hooks/auth";
 
 import { db, firebaseAuth } from "./config";
 import { showMsg } from "@/utils/showMsg";
-import { createSession, removeSession } from "@/actions/authActions";
+import { createSession, removeAdminUserCheck, removeSession } from "@/actions/authActions";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
 // returns [user, loading, error]
@@ -110,6 +110,7 @@ export const signInWithEmailAndPassword = async (formData: { email: string; pass
 export async function signOut() {
   try {
     await removeSession()
+    await removeAdminUserCheck()
     return await firebaseAuth.signOut()
   } catch (error) {
     const message = (error instanceof Error) ? error.message : "An unexpected error occurred";

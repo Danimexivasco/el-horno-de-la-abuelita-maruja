@@ -2,7 +2,6 @@ export const ROUTES = [
   {
     path: "/",
     name: "Home",
-    protected: true
   },
   {
     path: "/signIn",
@@ -17,15 +16,18 @@ export const ROUTES = [
   {
     path: "/products",
     name: "Products",
-    protected: true
   },
   {
     path: "/product/:id",
     name: "ProductDetail",
-    protected: true
   },
   {
     path: "/componentsPreview",
     name: "ComponentsPreview",
+  },
+  {
+    path: "/admin/dashboard",
+    name: "AdminDashboard",
+    protected: true
   },
 ]

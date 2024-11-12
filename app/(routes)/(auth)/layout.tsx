@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { MoonIcon, SunIcon } from "../_icons";
+import ThemeSwitchButton from "@/components/themeSwitchButton";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s - EL Horno de la Abuelita Maruja",
+    template: "%s - El Horno de la Abuelita Maruja",
     default: "Sign In",
   },
   description: "Quieres probar un sabor a la vieja usanza? Prueba nuestros productos!",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "El Horno de la Abuelita Maruja",
     description: "Quieres probar un sabor a la vieja usanza? Prueba nuestros productos!",
     url: "https://el-horno-de-la-abuelita-maruja.vercel.app/",
-    siteName: "EL HORNO DE LA ABUELLITA MARUJA",
+    siteName: "El Horno de la Abuelita Maruja",
     locale: "es-ES",
     type: "website"
   }
@@ -26,11 +26,11 @@ export default async function RootLayout({
 }>) {
   
   return (
-    <section className="grid place-content-center min-h-screen">
-      <h1>AUTH LAYOUT</h1>
-      <SunIcon />
-      <MoonIcon />
-      {children}
+    <section className="flex items-center justify-center min-h-screen p-6">
+      <>
+        {children}
+        <ThemeSwitchButton className="fixed top-4 right-4 md:top-8 md:right-8"/>
+      </>
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { collection, doc, query, addDoc, deleteDoc, setDoc, QuerySnapshot, DocumentData, getDoc } from "firebase/firestore";
+import { collection, doc, query, deleteDoc, setDoc, QuerySnapshot, DocumentData, getDoc } from "firebase/firestore";
 import { db } from "./config";
 import {
   useCollectionData,
@@ -35,9 +35,9 @@ export const getActualUser = async (id: string) => {
 }
 
 
-export const createUser = async (data: User) => {
+export const createUser = async (uid: string, data: User) => {
   try {
-    await addDoc(_collection, data);
+    await setDoc(doc(db, "users", uid), data)
     showMsg("User created", "success")
   } catch {
     showMsg("Something went wrong", "error")

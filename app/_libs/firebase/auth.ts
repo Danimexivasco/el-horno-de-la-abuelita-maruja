@@ -11,7 +11,8 @@ import { useAuthState as _useAuthState } from "react-firebase-hooks/auth";
 import { db, firebaseAuth } from "./config";
 import { showMsg } from "@/utils/showMsg";
 import { createSession, removeAdminUserCheck, removeSession } from "@/actions/authActions";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
+import { createUser } from "./users";
 
 // returns [user, loading, error]
 export const useAuthState = () => _useAuthState(firebaseAuth);
@@ -29,20 +30,15 @@ export async function signInWithGoogle() {
     const existingUser = await (await getDoc(doc(db, "users", uid))).data()
     
     if (!existingUser) {
-      try {
-        await setDoc(doc(db, "users", uid), {
-          id: uid,
-          email: email ?? "",
-          username: displayName ?? "",
-          createdAt: new Date(),
-          photoURL: photoURL ?? "",
-          emailVerified,
-          role: "customer"
-        })
-        showMsg("User created", "success")
-      } catch {
-        showMsg("Something went wrong", "error")
-      }
+      await createUser(uid, {
+        id: uid,
+        email: email ?? "",
+        username: displayName ?? "",
+        createdAt: new Date(),
+        photoURL: photoURL ?? "",
+        emailVerified,
+        role: "customer"
+      })
     }
 
     if (!userCredential || !userCredential.user) {
@@ -64,19 +60,15 @@ export const signUpWithEmailAndPassword = async (formData: { email: string; pass
     const existingUser = await (await getDoc(doc(db, "users", uid))).data()
     
     if (!existingUser) {
-      try {
-        await setDoc(doc(db, "users", uid), {
-          id: uid,
-          email: _email ?? "",
-          username: displayName ?? "",
-          createdAt: new Date(),
-          photoURL: photoURL ?? "",
-          emailVerified
-        })
-        showMsg("User created", "success")
-      } catch {
-        showMsg("Something went wrong", "error")
-      }
+      await createUser(uid, {
+        id: uid,
+        email: _email ?? "",
+        username: displayName ?? "",
+        createdAt: new Date(),
+        photoURL: photoURL ?? "",
+        emailVerified,
+        role: "customer"
+      })
     }
     if (!userCredential || !userCredential.user) {
       throw new Error("Something failed during sign up");

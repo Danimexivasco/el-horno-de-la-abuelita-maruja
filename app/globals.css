@@ -4,7 +4,11 @@
 
 @layer components {
   .button {
-    @apply dark:!text-white dark:bg-cake-500 dark:hover:bg-cake-600 dark:active:bg-cake-700 !text-white bg-cake-600 hover:bg-cake-700 active:bg-cake-800 px-4 py-2 rounded-lg transition-all
+    @apply dark:!text-black dark:bg-cake-400 dark:hover:bg-cake-500 dark:active:bg-cake-600 !text-black bg-cake-500 hover:bg-cake-600 active:bg-cake-700 px-4 py-2 rounded-lg transition-all
+  }
+
+  .sidebar-item {
+    @apply  w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg dark:bg-cake-900 dark:hover:bg-cake-500 bg-cake-100 hover:bg-cake-500 hover:text-black hover:rounded-xl transition-all duration-200 ease-linear cursor-pointer
   }
  
 }

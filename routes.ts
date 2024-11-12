@@ -1,4 +1,14 @@
-export const ROUTES = [
+
+
+export type Route = {
+  path: string
+  name: string
+  authRoute?: boolean
+  protected?: boolean
+  isNavRoute?: boolean
+}
+
+export const ROUTES : Route[] = [
   {
     path: "/",
     name: "Home",
@@ -14,6 +24,18 @@ export const ROUTES = [
     authRoute: true
   },
   {
+    path: "/admin/dashboard",
+    name: "AdminDashboard",
+    protected: true,
+    isNavRoute: true
+  },
+  {
+    path: "/admin/dashboard/products",
+    name: "AdminProducts",
+    protected: true,
+    isNavRoute: true
+  },
+  {
     path: "/products",
     name: "Products",
   },
@@ -24,10 +46,5 @@ export const ROUTES = [
   {
     path: "/componentsPreview",
     name: "ComponentsPreview",
-  },
-  {
-    path: "/admin/dashboard",
-    name: "AdminDashboard",
-    protected: true
   },
 ]

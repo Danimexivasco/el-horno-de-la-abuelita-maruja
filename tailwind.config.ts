@@ -25,6 +25,19 @@ const config: Config = {
           950: "#151004"
         },
       },
+      keyframes: {
+        grow: {
+          "0%": {
+            height: "16px",
+          },
+          "100%": {
+            height: "40px",
+          },
+        },
+      },
+      animation: {
+        grow: "grow 0.3s ease-in-out",
+      }
     },
   },
   plugins: [],

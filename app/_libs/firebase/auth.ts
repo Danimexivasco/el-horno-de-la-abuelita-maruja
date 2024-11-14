@@ -13,6 +13,8 @@ import { showMsg } from "@/utils/showMsg";
 import { createSession, removeAdminUserCheck, removeSession } from "@/actions/authActions";
 import { doc, getDoc } from "firebase/firestore";
 import { createUser } from "./users";
+import { redirect } from "next/navigation"
+import { SIGN_IN_PATH } from "@/routes";
 
 // returns [user, loading, error]
 export const useAuthState = () => _useAuthState(firebaseAuth);
@@ -103,10 +105,12 @@ export async function signOut() {
   try {
     await removeSession()
     await removeAdminUserCheck()
-    return await firebaseAuth.signOut()
+    await firebaseAuth.signOut()
   } catch (error) {
     const message = (error instanceof Error) ? error.message : "An unexpected error occurred";
     showMsg(message, "error")
     throw new Error(message)
   }
+
+  return redirect(SIGN_IN_PATH)
 }

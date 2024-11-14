@@ -2,9 +2,6 @@
 
 import { signOut } from "../_libs/firebase/auth";
 import { Route } from "@/routes";
-import Link from "./link";
-import { Logo } from "../_icons/logo";
-import { getPath } from "../_utils/getPath";
 import SidebarNavItem from "./sidebarNavItem";
 import { LogOutIcon } from "../_icons";
 import Button from "@/components/button";
@@ -32,16 +29,6 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
               label={route.label}
             />
           ))}
-          <li
-            className="flex justify-center relative w-full"
-          >
-            <Link href={getPath("Home")} className="peer flex justify-center">
-              <Logo className="w-14 h-14"/>
-            </Link>
-            <Tooltip
-              text="Ir a la tienda"
-            />
-          </li>
         </ul>
       </nav>
       <ul className="grid place-items-center gap-2">

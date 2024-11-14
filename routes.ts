@@ -12,6 +12,7 @@ export const SIGN_IN_PATH = "/signIn"
 export const SIGN_UP_PATH = "/signUp"
 export const ADMIN_DASHBOARD_PATH = "/admin/dashboard"
 export const ADMIN_PRODUCTS_PATH = "/admin/dashboard/products"
+export const ADMIN_NEW_PRODUCT_PATH = "/admin/dashboard/products/new"
 export const PRODUCTS_PATH = "/products"
 export const PRODUCT_DETAIL_PATH = "/product/:id"
 export const COMPONENTS_PREVIEW_PATH = "/componentsPreview"
@@ -47,6 +48,12 @@ export const ROUTES : Route[] = [
     label: "Productos",
     protected: true,
     isNavRoute: true
+  },
+  {
+    path: ADMIN_NEW_PRODUCT_PATH,
+    name: "AdminNewProduct",
+    label: "Crear Producto",
+    protected: true,
   },
   {
     path: PRODUCTS_PATH,

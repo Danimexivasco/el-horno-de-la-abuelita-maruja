@@ -1,10 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { SESSION_COOKIE_NAME, USER_CHECKED_COOKIE_NAME } from "@/constants";
-import { ROUTES } from "@/routes";
+import { HOME_PATH, ROUTES, SIGN_IN_PATH } from "@/routes";
 import { setAdminUserCheck } from "./actions/authActions";
 
-const HOME_ROUTE_PATH = ROUTES.find((route) => route.name === "Home")?.path || "/";
-const LOGIN_ROUTE_PATH = ROUTES.find((route) => route.name === "SignIn")?.path || "/signIn";
 const protectedRoutes = ROUTES.filter((route) => route.protected)?.map((route) => route.path);
 const authRoutes = ROUTES.filter((route) => route.authRoute)?.map((route) => route.path);
 
@@ -14,13 +12,13 @@ export async function middleware(request: NextRequest) {
 
   if (!sessionCookie && !authRoutes.includes(request.nextUrl.pathname)) {
     const absoluteURL = request.nextUrl.clone()
-    absoluteURL.pathname = LOGIN_ROUTE_PATH
+    absoluteURL.pathname = SIGN_IN_PATH
     return NextResponse.redirect(absoluteURL)
   }
 
   if (sessionCookie && authRoutes.includes(request.nextUrl.pathname)) {
     const absoluteURL = request.nextUrl.clone()
-    absoluteURL.pathname = HOME_ROUTE_PATH
+    absoluteURL.pathname = HOME_PATH
     return NextResponse.redirect(absoluteURL)
   }
 
@@ -52,7 +50,7 @@ export async function middleware(request: NextRequest) {
   
         if (notAuthorized) {
           const absoluteURL = request.nextUrl.clone()
-          absoluteURL.pathname = HOME_ROUTE_PATH
+          absoluteURL.pathname = HOME_PATH
           return NextResponse.redirect(absoluteURL)
         }
 

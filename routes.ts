@@ -1,5 +1,3 @@
-
-
 export type Route = {
   path: string
   name: string
@@ -9,50 +7,60 @@ export type Route = {
   isNavRoute?: boolean
 }
 
+export const HOME_PATH = "/"
+export const SIGN_IN_PATH = "/signIn"
+export const SIGN_UP_PATH = "/signUp"
+export const ADMIN_DASHBOARD_PATH = "/admin/dashboard"
+export const ADMIN_PRODUCTS_PATH = "/admin/dashboard/products"
+export const PRODUCTS_PATH = "/products"
+export const PRODUCT_DETAIL_PATH = "/product/:id"
+export const COMPONENTS_PREVIEW_PATH = "/componentsPreview"
+
 export const ROUTES : Route[] = [
   {
-    path: "/",
+    path: HOME_PATH,
     name: "Home",
-    label: "Home",
+    label: "Tienda",
   },
   {
-    path: "/signIn",
+    path: SIGN_IN_PATH,
     name: "SignIn",
-    label: "Sign In",
+    label: "Inicio de sesión",
     authRoute: true
   },
   {
-    path: "/signUp",
+    path: SIGN_UP_PATH,
     name: "SignUp",
-    label: "Sign Up",
+    label: "Registro",
     authRoute: true
   },
   {
-    path: "/admin/dashboard",
+    path: ADMIN_DASHBOARD_PATH,
     name: "AdminDashboard",
-    label: "Dashboard",
+    label: "Panel de Control",
     protected: true,
     isNavRoute: true
   },
   {
-    path: "/admin/dashboard/products",
+    path: ADMIN_PRODUCTS_PATH,
     name: "AdminProducts",
-    label: "Products",
+    label: "Productos",
     protected: true,
     isNavRoute: true
   },
   {
-    path: "/products",
+    path: PRODUCTS_PATH,
     name: "Products",
-    label: "Products",
+    label: "Productos",
   },
   {
-    path: "/product/:id",
+    path: PRODUCT_DETAIL_PATH,
     name: "ProductDetail",
   },
   {
-    path: "/componentsPreview",
+    path: COMPONENTS_PREVIEW_PATH,
     name: "ComponentsPreview",
-    label: "Components Preview",
+    label: "Preview de los Componentes",
+    isNavRoute: process.env.NODE_ENV !== "production"
   },
 ]

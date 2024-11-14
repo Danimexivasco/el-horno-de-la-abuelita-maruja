@@ -37,7 +37,11 @@ const config: Config = {
       },
       animation: {
         grow: "grow 0.3s ease-in-out",
-      }
+      },
+      gridTemplateColumns: {
+        "auto-fill": "repeat(auto-fill, minmax(350px, 1fr))",
+        "auto-fit": "repeat(auto-fit, minmax(350px, 1fr))",
+      },
     },
   },
   plugins: [],

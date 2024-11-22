@@ -28,6 +28,8 @@ export default [
     files: ["**/*.{js,mjs,ts,jsx,tsx}"],
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
+      'react/react-in-jsx-scope': 0,
+      'react/jsx-uses-react': 0
     },
     settings: {
       react: {

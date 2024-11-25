@@ -5,69 +5,76 @@ export type Route = {
   authRoute?: boolean
   protected?: boolean
   isNavRoute?: boolean
-}
+};
 
-export const HOME_PATH = "/"
-export const SIGN_IN_PATH = "/signIn"
-export const SIGN_UP_PATH = "/signUp"
-export const ADMIN_DASHBOARD_PATH = "/admin/dashboard"
-export const ADMIN_PRODUCTS_PATH = "/admin/dashboard/products"
-export const ADMIN_NEW_PRODUCT_PATH = "/admin/dashboard/products/new"
-export const PRODUCTS_PATH = "/products"
-export const PRODUCT_DETAIL_PATH = "/product/:id"
-export const COMPONENTS_PREVIEW_PATH = "/componentsPreview"
+export const HOME_PATH = "/";
+export const SIGN_IN_PATH = "/signIn";
+export const SIGN_UP_PATH = "/signUp";
+export const ADMIN_DASHBOARD_PATH = "/admin/dashboard";
+export const ADMIN_PRODUCTS_PATH = "/admin/dashboard/products";
+export const ADMIN_NEW_PRODUCT_PATH = "/admin/dashboard/products/new";
+export const ADMIN_PRODUCT_DETAIL_PATH = "/admin/dashboard/products/:id";
+export const PRODUCTS_PATH = "/products";
+export const PRODUCT_DETAIL_PATH = "/product/:id";
+export const COMPONENTS_PREVIEW_PATH = "/componentsPreview";
 
-export const ROUTES : Route[] = [
+export const ROUTES: Route[] = [
   {
-    path: HOME_PATH,
-    name: "Home",
-    label: "Tienda",
+    path:  HOME_PATH,
+    name:  "Home",
+    label: "Tienda"
   },
   {
-    path: SIGN_IN_PATH,
-    name: "SignIn",
-    label: "Inicio de sesión",
+    path:      SIGN_IN_PATH,
+    name:      "SignIn",
+    label:     "Inicio de sesión",
     authRoute: true
   },
   {
-    path: SIGN_UP_PATH,
-    name: "SignUp",
-    label: "Registro",
+    path:      SIGN_UP_PATH,
+    name:      "SignUp",
+    label:     "Registro",
     authRoute: true
   },
   {
-    path: ADMIN_DASHBOARD_PATH,
-    name: "AdminDashboard",
-    label: "Panel de Control",
-    protected: true,
+    path:       ADMIN_DASHBOARD_PATH,
+    name:       "AdminDashboard",
+    label:      "Panel de Control",
+    protected:  true,
     isNavRoute: true
   },
   {
-    path: ADMIN_PRODUCTS_PATH,
-    name: "AdminProducts",
-    label: "Productos",
-    protected: true,
+    path:       ADMIN_PRODUCTS_PATH,
+    name:       "AdminProducts",
+    label:      "Productos",
+    protected:  true,
     isNavRoute: true
   },
   {
-    path: ADMIN_NEW_PRODUCT_PATH,
-    name: "AdminNewProduct",
-    label: "Crear Producto",
-    protected: true,
+    path:      ADMIN_NEW_PRODUCT_PATH,
+    name:      "AdminNewProduct",
+    label:     "Nuevo Producto",
+    protected: true
   },
   {
-    path: PRODUCTS_PATH,
-    name: "Products",
-    label: "Productos",
+    path:      ADMIN_PRODUCT_DETAIL_PATH,
+    name:      "AdminProductDetail",
+    label:     "Detalle de Producto",
+    protected: true
+  },
+  {
+    path:  PRODUCTS_PATH,
+    name:  "Products",
+    label: "Productos"
   },
   {
     path: PRODUCT_DETAIL_PATH,
-    name: "ProductDetail",
+    name: "ProductDetail"
   },
   {
-    path: COMPONENTS_PREVIEW_PATH,
-    name: "ComponentsPreview",
-    label: "Preview de los Componentes",
+    path:       COMPONENTS_PREVIEW_PATH,
+    name:       "ComponentsPreview",
+    label:      "Preview de los Componentes",
     isNavRoute: process.env.NODE_ENV !== "production"
-  },
-]
+  }
+];

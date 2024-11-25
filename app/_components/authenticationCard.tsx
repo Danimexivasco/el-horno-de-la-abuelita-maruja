@@ -1,41 +1,42 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/navigation"
-import { AuthenticationPages } from "@/types"
-import { signInWithEmailAndPassword, signInWithGoogle, signUpWithEmailAndPassword } from "@/libs/firebase/auth"
-import { createSession } from "@/actions/authActions"
-import { AUTHENTICATION_FORM_INITIAL_STATE, AUTHENTICATION_FORM_INPUTS } from "@/constants"
-import { showMsg } from "@/utils/showMsg"
-import { GoogleIcon } from "@/icons/index"
-import Headline from "@/components/headline"
-import Button from "@/components/button"
-import Form from "@/components/form"
-import Link from "./link"
-import { useState } from "react"
-import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "@/routes"
+import { useRouter } from "next/navigation";
+import { AuthenticationPages } from "@/types";
+import { signInWithEmailAndPassword, signInWithGoogle, signUpWithEmailAndPassword } from "@/libs/firebase/auth";
+import { createSession } from "@/actions/authActions";
+import { AUTHENTICATION_FORM_INITIAL_STATE, AUTHENTICATION_FORM_INPUTS } from "@/constants";
+import { showMsg } from "@/utils/showMsg";
+import { GoogleIcon } from "@/icons/index";
+import Headline from "@/components/headline";
+import Button from "@/components/button";
+import Form from "@/components/form";
+import Link from "./link";
+import { useState } from "react";
+import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "@/routes";
 
 type AuthenticationCardProps = {
   type: AuthenticationPages
-}
+};
 
 export default function AuthenticationCard({ type }: AuthenticationCardProps) {
-  const router = useRouter()
-  const [ loading, setLoading ] = useState(false)
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
   const _signInWithGoogle = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const userUid = await signInWithGoogle()
+      const userUid = await signInWithGoogle();
       if (userUid) {
         await createSession(userUid);
       }
-      router.push(HOME_PATH)
+      router.push(HOME_PATH);
     } catch (error) {
-      showMsg("Failed to sign in with Google", "error")
-      console.error(error)
-      setLoading(false)
+      showMsg("Failed to sign in with Google", "error");
+      console.error(error);
+      setLoading(false);
     }
-  }
-  
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-full w-full bg-cake-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 border dark:border-cake-400/80 border-cake-500/80 p-6">
       <Headline
@@ -50,6 +51,8 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
         onSubmit={type === "signUp" ? signUpWithEmailAndPassword : signInWithEmailAndPassword}
         submitBtnText={type === "signUp" ? "Sign Up" : "Sign In"}
         redirectTo={HOME_PATH}
+        outterClassName="lg:w-3/4"
+        fullWidthBtn
       />
       <Headline
         as="h4"
@@ -80,5 +83,5 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
         </Link>
       </p>
     </div>
-  )
+  );
 }

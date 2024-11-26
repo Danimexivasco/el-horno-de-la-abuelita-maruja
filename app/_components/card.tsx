@@ -22,7 +22,7 @@ export default function Card({ name, description, category, price, image, classN
       <div
         className={
           combine(
-            "w-full h-3/4 min-h-3/4 overflow-hidden min-h-60 flex items-center justify-center dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
+            "w-full h-3/4 min-h-3/4 max-h-3/4 aspect-video overflow-hidden min-h-60 flex items-center justify-center dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
           )
         }
       >
@@ -32,7 +32,8 @@ export default function Card({ name, description, category, price, image, classN
             alt={name}
             width={420}
             height={250}
-            className="w-full h-full object-cover"
+            quality={100}
+            className="w-full h-full object-cover aspect-video"
           />
           :
           <LogoIcon className="w-1/4 h-auto opacity-60"/>
@@ -44,7 +45,7 @@ export default function Card({ name, description, category, price, image, classN
           className="mb-4"
         />
         <Headline as="h2">{name}</Headline>
-        <p>{description}</p>
+        <p className="line-clamp-1">{description}</p>
         <p className="font-bold mt-4 text-xl">{price} €</p>
       </div>
     </li>

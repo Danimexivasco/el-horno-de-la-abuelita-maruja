@@ -2,10 +2,8 @@
 
 import { cookies  } from "next/headers";
 
-import { ROUTES } from "@/routes";
+import { HOME_PATH } from "@/routes";
 import { ONE_DAY, SESSION_COOKIE_NAME, USER_CHECKED_COOKIE_NAME } from "@/constants";
-
-const HOME_ROUTE_PATH = ROUTES.find((route) => route.path === "/")?.path || "/";
 
 export async function createSession(uid: string) {
   const cookieStore = await cookies();
@@ -15,7 +13,7 @@ export async function createSession(uid: string) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: ONE_DAY,
-    path: HOME_ROUTE_PATH,
+    path: HOME_PATH,
     sameSite: "lax",
   });
 
@@ -37,7 +35,7 @@ export async function setAdminUserCheck() {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: ONE_DAY,
-    path: HOME_ROUTE_PATH,
+    path: HOME_PATH,
     sameSite: "lax",
   });
 

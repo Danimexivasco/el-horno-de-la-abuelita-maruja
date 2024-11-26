@@ -1,33 +1,80 @@
-export const ROUTES = [
+export type Route = {
+  path: string
+  name: string
+  label?: string
+  authRoute?: boolean
+  protected?: boolean
+  isNavRoute?: boolean
+};
+
+export const HOME_PATH = "/";
+export const SIGN_IN_PATH = "/signIn";
+export const SIGN_UP_PATH = "/signUp";
+export const ADMIN_DASHBOARD_PATH = "/admin/dashboard";
+export const ADMIN_PRODUCTS_PATH = "/admin/dashboard/products";
+export const ADMIN_NEW_PRODUCT_PATH = "/admin/dashboard/products/new";
+export const ADMIN_PRODUCT_DETAIL_PATH = "/admin/dashboard/products/:id";
+export const PRODUCTS_PATH = "/products";
+export const PRODUCT_DETAIL_PATH = "/product/:id";
+export const COMPONENTS_PREVIEW_PATH = "/componentsPreview";
+
+export const ROUTES: Route[] = [
   {
-    path: "/",
-    name: "Home",
+    path:  HOME_PATH,
+    name:  "Home",
+    label: "Tienda"
   },
   {
-    path: "/signIn",
-    name: "SignIn",
+    path:      SIGN_IN_PATH,
+    name:      "SignIn",
+    label:     "Inicio de sesión",
     authRoute: true
   },
   {
-    path: "/signUp",
-    name: "SignUp",
+    path:      SIGN_UP_PATH,
+    name:      "SignUp",
+    label:     "Registro",
     authRoute: true
   },
   {
-    path: "/products",
-    name: "Products",
+    path:       ADMIN_DASHBOARD_PATH,
+    name:       "AdminDashboard",
+    label:      "Panel de Control",
+    protected:  true,
+    isNavRoute: true
   },
   {
-    path: "/product/:id",
-    name: "ProductDetail",
+    path:       ADMIN_PRODUCTS_PATH,
+    name:       "AdminProducts",
+    label:      "Productos",
+    protected:  true,
+    isNavRoute: true
   },
   {
-    path: "/componentsPreview",
-    name: "ComponentsPreview",
-  },
-  {
-    path: "/admin/dashboard",
-    name: "AdminDashboard",
+    path:      ADMIN_NEW_PRODUCT_PATH,
+    name:      "AdminNewProduct",
+    label:     "Nuevo Producto",
     protected: true
   },
-]
+  {
+    path:      ADMIN_PRODUCT_DETAIL_PATH,
+    name:      "AdminProductDetail",
+    label:     "Detalle de Producto",
+    protected: true
+  },
+  {
+    path:  PRODUCTS_PATH,
+    name:  "Products",
+    label: "Productos"
+  },
+  {
+    path: PRODUCT_DETAIL_PATH,
+    name: "ProductDetail"
+  },
+  {
+    path:       COMPONENTS_PREVIEW_PATH,
+    name:       "ComponentsPreview",
+    label:      "Preview de los Componentes",
+    isNavRoute: process.env.NODE_ENV !== "production"
+  }
+];

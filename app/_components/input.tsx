@@ -1,18 +1,20 @@
-import { combine } from "../_utils/combineClassnames"
+import { combine } from "@/utils/combineClassnames";
 
-type InputProps = {
+export type InputProps = {
   name: string
   type: string
   label?: string
   placeholder: string
   required?: boolean
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (_e: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
-}
-export default function Input({ name, type, label, placeholder, required, onChange, className="" } : InputProps) {
+};
+
+export default function Input({ name, type, label, placeholder="", required, onChange, className="" }: InputProps) {
+  const fileClassNames = "focus:outline-none !p-0 rounded-none dark:text-white transition-colors";
   return (
     label ? (
-      <label  className="text-base font-bold grid gap-1">
+      <label className="text-base grid gap-2">
         {label}
         <input
           type={type}
@@ -20,7 +22,12 @@ export default function Input({ name, type, label, placeholder, required, onChan
           placeholder={placeholder}
           onChange={onChange}
           required={required}
-          className={combine("focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black placeholder:text-base", className)}
+          step=".01"
+          min="0"
+          className={combine(
+            "focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black placeholder:text-base",
+            type === "file" && fileClassNames, className
+          )}
         />
       </label>
     ) :
@@ -30,7 +37,12 @@ export default function Input({ name, type, label, placeholder, required, onChan
         placeholder={placeholder}
         onChange={onChange}
         required={required}
-        className={combine("focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black", className)}
+        step=".01"
+        min="0"
+        className={combine(
+          "focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black",
+          type === "file" && fileClassNames, className
+        )}
       />
-  )
+  );
 }

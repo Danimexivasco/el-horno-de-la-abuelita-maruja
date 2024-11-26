@@ -1,14 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
 import { Input as InputType, Select as SelectType } from "@/types";
-import Button from "./button";
 import { useRouter } from "next/navigation";
-import { showMsg } from "../_utils/showMsg";
-import Input from "./input";
+import React, { useState } from "react";
 import { combine } from "../_utils/combineClassnames";
-import Select from "./select";
+import { showMsg } from "../_utils/showMsg";
 import { uploadImage } from "../_utils/uploadImage";
+import Button from "./button";
+import FormField, { FormFieldProps } from "./formField";
 
 type FormProps = {
   inputs: (InputType | SelectType)[],
@@ -27,18 +26,17 @@ export default function Form({ inputs, initialState, onSubmit, redirectTo, submi
   const [isPending, setIsPending] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData({
+    const { name, value, type } = e.target;
+    if (type === "file") {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      return setFormData({
+        ...formData,
+        [e.target.name]: file
+      });
+    }
+    return setFormData({
       ...formData,
       [name]: value
-    });
-  };
-
-  const handleInputFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    setFormData({
-      ...formData,
-      [e.target.name]: file
     });
   };
 
@@ -70,32 +68,16 @@ export default function Form({ inputs, initialState, onSubmit, redirectTo, submi
       encType="multipart/form-data"
     >
       <div className={combine("grid gap-4", fieldsContainerClassName)}>
-        {inputs?.map((input: InputType | SelectType) => {
-          if (input.type === "select") return (
-            <Select
-              key={input.name}
-              onChange={handleChange}
-              options={(input as SelectType).options}
-              {...input}
-            />
-          );
-          if (input.type === "file") return (
-            <Input
-              key={input.name}
-              onChange={handleInputFileChange}
-              placeholder={(input as InputType).placeholder}
-              {...input}
-            />
-          );
-          return (
-            <Input
-              key={input.name}
-              onChange={handleChange}
-              placeholder={(input as InputType).placeholder}
-              {...input}
-            />
-          );
-        })}
+        {inputs?.map((input: InputType | SelectType) =>
+          <FormField
+            key={input.name}
+            type={input.type as FormFieldProps["type"]}
+            input={{
+              ...input,
+              onChange: handleChange
+            }}
+          />
+        )}
       </div>
       <Button
         type="submit"

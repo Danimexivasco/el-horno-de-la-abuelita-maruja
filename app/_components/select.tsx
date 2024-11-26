@@ -1,4 +1,4 @@
-type SelectProps = {
+export type SelectProps = {
   label?: string
   name?: string
   options: {value: string, label: string}[]

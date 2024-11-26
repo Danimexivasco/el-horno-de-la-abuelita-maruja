@@ -1,11 +1,11 @@
-import Image from "next/image"
-import { Logo } from "./logo"
-import FullLogoDark from "@/public/logo_dark.svg"
-import FullLogoLight from "@/public/logo_light.svg"
+import Image from "next/image";
+import { Logo } from "./logo";
+import FullLogoDark from "@/public/logo_dark.svg";
+import FullLogoLight from "@/public/logo_light.svg";
 
 export type IconProps = {
   className?: string
-}
+};
 
 export const MoonIcon = ({ className }: IconProps) => (
   <svg
@@ -18,7 +18,7 @@ export const MoonIcon = ({ className }: IconProps) => (
   >
     <path d="M34.4186 18.5C34.4186 27.2915 27.2915 34.4186 18.5 34.4186V37C28.7173 37 37 28.7173 37 18.5H34.4186ZM18.5 34.4186C9.7084 34.4186 2.5814 27.2915 2.5814 18.5H0C0 28.7173 8.28273 37 18.5 37V34.4186ZM2.5814 18.5C2.5814 9.7084 9.7084 2.5814 18.5 2.5814V0C8.28273 0 0 8.28273 0 18.5H2.5814ZM24.5233 22.3721C19.0583 22.3721 14.6279 17.9417 14.6279 12.4767H12.0465C12.0465 19.3675 17.6325 24.9535 24.5233 24.9535V22.3721ZM32.9994 17.5862C31.2645 20.4572 28.1169 22.3721 24.5233 22.3721V24.9535C29.0577 24.9535 33.0259 22.5337 35.2089 18.9211L32.9994 17.5862ZM14.6279 12.4767C14.6279 8.88313 16.5428 5.73552 19.4138 4.0006L18.0789 1.79123C14.4663 3.97414 12.0465 7.94225 12.0465 12.4767H14.6279ZM18.5 2.5814C18.3477 2.5814 18.1691 2.5127 18.0395 2.37778C17.9297 2.26349 17.9042 2.15536 17.8982 2.11163C17.891 2.05801 17.8946 1.90261 18.0789 1.79123L19.4138 4.0006C20.2798 3.4774 20.5582 2.51941 20.4564 1.76614C20.3507 0.983099 19.7332 0 18.5 0V2.5814ZM35.2089 18.9211C35.0973 19.1054 34.9419 19.109 34.8884 19.1018C34.8447 19.0958 34.7365 19.0703 34.6222 18.9605C34.4873 18.8309 34.4186 18.6523 34.4186 18.5H37C37 17.2668 36.0168 16.6493 35.2338 16.5436C34.4806 16.4418 33.5225 16.7202 32.9994 17.5862L35.2089 18.9211Z" fill="currentColor"/>
   </svg>
-)
+);
 
 export const SunIcon = ({ className }: IconProps) => (
   <svg
@@ -31,7 +31,12 @@ export const SunIcon = ({ className }: IconProps) => (
   >
     <g clipPath="url(#clip0_2_38)">
       <path d="M16.9583 1.54167C16.9583 0.690227 17.6485 0 18.5 0C19.3515 0 20.0417 0.690227 20.0417 1.54167V4.625C20.0417 5.47643 19.3515 6.16667 18.5 6.16667C17.6485 6.16667 16.9583 5.47643 16.9583 4.625V1.54167Z" fill="currentColor"/>
-      <path fillRule="evenodd" clipRule="evenodd" d="M27.75 18.5C27.75 23.6086 23.6086 27.75 18.5 27.75C13.3914 27.75 9.25 23.6086 9.25 18.5C9.25 13.3914 13.3914 9.25 18.5 9.25C23.6086 9.25 27.75 13.3914 27.75 18.5ZM12.4284 18.5C12.4284 21.8533 15.1468 24.5715 18.5 24.5715C21.8533 24.5715 24.5715 21.8533 24.5715 18.5C24.5715 15.1468 21.8533 12.4284 18.5 12.4284C15.1468 12.4284 12.4284 15.1468 12.4284 18.5Z" fill="currentColor"/>
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M27.75 18.5C27.75 23.6086 23.6086 27.75 18.5 27.75C13.3914 27.75 9.25 23.6086 9.25 18.5C9.25 13.3914 13.3914 9.25 18.5 9.25C23.6086 9.25 27.75 13.3914 27.75 18.5ZM12.4284 18.5C12.4284 21.8533 15.1468 24.5715 18.5 24.5715C21.8533 24.5715 24.5715 21.8533 24.5715 18.5C24.5715 15.1468 21.8533 12.4284 18.5 12.4284C15.1468 12.4284 12.4284 15.1468 12.4284 18.5Z"
+        fill="currentColor"
+      />
       <path d="M31.5815 5.41853C30.9793 4.81646 30.0033 4.81646 29.4013 5.41853L27.2209 7.59877C26.6189 8.20084 26.6189 9.17696 27.2209 9.77903C27.8231 10.3811 28.7991 10.3811 29.4013 9.77903L31.5815 7.59877C32.1835 6.99672 32.1835 6.02058 31.5815 5.41853Z" fill="currentColor"/>
       <path d="M1.54167 20.0416C0.690227 20.0416 0 19.3514 0 18.5C0 17.6485 0.690227 16.9583 1.54167 16.9583H4.625C5.47643 16.9583 6.16667 17.6485 6.16667 18.5C6.16667 19.3514 5.47643 20.0416 4.625 20.0416H1.54167Z" fill="currentColor"/>
       <path d="M5.41852 5.41853C4.81647 6.02058 4.81647 6.99672 5.41852 7.59877L7.59877 9.77903C8.20083 10.3811 9.17696 10.3811 9.77902 9.77903C10.3811 9.17696 10.3811 8.20084 9.77902 7.59877L7.59877 5.41853C6.99671 4.81646 6.02059 4.81646 5.41852 5.41853Z" fill="currentColor"/>
@@ -42,13 +47,17 @@ export const SunIcon = ({ className }: IconProps) => (
     </g>
     <defs>
       <clipPath id="clip0_2_38">
-        <rect width="37" height="37" fill="white"/>
+        <rect
+          width="37"
+          height="37"
+          fill="white"
+        />
       </clipPath>
     </defs>
   </svg>
-)
+);
 
-export const LogoIcon = ({ className }: IconProps) => <Logo className={className}/>
+export const LogoIcon = ({ className }: IconProps) => <Logo className={className}/>;
 
 export const LogoDarkIcon = ({ className }: IconProps) => (
   <Image
@@ -57,7 +66,7 @@ export const LogoDarkIcon = ({ className }: IconProps) => (
     className={className}
     priority
   />
-)
+);
 
 export const LogoLightIcon = ({ className }: IconProps) => (
   <Image
@@ -66,7 +75,7 @@ export const LogoLightIcon = ({ className }: IconProps) => (
     className={className}
     priority
   />
-)
+);
 
 export const CakeIcon = ({ className }: IconProps) => (
   <svg
@@ -93,7 +102,7 @@ export const CakeIcon = ({ className }: IconProps) => (
       />
     </g>
   </svg>
-)
+);
 
 export const DashboardIcon = ({ className }: IconProps) => (
   <svg
@@ -117,7 +126,13 @@ export const DashboardIcon = ({ className }: IconProps) => (
         fill="none"
         fillRule="evenodd"
       >
-        <rect id="Container" x={0} y={0} width={24} height={24} />
+        <rect
+          id="Container"
+          x={0}
+          y={0}
+          width={24}
+          height={24}
+        />
         <rect
           id="shape-1"
           stroke="currentColor"
@@ -152,7 +167,7 @@ export const DashboardIcon = ({ className }: IconProps) => (
       </g>
     </g>
   </svg>
-)
+);
 
 export const GoogleIcon = ({ className }: IconProps) => (
   <svg
@@ -203,7 +218,7 @@ export const GoogleIcon = ({ className }: IconProps) => (
       </g>
     </g>
   </svg>
-)
+);
 
 export const LogOutIcon = ({ className }: IconProps) => (
   <svg
@@ -230,4 +245,46 @@ export const LogOutIcon = ({ className }: IconProps) => (
       </g>
     </g>
   </svg>
-)
+);
+
+export const BackIcon = ({ className }: IconProps) => (
+  <svg
+    viewBox="0 0 512 512"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="currentColor"
+    className={className}
+  >
+    <g id="SVGRepo_bgCarrier" strokeWidth={0} />
+    <g
+      id="SVGRepo_tracerCarrier"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <g id="SVGRepo_iconCarrier">
+      <title>{"ionicons-v5-a"}</title>
+      <polyline
+        points="244 400 100 256 244 112"
+        style={{
+          fill:           "none",
+          stroke:         "currentColor",
+          strokeLinecap:  "round",
+          strokeLinejoin: "round",
+          strokeWidth:    48
+        }}
+      />
+      <line
+        x1={120}
+        y1={256}
+        x2={412}
+        y2={256}
+        style={{
+          fill:           "none",
+          stroke:         "currentColor",
+          strokeLinecap:  "round",
+          strokeLinejoin: "round",
+          strokeWidth:    48
+        }}
+      />
+    </g>
+  </svg>
+);

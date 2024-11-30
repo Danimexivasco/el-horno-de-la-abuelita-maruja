@@ -1,13 +1,13 @@
-import Select, { SelectProps } from "./select";
-import Input, { InputProps } from "./input";
+import Select, { SelectProps } from "@/components/select";
+import Input, { InputProps } from "@/components/input";
 import TextArea, { TextareaProps } from "@/components/textarea";
 
 export type FormFieldProps = {
   input: InputProps | SelectProps
-  type: "input" | "select" | "textarea"
+  type?: "input" | "select" | "textarea"
 };
 
-export default function FormField({ input, type }: FormFieldProps) {
+export default function FormField({ input, type="input" }: FormFieldProps) {
 
   if (type === "select") {
     const { label, name, options, required, onChange } = input as SelectProps;
@@ -19,7 +19,7 @@ export default function FormField({ input, type }: FormFieldProps) {
       onChange={onChange}
     />;
   } else {
-    const { name, label, placeholder="", required, onChange, className="" } = input as (InputProps | TextareaProps);
+    const { name, type, label, placeholder="", required, options=[], onChange, className="" } = input as (InputProps & TextareaProps);
     if (type === "textarea") {
       return <TextArea
         name={name}
@@ -36,6 +36,7 @@ export default function FormField({ input, type }: FormFieldProps) {
       label={label}
       placeholder={placeholder}
       required={required}
+      options={options as InputProps["options"]}
       onChange={onChange as InputProps["onChange"]}
       className={className}
     />;

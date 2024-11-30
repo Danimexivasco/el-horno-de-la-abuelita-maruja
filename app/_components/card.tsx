@@ -22,7 +22,7 @@ export default function Card({ name, description, category, price, image, classN
       <div
         className={
           combine(
-            "w-full h-3/4 min-h-3/4 max-h-3/4 aspect-video overflow-hidden min-h-60 flex items-center justify-center dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
+            "w-full h-3/4 min-h-60 max-h-3/4 aspect-video overflow-hidden flex items-center justify-center dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
           )
         }
       >

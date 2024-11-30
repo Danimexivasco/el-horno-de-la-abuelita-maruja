@@ -12,7 +12,7 @@ export default function Select({ label, name, options, required, onChange }: Sel
       <label className="text-base grid gap-2">
         {label}
         <select
-          className="focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black border-r-8 border-r-transparent"
+          className="w-fit focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black border-r-8 border-r-transparent"
           name={name}
           required={required}
           onChange={onChange}
@@ -29,7 +29,7 @@ export default function Select({ label, name, options, required, onChange }: Sel
       </label>
     ) :
       <select
-        className="focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black border-r-8 border-r-transparent"
+        className="w-fit focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black border-r-8 border-r-transparent"
         name={name}
         required={required}
         onChange={onChange}

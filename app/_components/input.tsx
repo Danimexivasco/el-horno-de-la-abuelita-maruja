@@ -4,14 +4,69 @@ export type InputProps = {
   name: string
   type: string
   label?: string
-  placeholder: string
+  placeholder?: string
   required?: boolean
+  pattern?: string
+  options?: {value: string, label: string, checked?: boolean}[]
   onChange: (_e: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
 };
 
-export default function Input({ name, type, label, placeholder="", required, onChange, className="" }: InputProps) {
-  const fileClassNames = "focus:outline-none !p-0 rounded-none dark:text-white transition-colors";
+export default function Input({ name, type, label, placeholder="", required, pattern, options, onChange, className="" }: InputProps) {
+  if (type === "file") return (
+    <div className="grid gap-2">
+      <p>{label}</p>
+      <label
+        htmlFor="uploadFile"
+        className="dark:text-cake-100 text-cake-800 font-semibold text-base rounded w-full max-w-xl h-52 justify-self-start flex flex-col items-center justify-center cursor-pointer border-2 dark:border-cake-100 border-cake-800 text-cake-800 border-dashed font-[sans-serif] transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-11 mb-2 dark:fill-cake-100 fill-cake-text-cake-800 transition-colors"
+          viewBox="0 0 32 32"
+        >
+          <path
+            d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z"
+          />
+          <path
+            d="M20.293 19.707a1 1 0 0 0 1.414-1.414l-5-5a1 1 0 0 0-1.414 0l-5 5a1 1 0 0 0 1.414 1.414L15 16.414V29a1 1 0 0 0 2 0V16.414z"
+          />
+        </svg>
+        {placeholder}
+        <input
+          type="file"
+          id='uploadFile'
+          name={name}
+          placeholder={placeholder}
+          onChange={onChange}
+          className="hidden"
+        />
+        <p className="text-xs font-medium dark:text-cake-100 text-cake-800 mt-2 transition-colors">PNG, JPG SVG, WEBP o GIF.</p>
+      </label>
+    </div>
+  );
+  if (type === "radio") return (
+    <div className="text-base grid gap-2 w-fit">
+      {label}
+      <div className="flex items-center gap-4 w-fit">
+        {options?.map((option) => (
+          <div key={option.value} className="flex items-center gap-2">
+            <input
+              id={option.value}
+              type="radio"
+              name={name}
+              value={option.value}
+              onChange={onChange}
+              required={required}
+              defaultChecked={option.checked}
+              className="w-4 h-4 text-cake-800 bg-cake-100 border-cake-300"
+            />
+            <label htmlFor={option.value} className="text-sm font-medium text-gray-900 dark:text-gray-300">{option.label}</label>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
   return (
     label ? (
       <label className="text-base grid gap-2">
@@ -24,9 +79,10 @@ export default function Input({ name, type, label, placeholder="", required, onC
           required={required}
           step=".01"
           min="0"
+          pattern={pattern}
           className={combine(
             "focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black placeholder:text-base",
-            type === "file" && fileClassNames, className
+            className
           )}
         />
       </label>
@@ -39,9 +95,10 @@ export default function Input({ name, type, label, placeholder="", required, onC
         required={required}
         step=".01"
         min="0"
+        pattern={pattern}
         className={combine(
           "focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black",
-          type === "file" && fileClassNames, className
+          className
         )}
       />
   );

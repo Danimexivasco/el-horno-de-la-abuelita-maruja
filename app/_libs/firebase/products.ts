@@ -10,7 +10,10 @@ import {
   getDoc
 } from "firebase/firestore";
 import { db } from "@/libs/firebase/config";
-import { useCollectionData, useDocumentData } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useDocumentData
+} from "react-firebase-hooks/firestore";
 import { Product } from "@/types";
 import { showMsg } from "@/utils/showMsg";
 

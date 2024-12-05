@@ -117,15 +117,16 @@ export const NEW_PRODUCT_FORM_INPUTS = [
   }
 ];
 
-export const NEW_PRODUCT_FORM_INITIAL_STATE = {
+export const NEW_PRODUCT_FORM_INITIAL_STATE: Product = {
+  id:                 "",
   name:               "",
   description:        "",
-  category:           "" as Product["category"],
+  category:           "",
   price:              0,
   image:              "",
-  new:                "",
+  new:                "yes",
   onOffer:            "no",
-  offerType:          "percentage",
-  discountPercentage: "",
-  "2x1Amount":        ""
+  offerType:          "",
+  discountPercentage: 0,
+  multiplierAmount:   ""
 };

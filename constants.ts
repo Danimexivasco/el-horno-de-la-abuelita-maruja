@@ -1,3 +1,5 @@
+import { Product } from "./types";
+
 export const SESSION_COOKIE_NAME = "user_session";
 export const USER_CHECKED_COOKIE_NAME = "user_c";
 export const ONE_DAY = 60 * 60 * 24;
@@ -54,7 +56,7 @@ export const NEW_PRODUCT_FORM_INPUTS = [
   },
   {
     name:        "description",
-    type:        "text",
+    type:        "textarea",
     label:       "Descripción",
     placeholder: "Inserta una descripción que haga babear a tus clientes",
     required:    true
@@ -70,21 +72,61 @@ export const NEW_PRODUCT_FORM_INPUTS = [
     name:        "price",
     type:        "number",
     label:       "Precio",
-    placeholder: "Inserta un precio para tu producto Ej: 9.99",
+    placeholder: "Inserta un precio para tu producto. Ejemplo: 9.99",
     required:    true
   },
   {
     name:        "image",
     type:        "file",
-    label:       "Image",
-    placeholder: "Elige tu imagen"
+    label:       "Imagen",
+    placeholder: "Sube una imagen"
+  },
+  {
+    name:    "new",
+    type:    "radio",
+    label:   "Nuevo?",
+    options: [
+      {
+        value:   "yes",
+        label:   "Si",
+        checked: true
+      },
+      {
+        value:   "no",
+        label:   "No",
+        checked: false
+      }
+    ]
+  },
+  {
+    name:    "onOffer",
+    type:    "radio",
+    label:   "En oferta?",
+    options: [
+      {
+        value:   "yes",
+        label:   "Si",
+        checked: false
+      },
+      {
+        value:   "no",
+        label:   "No",
+        checked: true
+      }
+    ]
   }
 ];
 
-export const NEW_PRODUCT_FORM_INITIAL_STATE = {
-  name:        "",
-  description: "",
-  category:    "",
-  price:       "",
-  image:       ""
+export const NEW_PRODUCT_FORM_INITIAL_STATE: Product = {
+  id:                 "",
+  name:               "",
+  description:        "",
+  category:           "",
+  price:              0,
+  image:              "",
+  new:                "yes",
+  onOffer:            "no",
+  offerType:          "",
+  discountPercentage: 0,
+  multiplierAmount:   ""
 };

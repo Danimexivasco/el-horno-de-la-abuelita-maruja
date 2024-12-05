@@ -2,14 +2,21 @@
 
 import { useRouter } from "next/navigation";
 import { AuthenticationPages } from "@/types";
-import { signInWithEmailAndPassword, signInWithGoogle, signUpWithEmailAndPassword } from "@/libs/firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithGoogle,
+  signUpWithEmailAndPassword
+} from "@/libs/firebase/auth";
 import { createSession } from "@/actions/authActions";
-import { AUTHENTICATION_FORM_INITIAL_STATE, AUTHENTICATION_FORM_INPUTS } from "@/constants";
+import {
+  AUTHENTICATION_FORM_INITIAL_STATE,
+  AUTHENTICATION_FORM_INPUTS
+} from "@/constants";
 import { showMsg } from "@/utils/showMsg";
 import { GoogleIcon } from "@/icons/index";
 import Headline from "@/components/headline";
 import Button from "@/components/button";
-import Form from "@/components/form";
+import Form from "@/components/forms/form";
 import Link from "./link";
 import { useState } from "react";
 import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "@/routes";

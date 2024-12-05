@@ -3,11 +3,11 @@
 import { Input as InputType, Select as SelectType } from "@/types";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { combine } from "../_utils/combineClassnames";
-import { showMsg } from "../_utils/showMsg";
-import { uploadImage } from "../_utils/uploadImage";
-import Button from "./button";
-import FormField, { FormFieldProps } from "./formField";
+import { combine } from "@/utils/combineClassnames";
+import { showMsg } from "@/utils/showMsg";
+import { uploadImage } from "@/utils/uploadImage";
+import Button from "@/components/button";
+import FormField, { FormFieldProps } from "@/components/forms/formField";
 
 type FormProps = {
   inputs: (InputType | SelectType)[],
@@ -25,13 +25,14 @@ export default function Form({ inputs, initialState, onSubmit, redirectTo, submi
   const [formData, setFormData] = useState(initialState ?? {});
   const [isPending, setIsPending] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     if (type === "file") {
       const file = (e.target as HTMLInputElement).files?.[0];
+      const url = await uploadImage(file as File);
       return setFormData({
         ...formData,
-        [e.target.name]: file
+        [e.target.name]: url
       });
     }
     return setFormData({
@@ -44,14 +45,7 @@ export default function Form({ inputs, initialState, onSubmit, redirectTo, submi
     e.preventDefault();
     setIsPending(true);
     try {
-      const _formData = {
-        ...formData
-      };
-      if (_formData.image) {
-        const url = await uploadImage(_formData.image as File);
-        _formData.image = url;
-      }
-      await onSubmit(_formData);
+      await onSubmit(formData);
       if (redirectTo) {
         router.push(redirectTo);
       }

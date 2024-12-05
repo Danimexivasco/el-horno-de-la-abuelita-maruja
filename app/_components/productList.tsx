@@ -16,7 +16,7 @@ export default function ProductList() {
 
   if (loading) return (
     <div className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex flex-col gap-4 items-center">
-      <p className="text-lg">Loading products</p>
+      <p className="text-lg">Cargando productos...</p>
       <Spinner/>
     </div>
   );
@@ -37,6 +37,10 @@ export default function ProductList() {
               category={product.category}
               price={product.price}
               image={product.image}
+              onOffer={product.onOffer}
+              offerType={product.offerType}
+              discountPercentage={product.discountPercentage}
+              multiplierAmount={product.multiplierAmount}
               className={
                 combine("group-hover:ring-1 group-hover:ring-cake-500 group-hover:shadow-md group-hover:shadow-cake-700",
                   product?.image && "justify-center"

@@ -4,6 +4,7 @@ export type InputProps = {
   name: string
   type: string
   label?: string
+  value?: string | number
   placeholder?: string
   required?: boolean
   pattern?: string
@@ -12,7 +13,7 @@ export type InputProps = {
   className?: string
 };
 
-export default function Input({ name, type, label, placeholder="", required, pattern, options, onChange, className="" }: InputProps) {
+export default function Input({ name, type, label, value, placeholder="", required, pattern, options, onChange, className="" }: InputProps) {
   if (type === "file") return (
     <div className="grid gap-2">
       <p>{label}</p>
@@ -58,12 +59,13 @@ export default function Input({ name, type, label, placeholder="", required, pat
               value={option.value}
               onChange={onChange}
               required={required}
-              defaultChecked={option.checked}
+              checked={value ? value === option.value : option.checked}
               className="w-4 h-4 text-cake-800 bg-cake-100 border-cake-300"
             />
             <label htmlFor={option.value} className="text-sm font-medium text-gray-900 dark:text-gray-300">{option.label}</label>
           </div>
-        ))}
+        )
+        )}
       </div>
     </div>
   );
@@ -74,11 +76,13 @@ export default function Input({ name, type, label, placeholder="", required, pat
         <input
           type={type}
           name={name}
+          value={value}
           placeholder={placeholder}
           onChange={onChange}
           required={required}
           step=".01"
-          min="0"
+          min="1"
+          onWheel={type === "number" ? (e) => (e.target as HTMLElement).blur() : () => {}}
           pattern={pattern}
           className={combine(
             "focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black placeholder:text-base",
@@ -90,11 +94,13 @@ export default function Input({ name, type, label, placeholder="", required, pat
       <input
         type={type}
         name={name}
+        value={value}
         placeholder={placeholder}
         onChange={onChange}
         required={required}
         step=".01"
-        min="0"
+        min="1"
+        onWheel={type === "number" ? (e) => (e.target as HTMLElement).blur() : () => {}}
         pattern={pattern}
         className={combine(
           "focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black",

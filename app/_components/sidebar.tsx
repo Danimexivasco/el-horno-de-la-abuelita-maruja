@@ -17,7 +17,7 @@ type SidebarProps = {
 export default function Sidebar({ routes=[], className="" }: SidebarProps) {
   return (
     <section
-      className={combine("fixed w-20 min-h-screen h-full flex flex-col justify-between py-3 dark:bg-cake-950 bg-cake-200 transition-colors",
+      className={combine("sticky top-0 w-20 min-w-20 min-h-screen h-full flex flex-col justify-between py-3 dark:bg-cake-950 bg-cake-200 transition-colors",
         className
       )}
     >

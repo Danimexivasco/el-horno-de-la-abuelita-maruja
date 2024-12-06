@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { signOut } from "../_libs/firebase/auth";
 import { Route } from "@/routes";
@@ -7,11 +7,12 @@ import { LogOutIcon } from "../_icons";
 import Button from "@/components/button";
 import Tooltip from "./tooltip";
 import { combine } from "../_utils/combineClassnames";
+import ThemeSwitchButton from "./themeSwitchButton";
 
 type SidebarProps = {
   routes: Route[]
   className?: string
-}
+};
 
 export default function Sidebar({ routes=[], className="" }: SidebarProps) {
   return (
@@ -31,8 +32,10 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
           ))}
         </ul>
       </nav>
-      <ul className="grid place-items-center gap-2">
-        
+      <ul className="grid place-items-center gap-4">
+        <li>
+          <ThemeSwitchButton />
+        </li>
         <li
           className="flex justify-center relative w-full"
         >

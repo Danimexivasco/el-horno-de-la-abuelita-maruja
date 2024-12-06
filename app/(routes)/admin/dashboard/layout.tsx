@@ -1,6 +1,5 @@
 import Container from "@/app/_components/container";
 import Sidebar from "@/app/_components/sidebar";
-import ThemeSwitchButton from "@/app/_components/themeSwitchButton";
 import { Logo } from "@/app/_icons/logo";
 import { ROUTES } from "@/routes";
 import { Metadata } from "next";
@@ -28,7 +27,6 @@ export default async function Layout({
         {children}
         <Logo className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 -z-10 opacity-30 w-48 h-auto"/>
       </Container>
-      <ThemeSwitchButton className="fixed top-4 right-4 md:top-8 md:right-8"/>
     </section>
   );
 }

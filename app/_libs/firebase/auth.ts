@@ -52,7 +52,10 @@ export async function signInWithGoogle() {
       throw new Error("Google sign in failed");
     }
 
-    return userCredential.user.uid;
+    return {
+      id:      userCredential.user.uid,
+      isAdmin: existingUser?.role === "admin"
+    };
   } catch (error: FirebaseError | any) {
     if (error.code !== "auth/popup-closed-by-user") {
       console.error("Error signing in with Google", error);

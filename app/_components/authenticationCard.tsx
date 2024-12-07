@@ -14,7 +14,12 @@ import {
   signInWithGoogle,
   signUpWithEmailAndPassword
 } from "@/libs/firebase/auth";
-import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "@/routes";
+import {
+  ADMIN_DASHBOARD_PATH,
+  HOME_PATH,
+  SIGN_IN_PATH,
+  SIGN_UP_PATH
+} from "@/routes";
 import { AuthenticationPages } from "@/types";
 import { showMsg } from "@/utils/showMsg";
 import { useRouter } from "next/navigation";
@@ -29,11 +34,14 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
 
   const _signInWithGoogle = async () => {
     try {
-      const userUid = await signInWithGoogle();
-      if (userUid) {
-        await createSession(userUid);
+      const user = await signInWithGoogle();
+      if (user) {
+        const { id, isAdmin } = user;
+        if (id) {
+          await createSession(id);
+        }
+        router.push(isAdmin ? ADMIN_DASHBOARD_PATH : HOME_PATH);
       }
-      router.push(HOME_PATH);
     } catch (error) {
       showMsg("Failed to sign in with Google", "error");
       console.error(error);

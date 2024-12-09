@@ -69,13 +69,6 @@ export const NEW_PRODUCT_FORM_INPUTS = [
     required: true
   },
   {
-    name:        "price",
-    type:        "number",
-    label:       "Precio",
-    placeholder: "Inserta un precio para tu producto. Ejemplo: 9.99",
-    required:    true
-  },
-  {
     name:        "image",
     type:        "file",
     label:       "Imagen",
@@ -97,23 +90,6 @@ export const NEW_PRODUCT_FORM_INPUTS = [
         checked: false
       }
     ]
-  },
-  {
-    name:    "onOffer",
-    type:    "radio",
-    label:   "En oferta?",
-    options: [
-      {
-        value:   "yes",
-        label:   "Si",
-        checked: false
-      },
-      {
-        value:   "no",
-        label:   "No",
-        checked: true
-      }
-    ]
   }
 ];
 
@@ -122,6 +98,8 @@ export const NEW_PRODUCT_FORM_INITIAL_STATE: Product = {
   name:               "",
   description:        "",
   category:           "",
+  multiPrice:         "no",
+  variants:           [],
   price:              0,
   image:              "",
   new:                "yes",

@@ -1,5 +1,3 @@
-import { Timestamp } from "firebase/firestore";
-
 export type Theme = "light" | "dark";
 
 export type AuthenticationPages = "signIn" | "signUp";
@@ -8,6 +6,7 @@ export type Input = {
   name: string,
   type: string,
   label?: string,
+  value?: string,
   placeholder: string,
   options?: {value: string, label: string}[],
   required?: boolean
@@ -17,6 +16,7 @@ export type Select = {
   name: string,
   type: string,
   label?: string,
+  value?: string,
   options: {value: string, label: string}[],
   required?: boolean
 };
@@ -33,20 +33,33 @@ export type User = {
 
 type Categories = "tartas" | "galletas" | "bizcochos";
 
+export type ProductVariant = {
+  id: string
+  name: string,
+  value: number
+  offerData: {
+    onOffer: "yes" | "no",
+    offerType?: "percentage" | "multiplier" | ""
+    discountPercentage?: number
+    multiplierAmount?: string
+  }
+};
+
 export type Product = {
   id: string,
   name: string,
   description: string,
   category: Categories | ""
   image?: string,
-  // sizes?: Record<string, number>[] // Array of type: [{tamaño: "grande", precio: 14}]
-  price: number, // Maybe we need to remove it and pass to sizes
+  multiPrice: "no" | "yes",
+  price: number,
+  variants?: ProductVariant[]
   onOffer: string
-  offerType?: "percentage" | "2x1"
+  offerType?: "percentage" | "multiplier" | ""
   discountPercentage?: number
-  "2x1Amount"?: string
-  createdAt: Date | Timestamp
-  new?: boolean
+  multiplierAmount?: string
+  createdAt?: Date
+  new?: "no" | "yes"
 };
 
 export type MinOrder = {

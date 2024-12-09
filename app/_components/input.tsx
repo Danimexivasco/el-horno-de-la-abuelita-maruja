@@ -11,9 +11,16 @@ export type InputProps = {
   options?: {value: string, label: string, checked?: boolean}[]
   onChange: (_e: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
+  props?: any
 };
 
-export default function Input({ name, type, label, value, placeholder="", required, pattern, options, onChange, className="" }: InputProps) {
+export const removeZeroValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (e.target.value === "0") {
+    e.target.value = "";
+  }
+};
+
+export default function Input({ name, type, label, value, placeholder="", required, pattern, options, onChange, className="", ...props }: InputProps) {
   if (type === "file") return (
     <div className="grid gap-2">
       <p>{label}</p>
@@ -53,7 +60,7 @@ export default function Input({ name, type, label, value, placeholder="", requir
         {options?.map((option) => (
           <div key={option.value} className="flex items-center gap-2">
             <input
-              id={option.value}
+              id={`${name}-${option.value}`}
               type="radio"
               name={name}
               value={option.value}
@@ -61,8 +68,9 @@ export default function Input({ name, type, label, value, placeholder="", requir
               required={required}
               checked={value ? value === option.value : option.checked}
               className="w-4 h-4 text-cake-800 bg-cake-100 border-cake-300"
+              {...props}
             />
-            <label htmlFor={option.value} className="text-sm font-medium text-gray-900 dark:text-gray-300">{option.label}</label>
+            <label htmlFor={`${name}-${option.value}`} className="text-sm font-medium text-gray-900 dark:text-gray-300">{option.label}</label>
           </div>
         )
         )}
@@ -84,6 +92,7 @@ export default function Input({ name, type, label, value, placeholder="", requir
           min="1"
           onWheel={type === "number" ? (e) => (e.target as HTMLElement).blur() : () => {}}
           pattern={pattern}
+          {...props}
           className={combine(
             "focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black placeholder:text-base",
             className
@@ -102,6 +111,7 @@ export default function Input({ name, type, label, value, placeholder="", requir
         min="1"
         onWheel={type === "number" ? (e) => (e.target as HTMLElement).blur() : () => {}}
         pattern={pattern}
+        {...props}
         className={combine(
           "focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black",
           className

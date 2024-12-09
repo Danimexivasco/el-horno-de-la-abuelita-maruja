@@ -39,8 +39,8 @@ const config: Config = {
         grow: "grow 0.3s ease-in-out"
       },
       gridTemplateColumns: {
-        "auto-fill": "repeat(auto-fill, minmax(320px, 1fr))",
-        "auto-fit":  "repeat(auto-fit, minmax(320px, 1fr))"
+        "auto-fill": "repeat(auto-fill, minmax(300px, 1fr))",
+        "auto-fit":  "repeat(auto-fit, minmax(300px, 1fr))"
       }
     }
   },

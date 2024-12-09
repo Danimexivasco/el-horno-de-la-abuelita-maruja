@@ -5,12 +5,21 @@ import { combine } from "../_utils/combineClassnames";
 import { LogoIcon } from "../_icons";
 import Tag from "./tag";
 import { getDiscountPrice } from "../_utils/getDiscountPrice";
+import getCheapestVariant from "../_utils/getCheapestVariant";
 
 type CardProps = Omit<Product, "id" | "createdAt"> & {
   className?: string,
 };
 
-export default function Card({ name, description, category, price, image, onOffer, offerType, discountPercentage, multiplierAmount, className="" }: CardProps) {
+export default function Card({ name, description, category, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, className="" }: CardProps) {
+  const {
+    price: variantPrice,
+    onOffer: variantOnOffer,
+    offerType: variantOfferType,
+    discount: variantDiscount,
+    multiplierAmount: variantMultiplierAmount
+  } = getCheapestVariant(variants);
+
   return (
     <li
       className={
@@ -20,15 +29,28 @@ export default function Card({ name, description, category, price, image, onOffe
         )
       }
     >
-      {onOffer === "yes" &&
-        <div className="absolute -top-1 -right-0.5 rotate-45 translate-x-1/4 translate-y-1/3 px-2 py-1 bg-cake-500 w-32 flex items-center justify-center">
-          <p className="text-2xl font-bold text-black">{offerType === "percentage" ? `${discountPercentage}%` : multiplierAmount}</p>
-        </div>
+      {multiPrice ?
+        (variantOnOffer === "yes" &&
+          <div className="absolute -top-1 -right-0.5 rotate-45 translate-x-1/4 translate-y-1/3 px-2 py-1 bg-cake-500 w-32 flex items-center justify-center">
+            <p className="text-2xl font-bold text-black">{variantOfferType === "percentage" ?
+              `${variantDiscount}%`
+              : variantMultiplierAmount}
+            </p>
+          </div>
+        ) :
+        (onOffer === "yes" &&
+          <div className="absolute -top-1 -right-0.5 rotate-45 translate-x-1/4 translate-y-1/3 px-2 py-1 bg-cake-500 w-32 flex items-center justify-center">
+            <p className="text-2xl font-bold text-black">{offerType === "percentage" ?
+              `${discountPercentage}%`
+              : multiplierAmount}
+            </p>
+          </div>
+        )
       }
       <div
         className={
           combine(
-            "w-full h-3/4 min-h-60 max-h-3/4 aspect-video overflow-hidden flex items-center justify-center dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
+            "w-full h-60 md:h-64 aspect-video overflow-hidden flex items-center justify-center dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
           )
         }
       >
@@ -45,23 +67,44 @@ export default function Card({ name, description, category, price, image, onOffe
           <LogoIcon className="w-1/4 h-auto opacity-60"/>
         }
       </div>
-      <div className="px-6 pb-6 pt-2">
-        <Tag
-          text={category}
-          className="mb-4"
-        />
-        <Headline as="h2">{name}</Headline>
-        <p className="line-clamp-1">{description}</p>
-        <p className="flex gap-2 items-center font-bold mt-4 text-xl">
-          {onOffer === "yes" && offerType === "percentage" ?
-            <>
-              <span className="text-3xl">{getDiscountPrice(price, discountPercentage ?? 0)}€</span>
-              <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{price}€</span>
-            </>
-            :
-            `${price}€`
+      <div className="flex flex-col justify-between px-6 pb-6 pt-2 flex-1">
+        <div>
+          <Tag
+            text={category}
+            className="mb-4"
+          />
+          <Headline as="h2">{name}</Headline>
+          <p className="line-clamp-2">{description}</p>
+        </div>
+        <div className="grid mt-4">
+          {multiPrice &&
+            <p className="text-lg font-normal">Desde:</p>
           }
-        </p>
+          <div className="flex gap-2 items-center font-bold text-xl">
+            {multiPrice ? (
+              variantOnOffer === "yes" && variantOfferType === "percentage"
+                ?
+                <>
+                  <span className="text-3xl">
+                    {getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0)}€
+                  </span>
+                  <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{variantPrice}€</span>
+                </>
+                :
+                <p className="text-2xl">{variantPrice}€</p>
+            ) : (
+              onOffer === "yes" && offerType === "percentage" ?
+                <>
+                  <span className="text-3xl">
+                    {getDiscountPrice(price ?? 0, discountPercentage ?? 0)}€
+                  </span>
+                  <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{price}€</span>
+                </>
+                :
+                <p className="text-2xl">{price}€</p>
+            )}
+          </div>
+        </div>
       </div>
     </li>
   );

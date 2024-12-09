@@ -1,24 +1,27 @@
 "use client";
 
-import { LogoIcon } from "@/app/_icons";
+import { LogoIcon, TrashIcon } from "@/app/_icons";
 import {
-  createProduct,
   deleteProduct as _deleteProduct,
+  createProduct,
   updateProduct
 } from "@/app/_libs/firebase/products";
+import { generateId } from "@/app/_utils/generateId";
 import { getDiscountPrice } from "@/app/_utils/getDiscountPrice";
 import Button from "@/components/button";
 import FormField, { FormFieldProps } from "@/components/forms/formField";
+import { ADMIN_PRODUCTS_PATH } from "@/routes";
 import { Input as InputType, Product, Select as SelectType } from "@/types";
 import { combine } from "@/utils/combineClassnames";
 import { showMsg } from "@/utils/showMsg";
 import { uploadImage } from "@/utils/uploadImage";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import Spinner from "../spinner";
+import React, { useEffect, useState } from "react";
 import Headline from "../headline";
-import { ADMIN_PRODUCTS_PATH } from "@/routes";
+import { removeZeroValue } from "../input";
+import Spinner from "../spinner";
+import ProductVariantField from "./productVariantFields";
 
 type ProductFormProps = {
   headline: string
@@ -35,7 +38,19 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
   const router = useRouter();
   const [formData, setFormData] = useState<Omit<Product, "createdAt">>({
     ...initialState,
-    offerType: initialState.offerType !== "" ? initialState.offerType : "percentage"
+    offerType: initialState.offerType !== "" ? initialState.offerType : "percentage",
+    variants:  initialState.variants?.map(variant => {
+      if (variant.offerData.onOffer === "no" && variant.offerData.offerType === "") {
+        return {
+          ...variant,
+          offerData: {
+            ...variant.offerData,
+            offerType: "percentage"
+          }
+        };
+      }
+      return variant;
+    })
   });
 
   const [isPending, setIsPending] = useState(false);
@@ -61,39 +76,11 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
     });
   };
 
-  const handleOffers = (data: Product): Product => {
-    if (data.onOffer === "no") {
-      return {
-        ...data,
-        offerType:          "",
-        discountPercentage: 0,
-        multiplierAmount:   ""
-      };
+  useEffect(() => {
+    if (formData.multiPrice === "yes" && formData.variants?.length === 0) {
+      handleAddSize();
     }
-    return data;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsPending(true);
-    try {
-      const _formData = await handleOffers(formData);
-      if (_formData.id) {
-        await updateProduct(_formData.id, _formData);
-      } else {
-        await createProduct({
-          ..._formData,
-          createdAt: new Date()
-        });
-      }
-      if (redirectTo) {
-        router.push(redirectTo);
-      }
-    } catch (error) {
-      setIsPending(false);
-      showMsg(`Error: ${error}`, "error");
-    }
-  };
+  }, [formData.multiPrice]);
 
   const renderImage = (image?: string) => {
     if (loadingImage) return <Spinner />;
@@ -120,6 +107,145 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
     }
   };
 
+  const removeImage = () => {
+    (document.querySelector("input[name=image]") as HTMLInputElement).value = "";
+    setFormData({
+      ...formData,
+      image: ""
+    });
+  };
+
+  const handleVariantChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, name, value, dataset } = e.target;
+    setFormData({
+      ...formData,
+      variants: formData.variants?.map((variant) => {
+        if (variant.id === id) {
+          if (name === "name") {
+            return {
+              ...variant,
+              name: value
+            };
+          } else if (name === "price") {
+            return {
+              ...variant,
+              value: value === "" ? 0 : Number(value)
+            };
+          }
+          return {
+            ...variant,
+            offerData: {
+              ...variant.offerData,
+              [dataset.name as string]: value
+            }
+          };
+        }
+        return variant;
+      })
+    });
+  };
+
+  const removeVariant = (id: string) => {
+    setFormData({
+      ...formData,
+      variants: formData.variants?.filter((variant) => variant.id !== id)
+    });
+  };
+
+  const handleAddSize = () => {
+    if (formData.variants) {
+      setFormData({
+        ...formData,
+        variants: [...formData.variants, {
+          id:        generateId(),
+          name:      "",
+          value:     formData.price && formData.variants?.length === 0 ? Number(formData.price) : 0,
+          offerData: {
+            onOffer:            "no",
+            offerType:          "percentage",
+            discountPercentage: 0,
+            multiplierAmount:   ""
+          }
+        }]
+      });
+    } else {
+      setFormData({
+        ...formData,
+        variants: [{
+          id:        generateId(),
+          name:      "",
+          value:     formData.price ? Number(formData.price) : 0,
+          offerData: {
+            onOffer:            "no",
+            offerType:          "",
+            discountPercentage: 0,
+            multiplierAmount:   ""
+          }
+        }]
+      });
+    }
+  };
+
+  const handleProductData = (data: Product): Product => {
+    let _data = data;
+    if (_data?.onOffer === "no") {
+      _data = {
+        ...data,
+        offerType:          "",
+        discountPercentage: 0,
+        multiplierAmount:   ""
+      };
+    }
+    if (_data?.multiPrice === "no") {
+      _data = {
+        ..._data,
+        variants: []
+      };
+    } else {
+      _data = {
+        ..._data,
+        price:    0,
+        variants: _data?.variants?.map((variant) => {
+          if (variant.offerData?.onOffer === "no") {
+            return {
+              ...variant,
+              offerData: {
+                ...variant.offerData,
+                offerType:          "",
+                discountPercentage: 0,
+                multiplierAmount:   ""
+              }
+            };
+          }
+          return variant;
+        })
+      };
+    }
+    return _data;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsPending(true);
+    try {
+      const _formData = await handleProductData(formData);
+      if (_formData.id) {
+        await updateProduct(_formData.id, _formData);
+      } else {
+        await createProduct({
+          ..._formData,
+          createdAt: new Date()
+        });
+      }
+      if (redirectTo) {
+        router.push(redirectTo);
+      }
+    } catch (error) {
+      setIsPending(false);
+      showMsg(`Error: ${error}`, "error");
+    }
+  };
+
   return (
     <>
       <div className="flex items-center justify-between mb-8">
@@ -127,43 +253,130 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
         {formData.id &&
           <Button
             onClick={deleteProduct}
-            className="dark:bg-red-500 bg-red-600 dark:hover:bg-red-600 hover:bg-red-700"
-          >Eliminar
+            withIcon
+            isRed
+          ><TrashIcon className="w-5 h-5"/> Eliminar
           </Button>
         }
       </div>
       <form
         onSubmit={handleSubmit}
-        className={combine("grid gap-12 max-w-7xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10", outterClassName)}
+        className={combine("grid lg:flex gap-12 max-w-7xl bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10", outterClassName)}
         encType="multipart/form-data"
       >
-        <div className="w-1/2">
+        <div className="flex flex-col flex-1">
           <div
             className={
               combine(
-                "w-full h-3/4 min-h-96 max-h-3/4 aspect-square overflow-hidden flex items-center justify-center rounded-lg dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
+                "w-full min-h-96 max-h-96 lg:max-h-none aspect-square overflow-hidden flex items-center justify-center rounded-lg dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
               )
             }
           >
             {renderImage(formData?.image as string)}
           </div>
+          {formData?.image &&
+            <p
+              className="text-sm dark:text-red-500 text-red-600 dark:hover:text-red-600 hover:text-red-700 dark:active:text-red-900 active:text-red-800 cursor-pointer flex gap-1 w-fit mt-2"
+              onClick={removeImage}
+            ><TrashIcon className="w-5 h-5"/><span>Eliminar imagen</span>
+            </p>
+          }
           {!formData?.image &&
           <small className="block italic mt-2">*Esta será la imagen por defecto si no se selecciona otra</small>
           }
         </div>
-        <div className={combine("grid gap-4", fieldsContainerClassName)}>
+        <div className={combine("grid flex-1 gap-8", fieldsContainerClassName)}>
           {inputs?.map((input: InputType | SelectType) =>
             <FormField
               key={input.name}
               type={input.type as FormFieldProps["type"]}
-              value={formData[input.name as keyof typeof formData]}
+              value={formData[input.name as keyof typeof formData] as string | number}
               input={{
                 ...input,
                 onChange: handleChange
               }}
             />
           )}
-          {formData?.onOffer === "yes" &&
+          <FormField
+            value={formData.multiPrice}
+            input={{
+              name:    "multiPrice",
+              type:    "radio",
+              label:   "Varios formatos disponibles",
+              options: [
+                {
+                  value:   "yes",
+                  label:   "Si",
+                  checked: false
+                },
+                {
+                  value:   "no",
+                  label:   "No",
+                  checked: true
+                }
+              ],
+              onChange: handleChange
+            }}
+          />
+          {formData.multiPrice === "yes" ? (
+            <div className="grid gap-4 dark:bg-cake-600/40 bg-cake-600/40 p-6 rounded-md">
+              <Button
+                onClick={handleAddSize}
+              >Añadir variante
+              </Button>
+              { formData?.variants && formData.variants.length > 0 &&
+                formData.variants.map((variant, index) => (
+                  <div
+                    key={variant.id}
+                    className="grid"
+                  >
+                    <Headline as="h3" className="!mb-2 mt-4">Variante {index + 1}</Headline>
+                    <ProductVariantField
+                      key={variant.id}
+                      handleChange={handleVariantChange}
+                      removeVariant={() => removeVariant(variant.id)}
+                      {...variant}
+                    />
+                  </div>
+                ))
+              }
+            </div>
+          ) : (
+            <>
+              <FormField
+                value={formData.price}
+                input={{
+                  name:        "price",
+                  type:        "number",
+                  label:       "Precio",
+                  placeholder: "Inserta un precio para tu producto. Ejemplo: 9.99",
+                  required:    true,
+                  onChange:    handleChange
+                }}
+                onClick={removeZeroValue}
+              />
+              <FormField
+                value={formData.onOffer}
+                input={{
+                  name:    "onOffer",
+                  type:    "radio",
+                  label:   "En oferta?",
+                  options: [
+                    {
+                      value:   "yes",
+                      label:   "Si",
+                      checked: false
+                    },
+                    {
+                      value:   "no",
+                      label:   "No",
+                      checked: true
+                    }
+                  ],
+                  onChange: handleChange
+                }}
+              />
+              {formData?.onOffer === "yes" &&
           <FormField
             value={formData.offerType}
             input={{
@@ -186,40 +399,43 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
               onChange: handleChange
             }}
           />
-          }
-          {formData?.onOffer === "yes" && formData?.offerType === "percentage" && (
-            <div>
-              <FormField
-                value={formData.discountPercentage}
-                input={{
-                  name:        "discountPercentage",
-                  type:        "number",
-                  label:       "Porcentaje de descuento",
-                  required:    formData?.onOffer === "yes",
-                  placeholder: "Inserta un porcentaje de descuento. Ejemplo: 15",
-                  onChange:    handleChange
-                }}
-              />
-              <small className="block italic mt-2">El precio final sería {getDiscountPrice(formData.price, formData?.discountPercentage ?? 0)} €</small>
-            </div>
-          )
-          }
-          {formData?.onOffer === "yes" && formData?.offerType === "multiplier" && (
-            <FormField
-              value= {formData.multiplierAmount}
-              input={{
-                name:        "multiplierAmount",
-                type:        "text",
-                label:       "Tipo de descuento 2X1",
-                required:    formData?.onOffer === "yes",
-                placeholder: "Ejemplos válidos: 2x1, 3x2, 4x3, 5x4...",
-                onChange:    handleChange,
-                //eslint-disable-next-line
-              pattern:     "^\\d[xX]\\d$",
-              }}
-            />
-          )
-          }
+              }
+              {formData?.onOffer === "yes" && formData?.offerType === "percentage" && (
+                <div>
+                  <FormField
+                    value={formData.discountPercentage}
+                    input={{
+                      name:        "discountPercentage",
+                      type:        "number",
+                      label:       "Porcentaje de descuento",
+                      required:    formData?.onOffer === "yes",
+                      placeholder: "Inserta un porcentaje de descuento. Ejemplo: 15",
+                      onChange:    handleChange
+                    }}
+                    onClick={removeZeroValue}
+                  />
+                  <small className="block italic mt-2">El precio final sería {getDiscountPrice(formData.price, formData?.discountPercentage ?? 0)} €</small>
+                </div>
+              )
+              }
+              {formData?.onOffer === "yes" && formData?.offerType === "multiplier" && (
+                <FormField
+                  value= {formData.multiplierAmount}
+                  input={{
+                    name:        "multiplierAmount",
+                    type:        "text",
+                    label:       "Tipo de descuento 2X1",
+                    required:    formData?.onOffer === "yes",
+                    placeholder: "Ejemplos válidos: 2x1, 3x2, 4x3, 5x4...",
+                    onChange:    handleChange,
+                    //eslint-disable-next-line
+                    pattern:     "^\\d[xX]\\d$",
+                  }}
+                />
+              )
+              }
+            </>
+          )}
           <Button
             type="submit"
             className={combine("mt-4", fullWidthBtn && "w-full")}

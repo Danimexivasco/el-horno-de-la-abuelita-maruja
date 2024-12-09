@@ -28,7 +28,7 @@ export async function generateMetadata(
 export default async function ProductDetail({ params }: ProductDetailProps) {
 
   const { id } = await params;
-  const { name, description, category, price, image="", onOffer, offerType, discountPercentage, multiplierAmount, new: isNew } = await getProduct(id);
+  const { name, description, category, price, image="", onOffer, offerType, discountPercentage, multiplierAmount, multiPrice, variants, new: isNew } = await getProduct(id);
 
   return (
     <>
@@ -49,16 +49,15 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
           description:        description,
           category:           category,
           image:              image,
-          // sizes?: Record<string, number>[] // Array of type: [{tamaño: "grande", precio: 14}]
-          price:              price, // Maybe we need to remove it and pass to sizes
+          multiPrice:         multiPrice,
+          variants:           variants,
+          price:              price,
           onOffer:            onOffer,
           offerType:          offerType,
           discountPercentage: discountPercentage,
           multiplierAmount:   multiplierAmount,
           new:                isNew
         }}
-        outterClassName="!flex"
-        fieldsContainerClassName="w-1/2 gap-8"
       />
     </>
   );

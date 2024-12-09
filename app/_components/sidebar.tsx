@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { signOut } from "../_libs/firebase/auth";
 import { Route } from "@/routes";
@@ -7,16 +7,17 @@ import { LogOutIcon } from "../_icons";
 import Button from "@/components/button";
 import Tooltip from "./tooltip";
 import { combine } from "../_utils/combineClassnames";
+import ThemeSwitchButton from "./themeSwitchButton";
 
 type SidebarProps = {
   routes: Route[]
   className?: string
-}
+};
 
 export default function Sidebar({ routes=[], className="" }: SidebarProps) {
   return (
     <section
-      className={combine("fixed w-20 min-h-screen h-full flex flex-col justify-between py-3 dark:bg-cake-950 bg-cake-200 transition-colors",
+      className={combine("sticky top-0 w-20 min-w-20 min-h-screen h-full flex flex-col justify-between py-3 dark:bg-cake-950 bg-cake-200 transition-colors",
         className
       )}
     >
@@ -31,13 +32,16 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
           ))}
         </ul>
       </nav>
-      <ul className="grid place-items-center gap-2">
-        
+      <ul className="grid place-items-center gap-4">
+        <li>
+          <ThemeSwitchButton />
+        </li>
         <li
           className="flex justify-center relative w-full"
         >
           <Button
-            className="peer w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg bg-red-500/80 hover:bg-red-600/80 active:bg-red-700/80 !text-black rounded-xl cursor-pointer p-0"
+            className="peer w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg !text-black rounded-xl cursor-pointer p-0"
+            isRed
             onClick={async () => await signOut()}
           >
             <LogOutIcon className="w-6 h-6"/>

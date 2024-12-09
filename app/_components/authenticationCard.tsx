@@ -1,25 +1,29 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { AuthenticationPages } from "@/types";
+import { createSession } from "@/actions/authActions";
+import Button from "@/components/button";
+import Form from "@/components/forms/form";
+import Headline from "@/components/headline";
+import {
+  AUTHENTICATION_FORM_INITIAL_STATE,
+  AUTHENTICATION_FORM_INPUTS
+} from "@/constants";
+import { GoogleIcon } from "@/icons/index";
 import {
   signInWithEmailAndPassword,
   signInWithGoogle,
   signUpWithEmailAndPassword
 } from "@/libs/firebase/auth";
-import { createSession } from "@/actions/authActions";
 import {
-  AUTHENTICATION_FORM_INITIAL_STATE,
-  AUTHENTICATION_FORM_INPUTS
-} from "@/constants";
+  ADMIN_DASHBOARD_PATH,
+  HOME_PATH,
+  SIGN_IN_PATH,
+  SIGN_UP_PATH
+} from "@/routes";
+import { AuthenticationPages } from "@/types";
 import { showMsg } from "@/utils/showMsg";
-import { GoogleIcon } from "@/icons/index";
-import Headline from "@/components/headline";
-import Button from "@/components/button";
-import Form from "@/components/forms/form";
+import { useRouter } from "next/navigation";
 import Link from "./link";
-import { useState } from "react";
-import { HOME_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "@/routes";
 
 type AuthenticationCardProps = {
   type: AuthenticationPages
@@ -27,25 +31,25 @@ type AuthenticationCardProps = {
 
 export default function AuthenticationCard({ type }: AuthenticationCardProps) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
 
   const _signInWithGoogle = async () => {
-    setLoading(true);
     try {
-      const userUid = await signInWithGoogle();
-      if (userUid) {
-        await createSession(userUid);
+      const user = await signInWithGoogle();
+      if (user) {
+        const { id, isAdmin } = user;
+        if (id) {
+          await createSession(id);
+        }
+        router.push(isAdmin ? ADMIN_DASHBOARD_PATH : HOME_PATH);
       }
-      router.push(HOME_PATH);
     } catch (error) {
       showMsg("Failed to sign in with Google", "error");
       console.error(error);
-      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full bg-cake-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 border dark:border-cake-400/80 border-cake-500/80 p-6">
+    <div className="flex flex-col items-center justify-center h-full w-full bg-cake-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 shadow-xl p-6">
       <Headline
         as="h1"
         className="text-center uppercase"
@@ -75,11 +79,7 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
         <div className="bg-white p-1.5 rounded-full">
           <GoogleIcon className="w-5"/>
         </div>
-        {loading ?
-          "Loading..."
-          :
-          type === "signUp" ? "Sign Up with Google" : "Sign In with Google"
-        }
+        {type === "signUp" ? "Sign Up with Google" : "Sign In with Google"}
       </Button>
       <p className="flex flex-col sm:flex-row items-center sm:gap-2 mt-6">
         {type === "signUp" ? "You already have an account?" : "You don't have an account yet?"}

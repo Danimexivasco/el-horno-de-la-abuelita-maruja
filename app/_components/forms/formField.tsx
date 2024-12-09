@@ -6,9 +6,10 @@ export type FormFieldProps = {
   input: InputProps | SelectProps
   type?: string
   value?: string | number
+  [key: string]: any
 };
 
-export default function FormField({ input, type="input", value }: FormFieldProps) {
+export default function FormField({ input, type="input", value, ...props }: FormFieldProps) {
   if (type === "select") {
     const { label, name, options, required, onChange } = input as SelectProps;
     return <Select
@@ -43,6 +44,7 @@ export default function FormField({ input, type="input", value }: FormFieldProps
       options={options as InputProps["options"]}
       onChange={onChange as InputProps["onChange"]}
       className={className}
+      {...props}
     />;
   }
 }

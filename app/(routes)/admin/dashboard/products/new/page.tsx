@@ -24,8 +24,6 @@ export default function NewProduct() {
         submitBtnText="Crear Producto"
         redirectTo={ADMIN_PRODUCTS_PATH}
         initialState={NEW_PRODUCT_FORM_INITIAL_STATE}
-        outterClassName="!flex"
-        fieldsContainerClassName="w-1/2 gap-8"
       />
     </>
   );

@@ -40,7 +40,8 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
           className="flex justify-center relative w-full"
         >
           <Button
-            className="peer w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg bg-red-500/80 hover:bg-red-600/80 active:bg-red-700/80 !text-black rounded-xl cursor-pointer p-0"
+            className="peer w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg !text-black rounded-xl cursor-pointer p-0"
+            isRed
             onClick={async () => await signOut()}
           >
             <LogOutIcon className="w-6 h-6"/>

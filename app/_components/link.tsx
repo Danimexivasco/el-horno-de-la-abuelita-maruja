@@ -1,4 +1,4 @@
-import { default as NextLink }  from "next/link";
+import { default as NextLink } from "next/link";
 import { combine } from "../_utils/combineClassnames";
 
 type LinkProps = {
@@ -8,21 +8,22 @@ type LinkProps = {
   asButton?: boolean;
   className?: string;
   props?: any
-}
+};
 
 export default function Link({ href, children, external, asButton=false, className="", ...props }: LinkProps) {
-  const buttonClasses = asButton ? "button" : "underline"
-  
+  const buttonClasses = asButton ? "button" : "underline";
+
   if (external) return (
     <a
       href={href}
       className={combine("dark:text-cake-400 dark:active:text-cake-600 text-cake-600 active:text-cake-700", className, buttonClasses)}
       target="_blank"
+      rel="noreferrer"
       {...props}
     >
       {children}
     </a>
-  )
+  );
   return (
     <NextLink
       href={href}
@@ -31,5 +32,5 @@ export default function Link({ href, children, external, asButton=false, classNa
     >
       {children}
     </NextLink>
-  )
+  );
 }

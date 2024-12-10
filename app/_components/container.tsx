@@ -8,7 +8,7 @@ type ContainerProps = {
 };
 export default function Container({ children, as: As = "div", className = "" }: ContainerProps) {
   return (
-    <As className={combine("w-full max-w-7xl sm:mx-auto p-4", className && className)}>
+    <As className={combine("w-full max-w-7xl sm:mx-auto p-8", className && className)}>
       {children}
     </As>
   );

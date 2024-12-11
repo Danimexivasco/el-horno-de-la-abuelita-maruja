@@ -27,7 +27,7 @@ export const AUTHENTICATION_FORM_INITIAL_STATE = {
   password: ""
 };
 
-const CATEGORY_OPTIONS = [
+export const CATEGORY_OPTIONS = [
   {
     value: "",
     label: "Elige una categoria"

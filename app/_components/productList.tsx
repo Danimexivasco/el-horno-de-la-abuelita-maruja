@@ -23,7 +23,7 @@ export default function ProductList() {
   return (
     <>
       <Link href={ADMIN_NEW_PRODUCT_PATH} asButton>+ Nuevo Producto</Link>
-      <ul className="grid gap-9 grid-cols-auto-fill my-12">
+      <ul className="grid gap-12 grid-cols-auto-fill my-12">
         {productsWithIds.length > 0 && productsWithIds?.map((product: Product) =>
           <Link
             key={product.id}
@@ -44,7 +44,7 @@ export default function ProductList() {
               discountPercentage={product.discountPercentage}
               multiplierAmount={product.multiplierAmount}
               className={
-                combine(" group-hover:shadow-lg dark:group-hover:shadow-cake-500/40 group-hover:shadow-black/30",
+                combine("group-hover:shadow-lg dark:group-hover:shadow-cake-500/40 group-hover:shadow-black/30",
                   product?.image && "justify-center"
                 )
               }

@@ -1,6 +1,6 @@
 import { combine } from "../_utils/combineClassnames";
 
-type AllowedElements = "div" | "section";
+type AllowedElements = "div" | "section" | "nav";
 type ContainerProps = {
   children: React.ReactNode,
   as?: AllowedElements,

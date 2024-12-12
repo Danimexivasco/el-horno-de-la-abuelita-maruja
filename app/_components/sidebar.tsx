@@ -31,7 +31,7 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
         <ul className={"flex flex-col gap-2"}>
           {routes.map((route) => (
             <SidebarNavItem
-              key={route.name}
+              key={route.label}
               path={route.path}
               label={route.label}
               onClick={() => isMobile && setShowMobileMenu(!showMobileMenu)}

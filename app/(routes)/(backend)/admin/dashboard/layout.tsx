@@ -20,7 +20,7 @@ export default async function Layout({
   return (
     <section className="flex">
       <Sidebar
-        routes={ROUTES.filter(route => route.isNavRoute)}
+        routes={ROUTES.filter(route => route.isNavRoute && route.protected)}
         className="z-10 hover:z-20"
       />
       <Container className="md:!p-12 z-10 hover:z-20 relative">

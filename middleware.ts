@@ -10,6 +10,14 @@ export async function middleware(request: NextRequest) {
   const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME)?.value || "";
   const userCheckedCookie = request.cookies.get(USER_CHECKED_COOKIE_NAME)?.value || "";
 
+  const headers = new Headers(request.headers);
+  headers.set("x-current-path", request.nextUrl.pathname);
+  const response = NextResponse.next({
+    request: {
+      headers
+    }
+  });
+
   if (!sessionCookie && !authRoutes.includes(request.nextUrl.pathname)) {
     const absoluteURL = request.nextUrl.clone();
     absoluteURL.pathname = SIGN_IN_PATH;
@@ -32,7 +40,7 @@ export async function middleware(request: NextRequest) {
       const url = `${baseUrl}/api/user?userId=${sessionCookie}`;
 
       try {
-        const response = await fetch(url, {
+        const apiResponse = await fetch(url, {
           method:  "GET",
           headers: {
             "Content-Type": "application/json"
@@ -42,18 +50,18 @@ export async function middleware(request: NextRequest) {
           }
         });
 
-        if (!response.ok) {
+        if (!apiResponse.ok) {
           return NextResponse.json(
             {
               error: "Failed to fetch user"
             },
             {
-              status: response.status
+              status: apiResponse.status
             }
           );
         }
 
-        const userData = await response.json();
+        const userData = await apiResponse.json();
         const { role } = userData.data;
         const notAuthorized = role !== "admin";
 
@@ -65,7 +73,7 @@ export async function middleware(request: NextRequest) {
 
         await setAdminUserCheck();
 
-        return NextResponse.next();
+        return response;
 
       } catch (error) {
         console.error("Error in middleware:", error);
@@ -80,6 +88,7 @@ export async function middleware(request: NextRequest) {
       }
     }
   }
+  return response;
 }
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|opengraph-image.jpeg|sitemap.xml).*)"]

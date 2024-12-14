@@ -17,12 +17,13 @@ export const PRODUCTS_PATH = "/products";
 export const PRODUCT_DETAIL_PATH = "/product/:id";
 export const ABOUT_US_PATH = "/about";
 export const CONTACT_PATH = "/contact";
+export const CART_PATH = "/cart";
 export const COMPONENTS_PREVIEW_PATH = "/componentsPreview";
 
 export const ROUTES: Route[] = [
   {
     path:  HOME_PATH,
-    label: "Tienda"
+    label: "Inicio"
   },
   {
     path:      SIGN_IN_PATH,
@@ -70,6 +71,10 @@ export const ROUTES: Route[] = [
     path:       CONTACT_PATH,
     label:      "Contacto",
     isNavRoute: true
+  },
+  {
+    path:  CART_PATH,
+    label: "Cart"
   },
   {
     path: PRODUCT_DETAIL_PATH

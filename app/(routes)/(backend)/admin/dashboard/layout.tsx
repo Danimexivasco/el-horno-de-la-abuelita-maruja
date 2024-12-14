@@ -20,10 +20,10 @@ export default async function Layout({
   return (
     <section className="flex">
       <Sidebar
-        routes={ROUTES.filter(route => route.isNavRoute)}
+        routes={ROUTES.filter(route => route.isNavRoute && route.protected)}
         className="z-10 hover:z-20"
       />
-      <Container className="!p-12 z-10 hover:z-20 relative">
+      <Container className="md:!p-12 z-10 hover:z-20 relative">
         {children}
         <Logo className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 -z-10 opacity-30 w-48 h-auto"/>
       </Container>

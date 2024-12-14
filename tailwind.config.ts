@@ -41,6 +41,9 @@ const config: Config = {
       gridTemplateColumns: {
         "auto-fill": "repeat(auto-fill, minmax(300px, 1fr))",
         "auto-fit":  "repeat(auto-fit, minmax(300px, 1fr))"
+      },
+      maxWidth: {
+        "8xl": "96rem"
       }
     }
   },

@@ -268,7 +268,7 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
           <div
             className={
               combine(
-                "w-full min-h-96 max-h-96 lg:max-h-none aspect-square overflow-hidden flex items-center justify-center rounded-lg dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
+                "w-full md:min-h-96 max-h-96 lg:max-h-none aspect-square overflow-hidden flex items-center justify-center rounded-lg dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
               )
             }
           >

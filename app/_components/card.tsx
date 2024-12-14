@@ -24,7 +24,7 @@ export default function Card({ name, description, category, price, multiPrice, v
     <li
       className={
         combine(
-          "relative flex flex-col gap-4 h-full w-full bg-cake-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 shadow-xl overflow-hidden",
+          "relative flex flex-col gap-4 h-full w-full rounded-md glass shadow-xl overflow-hidden",
           className
         )
       }

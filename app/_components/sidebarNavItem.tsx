@@ -9,6 +9,7 @@ type SidebarNavItemProps = {
   path: string
   label?: string
   classNames?: string
+  onClick?: () => void
 };
 
 const getIcon = (path: string): React.ReactNode => {
@@ -16,7 +17,7 @@ const getIcon = (path: string): React.ReactNode => {
   if (path === ADMIN_DASHBOARD_PATH) return <DashboardIcon className="w-6 h-6 " />;
 };
 
-export default function SidebarNavItem({ path, label="", classNames="" }: SidebarNavItemProps) {
+export default function SidebarNavItem({ path, label="", classNames="", onClick }: SidebarNavItemProps) {
   const pathname = usePathname();
   const isActive = path === pathname;
 
@@ -33,6 +34,7 @@ export default function SidebarNavItem({ path, label="", classNames="" }: Sideba
   return (
     <li
       className={combine("flex justify-center relative", classNames)}
+      onClick={onClick}
     >
       <Link
         href={path}

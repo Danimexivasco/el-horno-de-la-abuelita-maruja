@@ -7,7 +7,8 @@ import {
   setDoc,
   QuerySnapshot,
   DocumentData,
-  getDoc
+  getDoc,
+  getDocs
 } from "firebase/firestore";
 import { db } from "@/libs/firebase/config";
 import {
@@ -41,6 +42,22 @@ export const getProduct = async (id: string): Promise<Product> => {
   const productDoc = doc(db, "products", id);
   const snapshot = await getDoc(productDoc);
   return snapshot.data() as Product;
+};
+
+export const getProducts = async (): Promise<Product[]> => {
+  try {
+    const querySnapshot = await getDocs(_collection);
+    const products = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    return products as Product[];
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    showMsg("Error fetching products", "error");
+    return [];
+  }
 };
 
 export const createProduct = async (data: Product) => {

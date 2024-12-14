@@ -3,18 +3,16 @@ import { useEffect, useState } from "react";
 type WindowSize = Record<"width" | "height", number | undefined>;
 
 type useWindowSizeValues = {
-    windowSize: WindowSize,
-    isMobile: boolean
+  windowSize: WindowSize;
+  isMobile: boolean;
 };
 const MOBILE_BREAKPOINT = 640;
 
 export const useWindowSize = (): useWindowSizeValues => {
-  const initSize: WindowSize = {
-    width:  window.innerWidth ?? undefined,
-    height: window.innerHeight ?? undefined
-  };
-
-  const [windowSize, setWindowSize] = useState<WindowSize>(initSize);
+  const [windowSize, setWindowSize] = useState<WindowSize>({
+    width:  undefined,
+    height: undefined
+  });
 
   useEffect(() => {
     const handleResize = (): void => {
@@ -24,14 +22,19 @@ export const useWindowSize = (): useWindowSizeValues => {
       });
     };
 
+    handleResize();
+
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
+  const isMobile =
+    windowSize.width !== undefined && windowSize.width < MOBILE_BREAKPOINT;
+
   return {
     windowSize,
-    isMobile: windowSize.width !== undefined && windowSize.width < MOBILE_BREAKPOINT
+    isMobile
   };
 };

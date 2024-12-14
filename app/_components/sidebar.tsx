@@ -22,7 +22,7 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
 
   return (
     <section
-      className={combine("fixed z-50 sm:sticky sm:z-10 sm:top-0 top-0 left-0 w-fit sm:w-20 min-w-20 min-h-screen h-full flex flex-col justify-between py-3 dark:bg-cake-950 bg-cake-200 transition-all",
+      className={combine("fixed z-50 sm:sticky sm:z-10 top-0 left-0 w-fit sm:w-20 min-w-20 min-h-screen h-screen flex flex-col justify-between py-3 dark:bg-cake-950 bg-cake-200 transition-all",
         !showMobileMenu && "!-left-20 w-2/3",
         className
       )}

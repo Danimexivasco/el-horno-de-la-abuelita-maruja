@@ -16,7 +16,7 @@ export default function ThemeSwitchButton({ className="" }: ThemeSwitchButtonPro
   return (
     <Button
       onClick={() => handleTheme(theme === "light" ? "dark" : "light")}
-      className={combine("rounded-full p-2 transition-colors dark:bg-cake-400 dark:hover:bg-cake-500 dark:active:bg-cake-600 !text-black bg-cake-500 hover:bg-cake-600 active:bg-cake-700 z-50 shadow-xl", className)}
+      className={combine("rounded-full p-2 transition-colors dark:bg-cake-400 dark:hover:bg-cake-500 dark:active:bg-cake-600 !text-black bg-cake-500 hover:bg-cake-600 active:bg-cake-700 z-40 shadow-xl", className)}
     >
       {theme === "light" ? <MoonIcon /> : <SunIcon />}
     </Button>

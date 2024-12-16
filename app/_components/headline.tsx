@@ -1,3 +1,4 @@
+import { libre } from "../_fonts";
 import { combine } from "../_utils/combineClassnames";
 
 type HeadlineProps = {
@@ -5,7 +6,9 @@ type HeadlineProps = {
   as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6"
   className?: string
 };
+
 export default function Headline({ children, as = "h1", className="" }: HeadlineProps) {
+
   const generateClasses = (as: HeadlineProps["as"]): string => {
     if (as === "h2") return "text-3xl mb-4";
     if (as === "h3") return "text-2xl mb-4";
@@ -14,10 +17,11 @@ export default function Headline({ children, as = "h1", className="" }: Headline
     if (as === "h6") return "text-md mb-4";
     return "text-4xl mb-4";
   };
+
   const defaultClasses = generateClasses(as);
   const HeadlineType = as;
 
   return (
-    <HeadlineType className={combine(defaultClasses, className)}>{children}</HeadlineType>
+    <HeadlineType className={combine(libre.className, defaultClasses, className)}>{children}</HeadlineType>
   );
 }

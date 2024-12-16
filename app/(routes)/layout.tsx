@@ -1,12 +1,13 @@
 import type { Metadata, Viewport } from "next";
-// import localFont from "next/font/local";
+
 import "@/app/globals.css";
 import { Toaster } from "react-hot-toast";
 import Footer from "../_components/footer";
 import Header from "../_components/header";
 import ThemeSwitchButton from "../_components/themeSwitchButton";
+import { combine } from "../_utils/combineClassnames";
+import { nunito } from "../_fonts";
 
-// TODO: Check fonts
 // TODO: Change url when the website is on prod
 export const metadata: Metadata = {
   title: {
@@ -28,6 +29,7 @@ export const metadata: Metadata = {
     type:        "website"
   }
 };
+
 export const viewport: Viewport = {
   themeColor: "#2A2009"
 };
@@ -39,7 +41,7 @@ export default async function RootLayout({
 }>) {
 
   return (
-    <html lang="es" className="dark">
+    <html lang="es" className={combine(nunito.className, "dark")}>
       <body className="dark:bg-cake-900 bg-cake-100 dark:text-white transition-colors">
         <main className="flex flex-col min-h-screen">
           <Toaster position="top-center" />
@@ -48,7 +50,7 @@ export default async function RootLayout({
             {children}
           </div>
           <ThemeSwitchButton
-            className="fixed bottom-4 right-4 md:bottom-8 md:right-8"
+            className="hidden lg:block fixed bottom-4 right-4 md:bottom-8 md:right-8"
           />
           <Footer />
         </main>

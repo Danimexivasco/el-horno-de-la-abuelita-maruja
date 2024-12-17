@@ -1,4 +1,4 @@
-import { libre } from "../_fonts";
+import { sriracha } from "../_fonts";
 import { combine } from "../_utils/combineClassnames";
 
 type HeadlineProps = {
@@ -22,6 +22,6 @@ export default function Headline({ children, as = "h1", className="" }: Headline
   const HeadlineType = as;
 
   return (
-    <HeadlineType className={combine(libre.className, defaultClasses, className)}>{children}</HeadlineType>
+    <HeadlineType className={combine(sriracha.className, defaultClasses, className)}>{children}</HeadlineType>
   );
 }

@@ -9,8 +9,8 @@ type AuthPageContentProps = {
 
 export default function AuthPageContent({ type }: AuthPageContentProps) {
   return (
-    <Container className="flex flex-col max-w-6xl md:flex-row items-center gap-12 md:gap-20 xl:gap-32">
-      <FullLogo className="w-72 md:w-1/2"/>
+    <Container className="flex flex-col max-w-6xl items-center gap-8 md:gap-12">
+      <FullLogo className="w-[30vh] md:w-96"/>
       <AuthenticationCard type={type}/>
     </Container>
   );

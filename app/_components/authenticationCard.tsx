@@ -49,7 +49,7 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full bg-cake-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 shadow-xl p-6">
+    <div className="flex flex-col items-center justify-center h-full w-full  p-6 max-w-md bg-cake-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 shadow-xl">
       <Headline
         as="h1"
         className="text-center uppercase"
@@ -62,7 +62,6 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
         onSubmit={type === "signUp" ? signUpWithEmailAndPassword : signInWithEmailAndPassword}
         submitBtnText={type === "signUp" ? "Sign Up" : "Sign In"}
         redirectTo={HOME_PATH}
-        outterClassName="lg:w-3/4"
         fullWidthBtn
       />
       <Headline

@@ -57,7 +57,7 @@ export default [
 
       "@stylistic/jsx-max-props-per-line": [
         "error",
-        { maximum: { single: 2, multi: 1 } },
+        { maximum: { single: 1, multi: 1 } },
       ],
       "@stylistic/jsx-closing-tag-location": ["error", "line-aligned"],
       "@stylistic/jsx-closing-bracket-location": ["error", "line-aligned"],

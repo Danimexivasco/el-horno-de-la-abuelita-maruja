@@ -50,7 +50,7 @@ export default function Card({ name, description, category, price, multiPrice, v
       <div
         className={
           combine(
-            "w-full h-60 md:h-64 aspect-video overflow-hidden flex items-center justify-center dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
+            "w-full h-60 lg:h-64 aspect-video overflow-hidden flex items-center justify-center dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
           )
         }
       >

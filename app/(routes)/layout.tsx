@@ -41,8 +41,11 @@ export default async function RootLayout({
 }>) {
 
   return (
-    <html lang="es" className={combine(nunito.className, "dark")}>
-      <body className="dark:bg-cake-900 bg-cake-100 dark:text-white transition-colors">
+    <html
+      lang="es"
+      className={combine(nunito.className, "dark")}
+    >
+      <body className="dark:bg-cake-900 bg-cake-100 dark:text-white text-black transition-colors scroll-mt-24 lg:scroll-mt-36">
         <main className="flex flex-col min-h-screen">
           <Toaster position="top-center" />
           <Header />
@@ -50,7 +53,7 @@ export default async function RootLayout({
             {children}
           </div>
           <ThemeSwitchButton
-            className="hidden lg:block fixed bottom-4 right-4 md:bottom-8 md:right-8"
+            className="hidden lg:block fixed bottom-4 right-4 lg:bottom-8 lg:right-8"
           />
           <Footer />
         </main>

@@ -10,9 +10,10 @@ type ButtonProps = {
   type?: "button" | "submit"
   isRed?: boolean
   disabled?: boolean
+  ariaLabel?: string
 };
 
-export default function Button({ children, onClick, withIcon=false, type="button", isRed, disabled, className="" }: ButtonProps) {
+export default function Button({ children, onClick, withIcon=false, type="button", isRed, disabled, className="", ariaLabel="" }: ButtonProps) {
   const redClass = isRed && "dark:bg-red-500 bg-red-600 dark:hover:bg-red-600 hover:bg-red-700 dark:active:bg-red-900 active:bg-red-800";
   return (
     <button
@@ -20,6 +21,7 @@ export default function Button({ children, onClick, withIcon=false, type="button
       type={type}
       className={combine("button", withIcon && "flex items-center gap-2", isRed && redClass, className)}
       disabled={disabled}
+      aria-label={ariaLabel}
     >
       {children}
     </button>

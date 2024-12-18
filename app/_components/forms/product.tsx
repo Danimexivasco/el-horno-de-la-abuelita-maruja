@@ -268,7 +268,7 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
           <div
             className={
               combine(
-                "w-full md:min-h-96 max-h-96 lg:max-h-none aspect-square overflow-hidden flex items-center justify-center rounded-lg dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
+                "w-full lg:min-h-96 max-h-96 lg:max-h-none aspect-square overflow-hidden flex items-center justify-center rounded-lg dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
               )
             }
           >
@@ -330,7 +330,11 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
                     key={variant.id}
                     className="grid"
                   >
-                    <Headline as="h3" className="!mb-2 mt-4">Variante {index + 1}</Headline>
+                    <Headline
+                      as="h3"
+                      className="!mb-2 mt-4"
+                    >Variante {index + 1}
+                    </Headline>
                     <ProductVariantField
                       key={variant.id}
                       handleChange={handleVariantChange}

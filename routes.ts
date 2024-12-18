@@ -18,6 +18,11 @@ export const PRODUCT_DETAIL_PATH = "/product/:id";
 export const ABOUT_US_PATH = "/about";
 export const CONTACT_PATH = "/contact";
 export const CART_PATH = "/cart";
+export const LEGAL_PATH = "/legal";
+export const PRIVACY_PATH = "/privacy";
+export const COOKIES_PATH = "/cookies";
+export const SALES_CONDITIONS_PATH = "/sales-conditions";
+
 export const COMPONENTS_PREVIEW_PATH = "/componentsPreview";
 
 export const ROUTES: Route[] = [
@@ -83,5 +88,24 @@ export const ROUTES: Route[] = [
     path:       COMPONENTS_PREVIEW_PATH,
     label:      "Preview Componentes",
     isNavRoute: process.env.NODE_ENV !== "production"
+  }
+];
+
+export const LEGAL_ROUTES: Route[] = [
+  {
+    path:  LEGAL_PATH,
+    label: "Aviso Legal"
+  },
+  {
+    path:  PRIVACY_PATH,
+    label: "Política de Privacidad"
+  },
+  {
+    path:  COOKIES_PATH,
+    label: "Política de Cookies"
+  },
+  {
+    path:  SALES_CONDITIONS_PATH,
+    label: "Condiciones de venta, envío y devolución"
   }
 ];

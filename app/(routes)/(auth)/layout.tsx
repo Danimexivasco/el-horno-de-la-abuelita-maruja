@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import ThemeSwitchButton from "@/components/themeSwitchButton";
 
 export const metadata: Metadata = {
   title: {
@@ -29,9 +28,8 @@ export default async function RootLayout({
 }>) {
 
   return (
-    <section className="flex items-center justify-center min-h-screen p-6">
+    <section className="flex items-center justify-center min-h-screen">
       {children}
-      <ThemeSwitchButton className="fixed bottom-4 right-4 md:bottom-8 md:right-8"/>
     </section>
   );
 }

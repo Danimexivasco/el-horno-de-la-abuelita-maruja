@@ -24,29 +24,31 @@ export default function DesktopHeader({ navRoutes=[], activePathname, user, clas
       )}
     >
       <ul className="flex gap-8 justify-self-end">
-        {navRoutes.slice(0, navRoutes.length/2)?.map((route: Route) => (
+        {navRoutes.slice(0, Math.round(navRoutes.length/2))?.map((route: Route) => (
           <Link
             href={route.path}
             key={route.path}
             className={combine(
-              "font-bold no-underline dark:active:text-cake-600 active:text-cake-700",
+              "text-lg font-bold no-underline dark:active:text-cake-600 active:text-cake-700",
               activePathname === route.path && "dark:text-cake-600 text-cake-700"
             )}
           >{route.label}
           </Link>
         ))}
       </ul>
-      <Link href={HOME_PATH} >
+      <Link
+        href={HOME_PATH}
+      >
         <FullLogo className="w-36"/>
       </Link>
       <div className="justify-self-start flex items-center justify-between gap-12">
         <ul className="flex items-center gap-8">
-          {navRoutes.slice(navRoutes.length/2, navRoutes.length)?.map((route) => (
+          {navRoutes.slice(Math.round(navRoutes.length/2), navRoutes.length)?.map((route) => (
             <Link
               href={route.path}
               key={route.path}
               className={combine(
-                "font-bold no-underline dark:active:text-cake-600 active:text-cake-700",
+                "text-lg font-bold no-underline dark:active:text-cake-600 active:text-cake-700",
                 activePathname === route.path && "dark:text-cake-600 text-cake-700"
               )}
             >{route.label}

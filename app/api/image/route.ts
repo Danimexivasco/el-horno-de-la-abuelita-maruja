@@ -1,3 +1,5 @@
+/* eslint camelcase: 0 */
+
 import { NextRequest, NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import crypto from "crypto";

@@ -1,17 +1,19 @@
 "use client";
 
-import { UserIcon, CartIcon, LogOutIcon } from "@/app/_icons";
-import { signOut } from "@/app/_libs/firebase/auth";
-import Link from "../link";
-import { CART_PATH, SIGN_IN_PATH } from "@/routes";
+import { useRouter } from "next/navigation";
 import { User } from "@/types";
+import { signOut } from "@/app/_libs/firebase/auth";
+import { SIGN_IN_PATH } from "@/routes";
+import { LogOutIcon, UserIcon } from "@/app/_icons";
 import Button from "../button";
+import Cart from "../cart";
 
 type UserActionsProps = {
     user: User | null
 };
 
 export default function UserActions({ user }: UserActionsProps) {
+  const router = useRouter();
 
   return (
     <div className="flex items-center gap-4">
@@ -22,7 +24,7 @@ export default function UserActions({ user }: UserActionsProps) {
         />
         <div className="hidden p-4 absolute group-hover:block group-hover:flex flex-col gap-2 top-full right-0 translate-x-1/2">
           <div
-            className="relative right-4 flex flex-col gap-2 p-4 items-start rounded-md glass !bg-opacity-35 shadow-lg"
+            className="relative right-4 flex flex-col gap-2 p-4 items-center rounded-md glass !bg-opacity-35 shadow-lg"
           >
             {user ? (
               <>
@@ -41,24 +43,19 @@ export default function UserActions({ user }: UserActionsProps) {
             ) : (
               <>
                 <p className="whitespace-nowrap dark:text-white text-black">Todavía no estás logueado</p>
-                <Link
-                  href={SIGN_IN_PATH}
-                >Inicia Sesión
-                </Link>
+                <Button
+                  onClick={() => router.push(SIGN_IN_PATH)}
+                >
+                  Inicia Sesión
+                </Button>
               </>
             )}
           </div>
         </div>
       </div>
-      <Link
-        href={CART_PATH}
-      >
-        <CartIcon
-          className="w-8 h-8 dark:active:text-cake-600 active:text-cake-700"
-          role="button"
-        />
-      </Link>
-
+      <Cart
+        className="w-8 h-8"
+      />
     </div>
   );
 }

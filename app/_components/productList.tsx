@@ -22,7 +22,11 @@ export default function ProductList() {
   );
   return (
     <>
-      <Link href={ADMIN_NEW_PRODUCT_PATH} asButton>+ Nuevo Producto</Link>
+      <Link
+        href={ADMIN_NEW_PRODUCT_PATH}
+        asButton
+      >+ Nuevo Producto
+      </Link>
       <ul className="grid gap-12 grid-cols-auto-fill my-12">
         {productsWithIds.length > 0 && productsWithIds?.map((product: Product) =>
           <Link

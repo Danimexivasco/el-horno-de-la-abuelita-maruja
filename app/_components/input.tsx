@@ -58,7 +58,10 @@ export default function Input({ name, type, label, value, placeholder="", requir
       {label}
       <div className="flex items-center gap-4 w-fit">
         {options?.map((option) => (
-          <div key={option.value} className="flex items-center gap-2">
+          <div
+            key={option.value}
+            className="flex items-center gap-2"
+          >
             <input
               id={`${name}-${option.value}`}
               type="radio"
@@ -70,7 +73,11 @@ export default function Input({ name, type, label, value, placeholder="", requir
               className="w-4 h-4 text-cake-800 bg-cake-100 border-cake-300"
               {...props}
             />
-            <label htmlFor={`${name}-${option.value}`} className="text-sm font-medium text-gray-900 dark:text-gray-300">{option.label}</label>
+            <label
+              htmlFor={`${name}-${option.value}`}
+              className="text-sm font-medium text-gray-900 dark:text-gray-300"
+            >{option.label}
+            </label>
           </div>
         )
         )}

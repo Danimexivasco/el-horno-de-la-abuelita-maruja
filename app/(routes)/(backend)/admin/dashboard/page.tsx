@@ -5,8 +5,8 @@ import Headline from "@/components/headline";
 import { CATEGORY_OPTIONS } from "@/constants";
 import { ADMIN_PRODUCTS_PATH, HOME_PATH } from "@/routes";
 import { Metadata } from "next";
-import { getActualUser } from "@/app/_libs/firebase/users";
-import { cookies } from "next/headers";
+import { getLoggedUser } from "@/actions/authActions";
+import { User } from "@/types";
 
 export const metadata: Metadata = {
   title:       "Panel de Control",
@@ -24,8 +24,7 @@ export const metadata: Metadata = {
 export default async function Dashboard() {
 // TODO: Implement Ventas page
   const products = await getProducts();
-  const cookieStore = await cookies();
-  const user = await getActualUser(cookieStore.get("user_session")?.value as string);
+  const user = await getLoggedUser() as User;
 
   return (
     <>

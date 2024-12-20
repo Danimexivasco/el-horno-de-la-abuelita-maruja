@@ -75,6 +75,37 @@ export const NEW_PRODUCT_FORM_INPUTS = [
     placeholder: "Sube una imagen"
   },
   {
+    name:    "allergens",
+    type:    "checkbox",
+    label:   "Alérgenos",
+    options: [
+      {
+        value: "gluten",
+        label: "Gluten"
+      },
+      {
+        value: "lactosa",
+        label: "Lactosa"
+      },
+      {
+        value: "frutos secos",
+        label: "Frutos secos"
+      },
+      {
+        value: "huevo",
+        label: "Huevo"
+      },
+      {
+        value: "soja",
+        label: "Soja"
+      },
+      {
+        value: "sésamo",
+        label: "Sésamo"
+      }
+    ]
+  },
+  {
     name:    "new",
     type:    "radio",
     label:   "Nuevo?",
@@ -106,5 +137,6 @@ export const NEW_PRODUCT_FORM_INITIAL_STATE: Product = {
   onOffer:            "no",
   offerType:          "",
   discountPercentage: 0,
-  multiplierAmount:   ""
+  multiplierAmount:   "",
+  allergens:          []
 };

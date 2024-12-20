@@ -70,12 +70,43 @@ export default function Input({ name, type, label, value, placeholder="", requir
               onChange={onChange}
               required={required}
               checked={value ? value === option.value : option.checked}
-              className="w-4 h-4 text-cake-800 bg-cake-100 border-cake-300"
+              className="w-4 h-4 appearance-none  bg-white rounded-full border dark:border-white border-black checked:ring-2 ring-cake-400 checked:bg-cake-400 checked:border-2 checked:border-white peer"
+              {...props}
+
+            />
+            <label
+              htmlFor={`${name}-${option.value}`}
+              className="text-sm font-medium dark:peer-checked:text-cake-400 peer-checked:text-cake-700"
+            >{option.label}
+            </label>
+          </div>
+        )
+        )}
+      </div>
+    </div>
+  );
+  if (type === "checkbox") return (
+    <div className="text-base grid gap-2 w-fit">
+      {label}
+      <div className="flex flex-wrap items-center gap-4 w-fit">
+        {options?.map((option) => (
+          <div
+            key={option.value}
+            className="flex items-center gap-1.5"
+          >
+            <input
+              id={`${name}-${option.value}`}
+              type="checkbox"
+              name={name}
+              value={option.value}
+              onChange={onChange}
+              required={required}
+              className="w-4 h-4 p-2.5 appearance-none border dark:border-transparent border-black bg-white rounded-md peer checked:bg-cake-400 checked:border-cake-400 checked:before:content-['✔'] checked:before:text-white checked:before:absolute checked:before:inset-0 checked:before:flex checked:before:items-center checked:before:justify-center relative"
               {...props}
             />
             <label
               htmlFor={`${name}-${option.value}`}
-              className="text-sm font-medium text-gray-900 dark:text-gray-300"
+              className="text-sm font-medium dark:peer-checked:text-cake-400 peer-checked:text-cake-700"
             >{option.label}
             </label>
           </div>

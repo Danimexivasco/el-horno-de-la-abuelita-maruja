@@ -16,6 +16,7 @@ import { CartIcon } from "./cart";
 import { InstagramIcon } from "./instagram";
 import { YoutubeIcon } from "./youtube";
 import { GuaranteeIcon } from "./guarantee";
+import { LensIcon } from "./lens";
 
 export type IconProps = {
   className?: string
@@ -59,5 +60,6 @@ export {
   CartIcon,
   InstagramIcon,
   YoutubeIcon,
-  GuaranteeIcon
+  GuaranteeIcon,
+  LensIcon
 };

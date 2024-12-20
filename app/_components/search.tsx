@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Input from "./input";
-import { LensIcon } from "../_icons/lens";
+import { LensIcon } from "../_icons";
 
 export default function Search() {
   const [query, setQuery] = useState("");

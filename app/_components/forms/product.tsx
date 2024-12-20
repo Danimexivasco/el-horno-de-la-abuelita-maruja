@@ -34,9 +34,13 @@ type ProductFormProps = {
   fullWidthBtn?: boolean
 };
 
+interface ProductFormData extends Omit<Product, "createdAt"> {
+  [key: string]: any;
+}
+
 export default function ProductForm({ headline, inputs, initialState, redirectTo, submitBtnText="Crear", outterClassName="", fieldsContainerClassName="", fullWidthBtn = false }: ProductFormProps) {
   const router = useRouter();
-  const [formData, setFormData] = useState<Omit<Product, "createdAt">>({
+  const [formData, setFormData] = useState<ProductFormData>({
     ...initialState,
     offerType: initialState.offerType !== "" ? initialState.offerType : "percentage",
     variants:  initialState.variants?.map(variant => {
@@ -58,6 +62,7 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
+
     if (type === "file") {
       setLoadingImage(true);
       const file = (e.target as HTMLInputElement).files?.[0];
@@ -69,6 +74,17 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
         });
       }
       return setLoadingImage(false);
+    }
+    if (type === "checkbox") {
+      const currentValues = (formData[name] as string[]) || [];
+      const updatedValues = e.target.checked
+        ? [...currentValues, value] // Add value if checked
+        : currentValues.filter((item) => item !== value); // Remove value if unchecked
+
+      return setFormData({
+        ...formData,
+        [name]: updatedValues
+      });
     }
     return setFormData({
       ...formData,

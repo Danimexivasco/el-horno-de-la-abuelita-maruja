@@ -13,7 +13,7 @@ export default function PrivacyPage() {
         <div>
           <Headline as="h3">1. Política de Privacidad y Seguridad</Headline>
           <p>
-            La siguiente información sobre nuestra Política de Privacidad refleja el compromiso de LAGUTER CRECE S.L, (en adelante El Horno de la abuelita Maruja), como responsable del tratamiento, por mantener y garantizar relaciones comerciales seguras
+            La siguiente información sobre nuestra Política de Privacidad refleja el compromiso de El Horno de la abuelita Maruja S.L, (en adelante El Horno de la abuelita Maruja), como responsable del tratamiento, por mantener y garantizar relaciones comerciales seguras
             mediante la protección de los datos personales, garantizando el derecho a la privacidad de cada uno de los usuarios de nuestros servicios. En este documento explicamos cómo utilizamos los datos personales durante el uso de nuestros
             servicios.
           </p>
@@ -24,7 +24,7 @@ export default function PrivacyPage() {
         </div>
         <div>
           <Headline as="h3">3. Tratamientos y finalidades de los datos recogidos</Headline>
-          <p>Cualquier dato personal que nos facilite al visitar nuestro portal web será tratado de conformidad con las normas de protección de datos y sólo serán recogidos, tratados y utilizados para fines lícitos, legítimos e informados. Por ello, detallamos todas las finalidades con las que LAGUTER CRECE S.L utiliza datos personales:</p>
+          <p>Cualquier dato personal que nos facilite al visitar nuestro portal web será tratado de conformidad con las normas de protección de datos y sólo serán recogidos, tratados y utilizados para fines lícitos, legítimos e informados. Por ello, detallamos todas las finalidades con las que El Horno de la abuelita Maruja S.L utiliza datos personales:</p>
           <div className="grid gap-4 py-8">
             <div>
               <Headline as="h4">- Por el envío de formularios de contacto o correos electrónicos:</Headline>

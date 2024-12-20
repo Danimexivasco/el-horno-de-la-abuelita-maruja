@@ -10,7 +10,7 @@ export default function SalesConditionsPage() {
     <Container className="py-12">
       <Headline className="mb-12">Condiciones de venta, envío y devolución</Headline>
       <p>
-        El presente documento establece las condiciones que se aplican a las ventas entre, las personas que quieren efectuar una compra en el presente sitio web a las que en adelante se referirá como «el cliente» y de LAGUTER CRECE, S.L.,
+        El presente documento establece las condiciones que se aplican a las ventas entre, las personas que quieren efectuar una compra en el presente sitio web a las que en adelante se referirá como «el cliente» y de El Horno de la abuelita Maruja, S.L.,
         (en adelante EL HORNO DE LA ABUELITA MARUJA).
       </p><br />
       <p>
@@ -195,7 +195,7 @@ export default function SalesConditionsPage() {
           <Headline as="h3">14. Información solicitada</Headline>
           <p>
             De acuerdo con lo establecido en la normativa de protección de datos, le informamos de que los datos personales que nos facilite a través de nuestro sitio web o mediante envíos de correos electrónicos, serán tratados por
-            LAGUTER CRECE, S.L. como responsable del tratamiento para poder realizar las transacciones solicitadas, así como recibir notificaciones periódicas a través de medios electrónicas. La legitimación del tratamiento
+            El Horno de la abuelita Maruja, S.L. como responsable del tratamiento para poder realizar las transacciones solicitadas, así como recibir notificaciones periódicas a través de medios electrónicas. La legitimación del tratamiento
             reside en la prestación de los servicios solicitados. Puede ampliar más información sobre el tratamiento de sus datos las finalidades descritas en la{" "}
             <Link href={PRIVACY_PATH}>política de privacidad</Link>, la cual debe ser leída, comprendida y aceptada para la utilización de los servicios presente portal web.
           </p><br />

@@ -5,7 +5,7 @@ import { HOME_PATH, Route, SIGN_IN_PATH } from "@/routes";
 import Container from "../container";
 import { User } from "@/types";
 import { combine } from "@/app/_utils/combineClassnames";
-import { LogoIcon, LogOutIcon } from "@/app/_icons";
+import { LogoIcon, SignOutIcon } from "@/app/_icons";
 import { useEffect, useState } from "react";
 import Link from "../link";
 import Cart from "../cart";
@@ -84,7 +84,7 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
                       onClick={async () => signOut()}
                       className="whitespace-nowrap mt-4"
                     >
-                      Cerrar Sesión <LogOutIcon className="w-4 h-4"/>
+                      Cerrar Sesión <SignOutIcon className="w-4 h-4"/>
                     </Button>
                   </>
                 ) : (

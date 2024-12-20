@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Headline from "./headline";
 import Button from "./button";
-import { MobileMenuArrow } from "../_icons";
+import { RightArrowIcon } from "../_icons";
 import { combine } from "../_utils/combineClassnames";
 import { playwrite } from "../_fonts";
 
@@ -45,7 +45,7 @@ export default function Hero({ bottomText, image }: HeroProps) {
           onClick={scrollDown}
           className="animate-bounce rounded-full p-3"
         >
-          <MobileMenuArrow className="w-6 h-6 rotate-90"/>
+          <RightArrowIcon className="w-6 h-6 rotate-90"/>
         </Button>
       </div>
     </section>

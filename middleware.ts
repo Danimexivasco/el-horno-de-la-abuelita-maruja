@@ -1,14 +1,14 @@
 import { SESSION_COOKIE_NAME, USER_CHECKED_COOKIE_NAME } from "@/constants";
-import { HOME_PATH, ROUTES } from "@/routes";
+import { ADMIN_PRODUCT_DETAIL_PATH, HOME_PATH, ROUTES } from "@/routes";
 import { type NextRequest, NextResponse } from "next/server";
 import { setAdminUserCheck } from "./actions/authActions";
 
-const protectedRoutes = ROUTES.filter((route) => route.protected)?.map((route) => route.path);
 const authRoutes = ROUTES.filter((route) => route.authRoute)?.map((route) => route.path);
 
 export async function middleware(request: NextRequest) {
   const sessionCookie = request.cookies.get(SESSION_COOKIE_NAME)?.value || "";
   const userCheckedCookie = request.cookies.get(USER_CHECKED_COOKIE_NAME)?.value || "";
+  const protectedRoutes = ROUTES.filter((route) => route.protected)?.map((route) => route.path);
 
   if (!sessionCookie && protectedRoutes.includes(request.nextUrl.pathname)) {
     const absoluteURL = request.nextUrl.clone();
@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(absoluteURL);
   }
 
-  if (sessionCookie && protectedRoutes.includes(request.nextUrl.pathname)) {
+  if (sessionCookie && (protectedRoutes.includes(request.nextUrl.pathname) || request.nextUrl.pathname === ADMIN_PRODUCT_DETAIL_PATH.replace(":id", request.nextUrl.pathname.split("/").pop() ?? ""))) {
     if (userCheckedCookie !== "true") {
       const baseUrl = process.env.NODE_ENV === "production" ?
         process.env.API_BASE_URL_PROD

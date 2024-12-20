@@ -43,7 +43,7 @@ export default async function RootLayout({
   return (
     <html
       lang="es"
-      className={combine(nunito.className, "dark")}
+      className={nunito.className}
     >
       <body className="dark:bg-cake-900 bg-cake-100 dark:text-white text-black transition-colors scroll-mt-24 lg:scroll-mt-36">
         <main className="flex flex-col min-h-screen">

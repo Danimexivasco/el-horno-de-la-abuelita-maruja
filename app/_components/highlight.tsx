@@ -29,7 +29,7 @@ export default function Highlight({ boxPosition="right", headline, text, image, 
           <Headline as="h2">{headline}</Headline>
           <ReactMarkdown className={combine(Boolean(boxBottomHeadline) && "mb-8")}>{text}</ReactMarkdown>
         </div>
-        <div className="w-full lg:w-1/2 flex gap-4 flex-col items-center p-4 lg:p-6 -translate-y-16 lg:-translate-y-20 dark:bg-cake-700 bg-cake-300 rounded-lg shadow-xl">
+        <div className="w-full lg:w-1/2 flex gap-2 lg:gap-4 flex-col items-center p-4 lg:p-6 -translate-y-16 lg:-translate-y-20 dark:bg-cake-700 bg-cake-300 rounded-lg shadow-xl">
           {boxTopHeadline ?
             <Headline
               as="h2"

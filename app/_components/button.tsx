@@ -1,6 +1,7 @@
 "use client";
 
 import { combine } from "@/utils/combineClassnames";
+import { sriracha } from "../_fonts";
 
 type ButtonProps = {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ export default function Button({ children, onClick, withIcon=false, type="button
     <button
       onClick={onClick}
       type={type}
-      className={combine("button", withIcon && "flex items-center gap-2", isRed && redClass, className)}
+      className={combine("button", sriracha.className, withIcon && "flex items-center gap-2", isRed && redClass, className)}
       disabled={disabled}
       aria-label={ariaLabel}
     >

@@ -2,17 +2,22 @@
 
 import Card from "@/app/_components/card";
 import Link from "@/components/link";
-import { ADMIN_NEW_PRODUCT_PATH, ADMIN_PRODUCT_DETAIL_PATH } from "@/routes";
+import { ADMIN_PRODUCT_DETAIL_PATH } from "@/routes";
 import { Product } from "@/types";
 import useProductsWithIds from "../_hooks/useProductsWithIds";
 import { useProductsData } from "../_libs/firebase/products";
 import { combine } from "../_utils/combineClassnames";
 import Spinner from "./spinner";
+import { useSearchParams } from "next/navigation";
+import useFilter from "../_hooks/useFilter";
+import Headline from "./headline";
 
 export default function ProductList() {
   //eslint-disable-next-line
   const [ products, loading, error, snapshot ] = useProductsData();
   const productsWithIds = useProductsWithIds(products, snapshot);
+  const searchParams = useSearchParams();
+  const filteredItems = useFilter(productsWithIds, searchParams.get("search")?.trim() ?? "", ["name", "description", "category"]);
 
   if (loading) return (
     <div className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex flex-col gap-4 items-center">
@@ -22,13 +27,13 @@ export default function ProductList() {
   );
   return (
     <>
-      <Link
-        href={ADMIN_NEW_PRODUCT_PATH}
-        asButton
-      >+ Nuevo Producto
-      </Link>
+      {searchParams.get("search") ? (
+        <p className="font-bold">{filteredItems.length} productos coinciden con {"\""}{searchParams.get("search")?.trim() ?? ""}{"\""}</p>
+      ) : (
+        <p className="font-bold">{filteredItems.length} productos</p>
+      )}
       <ul className="grid gap-12 grid-cols-auto-fill my-12">
-        {productsWithIds.length > 0 && productsWithIds?.map((product: Product) =>
+        {filteredItems.length > 0 ? filteredItems?.map((product: Product) =>
           <Link
             key={product.id}
             href={ADMIN_PRODUCT_DETAIL_PATH.replace(":id", product.id)}
@@ -54,7 +59,12 @@ export default function ProductList() {
               }
             />
           </Link>
-        )}
+        )
+          :
+          (
+            <Headline className="text-center col-span-full">No se encontraron productos...</Headline>
+          )
+        }
       </ul>
     </>
   );

@@ -42,8 +42,9 @@ export default function Header() {
     ADMIN_DASHBOARD_PATH,
     ADMIN_PRODUCTS_PATH,
     ADMIN_NEW_PRODUCT_PATH,
-    ADMIN_PRODUCT_DETAIL_PATH
+    ADMIN_PRODUCT_DETAIL_PATH.replace(":id", pathname.split("/").pop() ?? "")
   ];
+
   const hideHeader = pathsWithoutHeader.includes(pathname);
 
   return (

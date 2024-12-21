@@ -11,7 +11,7 @@ export type InputProps = {
   options?: {value: string, label: string, checked?: boolean}[]
   onChange: (_e: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
-  props?: any
+  [prop: string]: any
 };
 
 export const removeZeroValue = (e: React.ChangeEvent<HTMLInputElement>) => {

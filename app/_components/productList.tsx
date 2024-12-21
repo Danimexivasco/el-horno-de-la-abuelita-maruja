@@ -28,9 +28,9 @@ export default function ProductList() {
   return (
     <>
       {searchParams.get("search") ? (
-        <p className="font-bold">{filteredItems.length} productos coinciden con {"\""}{searchParams.get("search")?.trim() ?? ""}{"\""}</p>
+        <p className="font-bold">{filteredItems.length} productos coinciden con la busqueda{"\""}{searchParams.get("search")?.trim() ?? ""}{"\""}</p>
       ) : (
-        <p className="font-bold">{filteredItems.length} productos</p>
+        <p className="font-bold">Mostrando {filteredItems.length} productos</p>
       )}
       <ul className="grid gap-12 grid-cols-auto-fill my-12">
         {filteredItems.length > 0 ? filteredItems?.map((product: Product) =>

@@ -1,6 +1,7 @@
 import Headline from "@/app/_components/headline";
 import Link from "@/app/_components/link";
 import ProductList from "@/app/_components/productList";
+import { getProducts } from "@/app/_libs/firebase/products";
 import { ADMIN_NEW_PRODUCT_PATH } from "@/routes";
 import { Metadata } from "next";
 
@@ -17,7 +18,9 @@ export const metadata: Metadata = {
   }
 };
 
-export default function Products() {
+export default async function Products() {
+  const products = await getProducts();
+
   return (
     <>
       <Headline className="font-bold mb-8">Productos</Headline>
@@ -27,7 +30,7 @@ export default function Products() {
         className="mb-8"
       >+ Nuevo Producto
       </Link>
-      <ProductList />
+      <ProductList products={products}/>
     </>
   );
 }

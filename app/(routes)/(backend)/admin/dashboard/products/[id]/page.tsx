@@ -7,9 +7,9 @@ import { ADMIN_PRODUCTS_PATH } from "@/routes";
 import { Metadata } from "next";
 
 type ProductDetailProps = {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 };
 
 export async function generateMetadata(
@@ -28,7 +28,7 @@ export async function generateMetadata(
 export default async function ProductDetail({ params }: ProductDetailProps) {
 
   const { id } = await params;
-  const { name, description, category, price, image="", onOffer, offerType, discountPercentage, multiplierAmount, multiPrice, variants, new: isNew } = await getProduct(id);
+  const { name, description, category, price, image="", onOffer, offerType, discountPercentage, multiplierAmount, multiPrice, variants, new: isNew, allergens } = await getProduct(id);
 
   return (
     <>
@@ -56,7 +56,8 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
           offerType:          offerType,
           discountPercentage: discountPercentage,
           multiplierAmount:   multiplierAmount,
-          new:                isNew
+          new:                isNew,
+          allergens:          allergens
         }}
       />
     </>

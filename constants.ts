@@ -46,6 +46,33 @@ export const CATEGORY_OPTIONS = [
   }
 ];
 
+export const ALLERGENS_OPTIONS = [
+  {
+    value: "gluten",
+    label: "Gluten"
+  },
+  {
+    value: "lactosa",
+    label: "Lactosa"
+  },
+  {
+    value: "frutos secos",
+    label: "Frutos secos"
+  },
+  {
+    value: "huevo",
+    label: "Huevo"
+  },
+  {
+    value: "soja",
+    label: "Soja"
+  },
+  {
+    value: "sésamo",
+    label: "Sésamo"
+  }
+];
+
 export const NEW_PRODUCT_FORM_INPUTS = [
   {
     name:        "name",
@@ -78,32 +105,7 @@ export const NEW_PRODUCT_FORM_INPUTS = [
     name:    "allergens",
     type:    "checkbox",
     label:   "Alérgenos",
-    options: [
-      {
-        value: "gluten",
-        label: "Gluten"
-      },
-      {
-        value: "lactosa",
-        label: "Lactosa"
-      },
-      {
-        value: "frutos secos",
-        label: "Frutos secos"
-      },
-      {
-        value: "huevo",
-        label: "Huevo"
-      },
-      {
-        value: "soja",
-        label: "Soja"
-      },
-      {
-        value: "sésamo",
-        label: "Sésamo"
-      }
-    ]
+    options: ALLERGENS_OPTIONS
   },
   {
     name:    "new",
@@ -140,3 +142,5 @@ export const NEW_PRODUCT_FORM_INITIAL_STATE: Product = {
   multiplierAmount:   "",
   allergens:          []
 };
+
+export const FILTER_PARAMS = ["search", "category", "allergens", "priceFrom", "priceTo"];

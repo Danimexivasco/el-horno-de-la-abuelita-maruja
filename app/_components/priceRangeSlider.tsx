@@ -26,7 +26,6 @@ export default function PriceRangeSlider({ label, priceFrom, priceTo, onChange }
   }, [value]);
 
   const handleInput = (newValue: [number, number]) => {
-    console.log("newValue", newValue);
     if (Array.isArray(newValue)) {
       setValue(newValue);
     }

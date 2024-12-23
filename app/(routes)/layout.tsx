@@ -5,7 +5,6 @@ import { Toaster } from "react-hot-toast";
 import Footer from "../_components/footer";
 import Header from "../_components/header";
 import ThemeSwitchButton from "../_components/themeSwitchButton";
-import { combine } from "../_utils/combineClassnames";
 import { nunito } from "../_fonts";
 
 // TODO: Change url when the website is on prod

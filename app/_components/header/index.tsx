@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  ADMIN_DASHBOARD_PATH,
-  ADMIN_NEW_PRODUCT_PATH,
-  ADMIN_PRODUCT_DETAIL_PATH,
-  ADMIN_PRODUCTS_PATH,
-  ROUTES,
-  SIGN_IN_PATH,
-  SIGN_UP_PATH
-} from "@/routes";
+import { ROUTES } from "@/routes";
 import DesktopHeader from "./desktopHeader";
 import MobileHeader from "./mobileHeader";
 import { usePathname } from "next/navigation";
@@ -16,15 +8,19 @@ import { combine } from "@/app/_utils/combineClassnames";
 import { useEffect, useState } from "react";
 import { getLoggedUser } from "@/actions/authActions";
 import useScrollPosition from "@/app/_hooks/useScrollPosition";
+import useHideLayoutElements from "@/app/_hooks/useHideLayoutElements";
 
 export default function Header() {
   const pathname = usePathname();
   const [user, setUser] = useState(null);
 
+  const hideHeader = useHideLayoutElements();
+
   const { scrollY, scrollDirection } = useScrollPosition();
 
   useEffect(() => {
-    window?.scroll(0, 0);
+    // TODO: Check if it works without next line after latest changes
+    // window?.scroll(0, 0);
 
     const getUser = async () => {
       const user = await getLoggedUser(true);
@@ -36,16 +32,6 @@ export default function Header() {
   }, [pathname]);
 
   const navRoutes = ROUTES.filter(route => route.isNavRoute && !route.protected);
-  const pathsWithoutHeader = [
-    SIGN_IN_PATH,
-    SIGN_UP_PATH,
-    ADMIN_DASHBOARD_PATH,
-    ADMIN_PRODUCTS_PATH,
-    ADMIN_NEW_PRODUCT_PATH,
-    ADMIN_PRODUCT_DETAIL_PATH.replace(":id", pathname.split("/").pop() ?? "")
-  ];
-
-  const hideHeader = pathsWithoutHeader.includes(pathname);
 
   return (
     <header

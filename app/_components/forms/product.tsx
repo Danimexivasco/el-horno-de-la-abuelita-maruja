@@ -78,8 +78,8 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
     if (type === "checkbox") {
       const currentValues = (formData[name] as string[]) || [];
       const updatedValues = e.target.checked
-        ? [...currentValues, value] // Add value if checked
-        : currentValues.filter((item) => item !== value); // Remove value if unchecked
+        ? [...currentValues, value]
+        : currentValues.filter((item) => item !== value);
 
       return setFormData({
         ...formData,
@@ -245,6 +245,7 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
     setIsPending(true);
     try {
       const _formData = await handleProductData(formData);
+
       if (_formData.id) {
         await updateProduct(_formData.id, _formData);
       } else {

@@ -89,7 +89,7 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
                   </>
                 ) : (
                   <>
-                    <p className="dark:text-white text-black">Todavía no estás logueado</p>
+                    <p className="dark:text-white text-black mb-2">Todavía no estás logueado</p>
                     <Button
                       onClick={() => router.push(SIGN_IN_PATH)}
                     >

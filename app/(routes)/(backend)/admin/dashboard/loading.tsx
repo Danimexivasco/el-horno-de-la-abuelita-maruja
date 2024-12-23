@@ -6,5 +6,5 @@ export default function Loading() {
     <Container className="grid w-full place-items-center h-full min-h-screen overflow-hidden p-0">
       <Spinner />
     </Container>
-  )
+  );
 }

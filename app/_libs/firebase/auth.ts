@@ -19,7 +19,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { createUser } from "./users";
 import { redirect } from "next/navigation";
 import { SIGN_IN_PATH } from "@/routes";
-import { FirebaseError } from "firebase/app";
 
 // returns [user, loading, error]
 export const useAuthState = () => _useAuthState(firebaseAuth);
@@ -56,7 +55,7 @@ export async function signInWithGoogle() {
       id:      userCredential.user.uid,
       isAdmin: existingUser?.role === "admin"
     };
-  } catch (error: FirebaseError | any) {
+  } catch (error: any) {
     if (error.code !== "auth/popup-closed-by-user") {
       console.error("Error signing in with Google", error);
     }

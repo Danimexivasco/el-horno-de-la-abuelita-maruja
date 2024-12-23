@@ -1,6 +1,7 @@
 "use client";
 
 import { combine } from "@/utils/combineClassnames";
+import { sriracha } from "../_fonts";
 
 type ButtonProps = {
   children: React.ReactNode;
@@ -10,16 +11,18 @@ type ButtonProps = {
   type?: "button" | "submit"
   isRed?: boolean
   disabled?: boolean
+  ariaLabel?: string
 };
 
-export default function Button({ children, onClick, withIcon=false, type="button", isRed, disabled, className="" }: ButtonProps) {
-  const redClass = isRed && "dark:bg-red-500 bg-red-600 dark:hover:bg-red-600 hover:bg-red-700 dark:active:bg-red-900 active:bg-red-800";
+export default function Button({ children, onClick, withIcon=false, type="button", isRed, disabled, className="", ariaLabel="" }: ButtonProps) {
+  const redClass = isRed && "bg-red-500 hover:bg-red-600 active:bg-red-700";
   return (
     <button
       onClick={onClick}
       type={type}
-      className={combine("button", withIcon && "flex items-center gap-2", isRed && redClass, className)}
+      className={combine("button", sriracha.className, withIcon && "flex items-center gap-2", isRed && redClass, className)}
       disabled={disabled}
+      aria-label={ariaLabel}
     >
       {children}
     </button>

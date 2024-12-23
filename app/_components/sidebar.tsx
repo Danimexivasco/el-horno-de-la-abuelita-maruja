@@ -4,7 +4,7 @@ import { useState } from "react";
 import Button from "@/components/button";
 import { Route } from "@/routes";
 import { useWindowSize } from "../_hooks/useWindowSize";
-import { LogOutIcon, MobileMenuArrow } from "../_icons";
+import { SignOutIcon, RightArrowIcon } from "../_icons";
 import { signOut } from "../_libs/firebase/auth";
 import { combine } from "../_utils/combineClassnames";
 import SidebarNavItem from "./sidebarNavItem";
@@ -51,7 +51,7 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
             isRed
             onClick={async () => await signOut()}
           >
-            <LogOutIcon className="w-6 h-6"/>
+            <SignOutIcon className="w-6 h-6"/>
           </Button>
           <Tooltip
             text="Cerrar Sesión"
@@ -63,7 +63,7 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
         className={combine("sm:hidden absolute top-1/2 right-0 translate-x-9 rounded-full p-3 transition-transform text-red", showMobileMenu && "rotate-180")}
         onClick={() => setShowMobileMenu(!showMobileMenu)}
       >
-        <MobileMenuArrow className="w-6 h-6"/>
+        <RightArrowIcon className="w-6 h-6"/>
       </Button>
     </section>
   );

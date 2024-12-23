@@ -1,34 +1,18 @@
 "use client";
 
-import {
-  ADMIN_DASHBOARD_PATH,
-  ADMIN_NEW_PRODUCT_PATH,
-  ADMIN_PRODUCT_DETAIL_PATH,
-  ADMIN_PRODUCTS_PATH,
-  LEGAL_ROUTES,
-  Route,
-  SIGN_IN_PATH,
-  SIGN_UP_PATH
-} from "@/routes";
-import { usePathname } from "next/navigation";
+import { LEGAL_ROUTES, Route } from "@/routes";
 import { combine } from "../_utils/combineClassnames";
 import Container from "./container";
 import FullLogo from "./fullLogo";
 import Link from "./link";
 import Headline from "./headline";
 import { InstagramIcon, YoutubeIcon } from "../_icons";
+import useHideLayoutElements from "../_hooks/useHideLayoutElements";
 
 export default function Footer() {
-  const pathname = usePathname();
-  const pathsWithoutFooter = [
-    SIGN_IN_PATH,
-    SIGN_UP_PATH,
-    ADMIN_DASHBOARD_PATH,
-    ADMIN_PRODUCTS_PATH,
-    ADMIN_NEW_PRODUCT_PATH,
-    ADMIN_PRODUCT_DETAIL_PATH
-  ];
-  const hideFooter = pathsWithoutFooter.includes(pathname);
+
+  const hideFooter = useHideLayoutElements();
+
   return (
     <footer className={combine("dark:bg-cake-950 bg-cake-200 border-t-2 border-cake-500 transition-colors", hideFooter && "hidden")}>
       <Container className="flex flex-col lg:flex-row gap-12 justify-between items-center lg:p-12">

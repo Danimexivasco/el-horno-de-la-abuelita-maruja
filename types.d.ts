@@ -45,6 +45,8 @@ export type ProductVariant = {
   }
 };
 
+type Allergens = "gluten" | "lactosa" | "frutos secos" | "huevos" | "soja" | "sésamo";
+
 export type Product = {
   id: string,
   name: string,
@@ -58,6 +60,7 @@ export type Product = {
   offerType?: "percentage" | "multiplier" | ""
   discountPercentage?: number
   multiplierAmount?: string
+  allergens?: Allergens[]
   createdAt?: Date
   new?: "no" | "yes"
 };

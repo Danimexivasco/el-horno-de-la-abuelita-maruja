@@ -14,7 +14,7 @@ export const Logo = ({ className }: {className?: string}) => (
     >
       <g
         style={{
-          display: "inline",
+          display: "inline"
         }}
         id="g147"
         transform="matrix(0.26458333,0,0,0.26458333,14.319197,11.031374)"
@@ -331,4 +331,4 @@ export const Logo = ({ className }: {className?: string}) => (
       </g>
     </g>
   </svg>
-)
+);

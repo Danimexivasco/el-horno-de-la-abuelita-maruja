@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { User } from "@/types";
 import { signOut } from "@/app/_libs/firebase/auth";
 import { SIGN_IN_PATH } from "@/routes";
-import { LogOutIcon, UserIcon } from "@/app/_icons";
+import { SignOutIcon, UserIcon } from "@/app/_icons";
 import Button from "../button";
 import Cart from "../cart";
 
@@ -36,7 +36,7 @@ export default function UserActions({ user }: UserActionsProps) {
                   onClick={async () => signOut()}
                   className="whitespace-nowrap mt-4"
                 >
-                  Cerrar Sesión <LogOutIcon className="w-4 h-4"/>
+                  Cerrar Sesión <SignOutIcon className="w-4 h-4"/>
                 </Button>
               </>
 

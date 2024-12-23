@@ -20,16 +20,18 @@ export default function Card({ name, description, category, price, multiPrice, v
     multiplierAmount: variantMultiplierAmount
   } = getCheapestVariant(variants);
 
+  const isMultiPrice = multiPrice === "yes";
+
   return (
     <li
       className={
         combine(
-          "relative flex flex-col gap-4 h-full w-full rounded-md glass shadow-xl overflow-hidden",
+          "relative flex flex-col gap-4 h-full w-full rounded-md glass shadow-xl overflow-hidden transition-shadow",
           className
         )
       }
     >
-      {multiPrice ?
+      {isMultiPrice ?
         (variantOnOffer === "yes" &&
           <div className="absolute -top-1 -right-0.5 rotate-45 translate-x-1/4 translate-y-1/3 px-2 py-1 bg-cake-500 w-32 flex items-center justify-center">
             <p className="text-2xl font-bold text-black">{variantOfferType === "percentage" ?
@@ -77,11 +79,11 @@ export default function Card({ name, description, category, price, multiPrice, v
           <p className="line-clamp-2">{description}</p>
         </div>
         <div className="grid mt-4">
-          {multiPrice &&
+          {isMultiPrice &&
             <p className="text-lg font-normal">Desde:</p>
           }
           <div className="flex gap-2 items-center font-bold text-xl">
-            {multiPrice ? (
+            {isMultiPrice ? (
               variantOnOffer === "yes" && variantOfferType === "percentage"
                 ?
                 <>

@@ -8,33 +8,33 @@ import { combine } from "../_utils/combineClassnames";
 import { useSearchParams } from "next/navigation";
 import useFilter from "../_hooks/useFilter";
 import Headline from "./headline";
+import Spinner from "./spinner";
 
 type ProductListProps = {
   products: Product[];
 };
 
+// TODO: Remove old items
 export default function ProductList({ products }: ProductListProps) {
   const searchParams = useSearchParams();
 
-  const filteredItems = useFilter(products, ["name", "description", "category"]);
+  const [filteredItems, loading] = useFilter(products, ["name", "description", "category"]);
 
-  // TODO: Implement some loading depending on Filters
-  // and data
-  // if (loading) return (
-  //   <div className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 flex flex-col gap-4 items-center">
-  //     <p className="text-lg">Cargando productos...</p>
-  //     <Spinner/>
-  //   </div>
-  // );
+  if (loading) return (
+    <div className="flex flex-col gap-4 items-center justify-center h-full">
+      <p className="text-lg">Cargando productos...</p>
+      <Spinner/>
+    </div>
+  );
   return (
     <>
       {searchParams.get("search") ? (
         <p className="font-bold">{filteredItems.length} productos coinciden con la palabra {"\""}{searchParams.get("search")?.trim() ?? ""}{"\""}</p>
       ) : (
-        <p className="font-bold">Mostrando {filteredItems.length} productos</p>
+        <p className="font-bold">Mostrando {filteredItems?.length} productos</p>
       )}
       <ul className="grid gap-12 grid-cols-auto-fill my-12">
-        {filteredItems.length > 0 ? filteredItems?.map((product: Product) =>
+        {filteredItems?.length > 0 ? filteredItems?.map((product: Product) =>
           <Link
             key={product.id}
             href={ADMIN_PRODUCT_DETAIL_PATH.replace(":id", product.id)}

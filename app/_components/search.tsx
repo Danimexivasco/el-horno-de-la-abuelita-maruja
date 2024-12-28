@@ -9,6 +9,12 @@ export default function Search() {
   const [query, setQuery] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [firstURLCheck, setFirstURLCheck] = useState(false);
+  const [currentParams, setCurrentParams] = useState(new URLSearchParams(searchParams.toString()));
+
+  useEffect(() => {
+    setCurrentParams(new URLSearchParams(searchParams.toString()));
+  }, [searchParams]);
 
   useEffect(() => {
     const currentParams = new URLSearchParams(searchParams.toString());
@@ -16,11 +22,15 @@ export default function Search() {
     if (query) {
       currentParams.set("search", query);
     } else {
-      currentParams.delete("search");
+      if (!firstURLCheck) {
+        setFirstURLCheck(true);
+      } else {
+        currentParams.delete("search");
+      }
     }
 
     router.replace(`?${currentParams.toString()}`);
-  }, [query, router, searchParams]);
+  }, [query, searchParams]);
 
   useEffect(() => {
     setQuery(searchParams.get("search") ?? "");
@@ -28,6 +38,12 @@ export default function Search() {
 
   const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
+  };
+
+  const clearQuery = () => {
+    setQuery("");
+    currentParams.delete("search");
+    router.replace(`?${currentParams.toString()}`);
   };
 
   return (
@@ -49,7 +65,7 @@ export default function Search() {
           <CrossIcon
             className="w-6 h-6 dark:text-cake-400 text-cake-600"
             role="button"
-            onClick={() => setQuery("")}
+            onClick={clearQuery}
           />
           :
           null

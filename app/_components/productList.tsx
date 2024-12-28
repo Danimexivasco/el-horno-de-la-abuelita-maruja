@@ -63,7 +63,7 @@ export default function ProductList({ products }: ProductListProps) {
         )
           :
           (
-            <Headline className="text-center col-span-full">No se encontraron productos...</Headline>
+            <Headline className="text-center col-span-full">Vaya, no se encontraron productos... 😔<span className="block text-2xl mt-8">No te preocupes! Prueba a cambiar los filtros o la palabra de búsqueda 🤞🏽</span></Headline>
           )
         }
       </ul>

@@ -8,6 +8,7 @@ import Container from "./container";
 import Button from "./button";
 import FormField from "./forms/formField";
 import { useRouter, useSearchParams } from "next/navigation";
+import { FILTER_PARAMS, FILTERS_INITIAL_STATE } from "@/constants";
 
 type FiltersProps = {
   availableFilters: FiltersState
@@ -21,13 +22,6 @@ export type FiltersState = {
     [key: string]: any
 };
 
-const FILTERS_INITIAL_STATE = {
-  category:  [],
-  allergens: [],
-  priceFrom: 0,
-  priceTo:   0
-};
-
 export default function Filters({ availableFilters }: FiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -37,12 +31,12 @@ export default function Filters({ availableFilters }: FiltersProps) {
 
   useEffect(() => {
     setCurrentParams(new URLSearchParams(searchParams.toString()));
-  }, [filters, router, searchParams]);
+  }, [searchParams]);
 
   const handleFilter = (e: React.FormEvent) => {
     e.preventDefault();
     if (filters.category.length > 0) {
-      currentParams.set("category", encodeURI(filters.category.join(",")));
+      currentParams.set("category", filters.category.join(","));
     } else {
       currentParams.delete("category");
     }
@@ -67,28 +61,22 @@ export default function Filters({ availableFilters }: FiltersProps) {
   };
 
   useEffect(() => {
+    const searchParamsFilters = {
+      ...FILTERS_INITIAL_STATE
+    };
     searchParams.entries().forEach(([key, value]) => {
-      if (key === "category" || key === "allergens") {
-        setFilters({
-          ...filters,
-          [key]: decodeURI(value).split(",")
-        });
+      if(Array.isArray(filters[key])) {
+        if (value.includes(",")) {
+          searchParamsFilters[key] = [...new Set([...searchParamsFilters[key], value.split(",")].flat())];
+        } else {
+          searchParamsFilters[key] = [...new Set([...searchParamsFilters[key], value].flat())];
+        }
       } else {
-        setFilters({
-          ...filters,
-          [key]: value
-        });
+        searchParamsFilters[key] = value;
       }
     });
+    setFilters(searchParamsFilters);
   }, [searchParams]);
-
-  useEffect(() => {
-    setFilters({
-      ...filters,
-      priceFrom: availableFilters.priceFrom,
-      priceTo:   availableFilters.priceTo
-    });
-  }, [availableFilters]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -111,6 +99,13 @@ export default function Filters({ availableFilters }: FiltersProps) {
     });
   };
 
+  const clearFilters = () => {
+    setFilters(FILTERS_INITIAL_STATE);
+    FILTER_PARAMS.filter(param => param !== "search").forEach(param => currentParams.delete(param));
+    router.replace(`?${currentParams.toString()}`);
+    setFilterHeight(0);
+  };
+
   return (
     <section className=" dark:bg-cake-950/60 bg-cake-200/40 shadow-md">
       <Container className="h-8 flex items-center justify-end py-8 lg:px-24">
@@ -121,7 +116,7 @@ export default function Filters({ availableFilters }: FiltersProps) {
             "auto"
           )}
         >
-          <span className="text-lg font-bold dark:text-cake-400 text-cake-600">Filters</span>
+          <span className="text-lg font-bold dark:text-cake-400 text-cake-600">Filtros</span>
           <FilterIcon className="w-8 h-8 dark:text-cake-400 text-cake-600"/>
         </div>
       </Container>
@@ -172,11 +167,11 @@ export default function Filters({ availableFilters }: FiltersProps) {
               >Filtrar
               </Button>
               <Button
-                type="submit"
+                type="button"
                 withIcon
                 isRed
                 className="w-full lg:w-fit lg:px-8 justify-center"
-                onClick={() => setFilters(FILTERS_INITIAL_STATE)}
+                onClick={clearFilters}
               ><TrashIcon className="w-5 h-5 mr-2"/>Borrar Filtros
               </Button>
             </div>

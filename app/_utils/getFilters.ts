@@ -2,7 +2,7 @@
 import { Product } from "@/types";
 import { FiltersState } from "../_components/filters";
 
-export const getFilters = (products: Product[]) => {
+export const getFiltersFromProducts = (products: Product[]) => {
 
   const filters: FiltersState = {
     category:  [],
@@ -25,7 +25,7 @@ export const getFilters = (products: Product[]) => {
       const sortedVariants = product.variants?.sort((a, b) => a.value - b.value) ?? [];
 
       const minVariant = sortedVariants[0];
-      const maxVariant = sortedVariants.pop();
+      const maxVariant = sortedVariants[sortedVariants.length - 1];
       const minPrice = minVariant ? minVariant.value : 0;
       const maxPrice = maxVariant ? maxVariant.value : 0;
 

@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   const userCheckedCookie = request.cookies.get(USER_CHECKED_COOKIE_NAME)?.value || "";
   const protectedRoutes = ROUTES.filter((route) => route.protected)?.map((route) => route.path);
 
-  if (!sessionCookie && protectedRoutes.includes(request.nextUrl.pathname)) {
+  if (!sessionCookie && (protectedRoutes.includes(request.nextUrl.pathname) || request.nextUrl.pathname === ADMIN_PRODUCT_DETAIL_PATH.replace(":id", request.nextUrl.pathname.split("/").pop() ?? ""))) {
     const absoluteURL = request.nextUrl.clone();
     absoluteURL.pathname = HOME_PATH;
     return NextResponse.redirect(absoluteURL);

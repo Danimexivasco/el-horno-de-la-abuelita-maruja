@@ -1,10 +1,14 @@
 import { FILTER_PARAMS } from "@/constants";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import getCheapestVariant from "../_utils/getCheapestVariant";
+import { getDiscountPrice } from "../_utils/getDiscountPrice";
+import { Product } from "@/types";
 
-export default function useFilter(items: any[], targetFields: string[], debounceDelay = 100) {
+export default function useFilter(items: any[], targetFields: string[], debounceDelay = 100): [Product[], boolean] {
   const searchParams = useSearchParams();
   const query = searchParams.get("search") ?? "";
+  const [loading, setLoading] = useState(false);
   const [filteredItems, setFilteredItems] = useState(items ?? []);
   const [debouncedValue, setDebouncedValue] = useState("");
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -20,7 +24,7 @@ export default function useFilter(items: any[], targetFields: string[], debounce
   }, [query, debounceDelay]);
 
   useEffect(() => {
-    if (FILTER_PARAMS.some(param => searchParams.get(param))) {
+    if (FILTER_PARAMS.some((param) => searchParams.get(param))) {
       filterItems();
     } else {
       setFilteredItems(items);
@@ -28,15 +32,36 @@ export default function useFilter(items: any[], targetFields: string[], debounce
   }, [items, searchParams, debouncedValue]);
 
   const filterItems = () => {
+    setLoading(true);
     let filteredItems = items;
     searchParams.forEach((value, key) => {
+
       if (key === "priceFrom" || key === "priceTo") {
         const priceFrom = parseFloat(searchParams.get("priceFrom") ?? "0");
         const priceTo = parseFloat(searchParams.get("priceTo") ?? "Infinity");
 
         filteredItems = filteredItems.filter((item) => {
           const price = item.price ?? 0;
-          return price >= priceFrom && price <= priceTo;
+          let isWithinMinPrice = true;
+          let isWithinMaxPrice = true;
+
+          if (item.multiPrice === "yes") {
+            const minVariant = getCheapestVariant(item.variants);
+
+            const minPrice = minVariant ? getDiscountPrice(minVariant.price ?? 0, minVariant.discount ?? 0) : 0;
+
+            isWithinMinPrice = Number(priceFrom) <= Number(minPrice);
+            isWithinMaxPrice = Number(priceTo) >= Number(minPrice);
+
+          } else {
+            const itemWithOffer = item.onOffer === "yes" && item.offerType === "percentage";
+            const finalPrice = itemWithOffer ? getDiscountPrice(Number(item.price ?? 0), Number(item.discountPercentage ?? 0)) : price;
+
+            isWithinMinPrice = finalPrice >= priceFrom;
+            isWithinMaxPrice = finalPrice <= priceTo;
+          }
+
+          return isWithinMinPrice && isWithinMaxPrice;
         });
       } else if (key === "allergens") {
         const allergens = value.split(",");
@@ -67,8 +92,9 @@ export default function useFilter(items: any[], targetFields: string[], debounce
       }
     });
 
+    setLoading(false);
     return setFilteredItems(filteredItems);
   };
 
-  return filteredItems;
+  return [filteredItems, loading];
 }

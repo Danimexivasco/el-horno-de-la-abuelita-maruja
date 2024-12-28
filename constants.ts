@@ -1,3 +1,4 @@
+import { FiltersState } from "./app/_components/filters";
 import { Product } from "./types";
 
 export const SESSION_COOKIE_NAME = "user_session";
@@ -141,6 +142,13 @@ export const NEW_PRODUCT_FORM_INITIAL_STATE: Product = {
   discountPercentage: 0,
   multiplierAmount:   "",
   allergens:          []
+};
+
+export const FILTERS_INITIAL_STATE: FiltersState = {
+  category:  [],
+  allergens: [],
+  priceFrom: 0,
+  priceTo:   0
 };
 
 export const FILTER_PARAMS = ["search", "category", "allergens", "priceFrom", "priceTo"];

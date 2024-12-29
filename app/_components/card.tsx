@@ -6,12 +6,15 @@ import { LogoIcon } from "../_icons";
 import Tag from "./tag";
 import { getDiscountPrice } from "../_utils/getDiscountPrice";
 import getCheapestVariant from "../_utils/getCheapestVariant";
+import Button from "./button";
+import { formatPrice } from "../_utils/formatPrice";
 
 type CardProps = Omit<Product, "id" | "createdAt"> & {
+  showBuyBtn?: boolean
   className?: string,
 };
 
-export default function Card({ name, description, category, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, className="" }: CardProps) {
+export default function Card({ name, description, category, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, showBuyBtn=false, className="" }: CardProps) {
   const {
     price: variantPrice,
     onOffer: variantOnOffer,
@@ -78,34 +81,48 @@ export default function Card({ name, description, category, price, multiPrice, v
           <Headline as="h2">{name}</Headline>
           <p className="line-clamp-2">{description}</p>
         </div>
-        <div className="grid mt-4">
-          {isMultiPrice &&
-            <p className="text-lg font-normal">Desde:</p>
-          }
-          <div className="flex gap-2 items-center font-bold text-xl">
-            {isMultiPrice ? (
-              variantOnOffer === "yes" && variantOfferType === "percentage"
-                ?
-                <>
-                  <span className="text-3xl">
-                    {getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0)}€
-                  </span>
-                  <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{variantPrice}€</span>
-                </>
-                :
-                <p className="text-2xl">{variantPrice}€</p>
-            ) : (
-              onOffer === "yes" && offerType === "percentage" ?
-                <>
-                  <span className="text-3xl">
-                    {getDiscountPrice(price ?? 0, discountPercentage ?? 0)}€
-                  </span>
-                  <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{price}€</span>
-                </>
-                :
-                <p className="text-2xl">{price}€</p>
-            )}
+        <div className="flex items-center justify-between gap-4 mt-8">
+          <div className="grid">
+            <div className="flex gap-2 items-center font-bold text-xl">
+              {isMultiPrice ? (
+                variantOnOffer === "yes" && variantOfferType === "percentage"
+                  ?
+                  <div className="flex gap-4 items-start">
+                    <div>
+                      <p className="text-lg font-normal">Desde:</p>
+                      <span className="text-3xl">
+                        {formatPrice(getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0))}
+                      </span>
+                    </div>
+                    <div className="text-center dark:text-red-400 text-red-500 transition-colors">
+                      <span className="text-md font-normal">Antes</span>
+                      <span className="block text-xl font-normal ">{formatPrice(variantPrice)}</span>
+                    </div>
+                  </div>
+                  :
+                  <p className="text-2xl">{formatPrice(variantPrice)}</p>
+              ) : (
+                onOffer === "yes" && offerType === "percentage" ?
+                  <div className="flex gap-4 items-center">
+                    <span className="text-3xl">
+                      {formatPrice(getDiscountPrice(price ?? 0, discountPercentage ?? 0))}
+                    </span>
+                    <div className="text-center dark:text-red-400 text-red-500 transition-colors">
+                      <span className="text-md font-normal">Antes</span>
+                      <span className="block text-xl font-normal ">{formatPrice(price)}</span>
+                    </div>
+                  </div>
+                  :
+                  <p className="text-2xl">{formatPrice(price)}</p>
+              )}
+            </div>
           </div>
+          {showBuyBtn ?
+            <Button>
+              Ver
+            </Button>
+            : null
+          }
         </div>
       </div>
     </li>

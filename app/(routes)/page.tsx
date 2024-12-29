@@ -16,21 +16,15 @@ export default async function Home() {
   // TODO: Implement correct images functionality
   // on backend and remove mock images
   const mockImages = [
-    "https://placehold.co/600x400",
-    "https://placehold.co/600x400",
-    "https://placehold.co/700x350",
-    "https://placehold.co/600x900",
-    "https://placehold.co/900x450",
-    "https://placehold.co/600x800",
-    "https://placehold.co/600x900",
-    "https://placehold.co/600x400",
-    "https://placehold.co/600x400",
-    "https://placehold.co/600x400",
-    "https://placehold.co/700x350",
-    "https://placehold.co/600x900",
-    "https://placehold.co/900x450",
-    "https://placehold.co/600x400"
-
+    "https://res.cloudinary.com/danimexivasco/image/upload/v1733741667/el_horno_de_la_abuelita_maruja/btpb9hyk1lbqgfkaoyk9.webp",
+    "https://res.cloudinary.com/danimexivasco/image/upload/v1734170845/el_horno_de_la_abuelita_maruja/delicious-cookies-close-up-table_rbcfe5.jpg",
+    "https://res.cloudinary.com/danimexivasco/image/upload/v1733428047/el_horno_de_la_abuelita_maruja/r5b8qfrxhrimuafeyj23.jpg",
+    "https://res.cloudinary.com/danimexivasco/image/upload/v1732709141/el_horno_de_la_abuelita_maruja/q4p06gqnweaaz4jtxsnn.jpg",
+    "https://res.cloudinary.com/danimexivasco/image/upload/v1732704271/el_horno_de_la_abuelita_maruja/pf2jm4sew20nirhbvmyo.webp",
+    "https://res.cloudinary.com/danimexivasco/image/upload/v1732700986/el_horno_de_la_abuelita_maruja/gnjxckdc6zw5c3zlyw4x.jpg",
+    "https://res.cloudinary.com/danimexivasco/image/upload/v1734170845/el_horno_de_la_abuelita_maruja/delicious-cookies-close-up-table_rbcfe5.jpg",
+    "https://res.cloudinary.com/danimexivasco/image/upload/v1732700977/el_horno_de_la_abuelita_maruja/nyceqhsxseikqeon4c9e.jpg",
+    "https://res.cloudinary.com/danimexivasco/image/upload/v1732538065/el_horno_de_la_abuelita_maruja/xsommyc59ufmv2get42w.webp"
   ];
 
   return (

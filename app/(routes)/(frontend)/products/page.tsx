@@ -4,8 +4,9 @@ import Filters from "@/app/_components/filters";
 import ProductList from "@/app/_components/productList";
 import Search from "@/app/_components/search";
 import { getProducts } from "@/app/_libs/firebase/products";
-import { getFilters } from "@/app/_utils/getFilters";
+import { getFiltersFromProducts } from "@/app/_utils/getFilters";
 import { Metadata } from "next";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title:       "Productos",
@@ -22,15 +23,15 @@ export const metadata: Metadata = {
 
 export default async function ProductsPage() {
   const products = await getProducts();
-  const filters = getFilters(products);
+  const filters = getFiltersFromProducts(products);
 
   return (
-    <>
+    <Suspense>
       <Search />
       <Filters availableFilters={filters}/>
       <Container>
         <ProductList products={products}/>
       </Container>
-    </>
+    </Suspense>
   );
 }

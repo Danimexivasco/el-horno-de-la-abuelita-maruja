@@ -87,14 +87,14 @@ export default function Card({ name, description, category, price, multiPrice, v
               {isMultiPrice ? (
                 variantOnOffer === "yes" && variantOfferType === "percentage"
                   ?
-                  <div className="flex gap-4 items-start">
+                  <div className="flex gap-4 items-end">
                     <div>
                       <p className="text-lg font-normal">Desde:</p>
                       <span className="text-3xl">
                         {formatPrice(getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0))}
                       </span>
                     </div>
-                    <div className="text-center dark:text-red-400 text-red-500 transition-colors">
+                    <div className="dark:text-red-400 text-red-500 transition-colors">
                       <span className="text-md font-normal">Antes</span>
                       <span className="block text-xl font-normal ">{formatPrice(variantPrice)}</span>
                     </div>
@@ -107,7 +107,7 @@ export default function Card({ name, description, category, price, multiPrice, v
                     <span className="text-3xl">
                       {formatPrice(getDiscountPrice(price ?? 0, discountPercentage ?? 0))}
                     </span>
-                    <div className="text-center dark:text-red-400 text-red-500 transition-colors">
+                    <div className="dark:text-red-400 text-red-500 transition-colors">
                       <span className="text-md font-normal">Antes</span>
                       <span className="block text-xl font-normal ">{formatPrice(price)}</span>
                     </div>

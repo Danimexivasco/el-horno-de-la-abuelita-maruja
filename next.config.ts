@@ -6,16 +6,16 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "placehold.co",
-        port: "",
-        pathname: "**",
+        port:     "",
+        pathname: "**"
       },
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
-        port: "",
-        pathname: "**",
-      },
-    ],
+        port:     "",
+        pathname: "**"
+      }
+    ]
   }
 };
 

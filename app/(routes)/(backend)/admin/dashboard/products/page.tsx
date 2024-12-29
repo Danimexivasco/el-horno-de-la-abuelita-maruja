@@ -30,7 +30,10 @@ export default async function Products() {
         className="mb-8"
       >+ Nuevo Producto
       </Link>
-      <ProductList products={products}/>
+      <ProductList
+        products={products}
+        isAdminPage
+      />
     </>
   );
 }

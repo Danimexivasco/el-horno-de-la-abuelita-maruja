@@ -2,7 +2,7 @@
 
 import Card from "@/app/_components/card";
 import Link from "@/components/link";
-import { ADMIN_PRODUCT_DETAIL_PATH } from "@/routes";
+import { ADMIN_PRODUCT_DETAIL_PATH, PRODUCT_DETAIL_PATH } from "@/routes";
 import { Product } from "@/types";
 import { combine } from "../_utils/combineClassnames";
 import { useSearchParams } from "next/navigation";
@@ -12,10 +12,11 @@ import Spinner from "./spinner";
 
 type ProductListProps = {
   products: Product[];
+  isAdminPage?: boolean
 };
 
 // TODO: Remove old items
-export default function ProductList({ products }: ProductListProps) {
+export default function ProductList({ products, isAdminPage = false }: ProductListProps) {
   const searchParams = useSearchParams();
 
   const [filteredItems, loading] = useFilter(products, ["name", "description", "category"]);
@@ -37,7 +38,7 @@ export default function ProductList({ products }: ProductListProps) {
         {filteredItems?.length > 0 ? filteredItems?.map((product: Product) =>
           <Link
             key={product.id}
-            href={ADMIN_PRODUCT_DETAIL_PATH.replace(":id", product.id)}
+            href={isAdminPage ? ADMIN_PRODUCT_DETAIL_PATH.replace(":id", product.id) : PRODUCT_DETAIL_PATH.replace(":id", product.id)}
             className="group text-decoration-none no-underline dark:!text-white !text-black transition-all duration-200 ease-linear"
           >
             <Card
@@ -53,6 +54,7 @@ export default function ProductList({ products }: ProductListProps) {
               offerType={product.offerType}
               discountPercentage={product.discountPercentage}
               multiplierAmount={product.multiplierAmount}
+              showBuyBtn={!isAdminPage}
               className={
                 combine("group-hover:shadow-lg dark:group-hover:shadow-cake-500/40 group-hover:shadow-black/30",
                   product?.image && "justify-center"

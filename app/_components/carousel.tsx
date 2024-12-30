@@ -9,20 +9,22 @@ import Container from "./container";
 import Headline from "./headline";
 import { Product } from "@/types";
 import MinimalistCard from "./minimalistCard";
+import { combine } from "../_utils/combineClassnames";
 
 type CarouselProps = {
     headline?: string
-    items: string
+    items: string | Product[]
+    className?: string
 };
 
-export default function Carousel({ headline, items }: CarouselProps) {
+export default function Carousel({ headline, items = [], className }: CarouselProps) {
 
-  const _items = JSON.parse(items) ?? [];
+  const _items = Array.isArray(items) ? items : JSON.parse(items);
 
   return (
     <Container
       as="section"
-      className="overflow-hidden px-0 pb-12"
+      className={combine("overflow-hidden px-0 pb-12", className)}
     >
       {headline ? <Headline
         as="h2"

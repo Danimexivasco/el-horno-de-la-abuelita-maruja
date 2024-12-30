@@ -19,8 +19,7 @@ export default function Header() {
   const { scrollY, scrollDirection } = useScrollPosition();
 
   useEffect(() => {
-    // TODO: Check if it works without next line after latest changes
-    // window?.scroll(0, 0);
+    window?.scroll(0, 0);
 
     const getUser = async () => {
       const user = await getLoggedUser(true);

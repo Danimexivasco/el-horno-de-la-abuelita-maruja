@@ -7,7 +7,7 @@ import Tag from "./tag";
 import { getDiscountPrice } from "../_utils/getDiscountPrice";
 import getCheapestVariant from "../_utils/getCheapestVariant";
 import Button from "./button";
-import { formatPrice } from "../_utils/formatPrice";
+import { formatNumber } from "../_utils/formatNumber";
 
 type CardProps = Omit<Product, "id" | "createdAt"> & {
   showBuyBtn?: boolean
@@ -87,33 +87,33 @@ export default function Card({ name, description, category, price, multiPrice, v
               {isMultiPrice ? (
                 variantOnOffer === "yes" && variantOfferType === "percentage"
                   ?
-                  <div className="flex gap-4 items-start">
+                  <div className="flex gap-4 items-end">
                     <div>
                       <p className="text-lg font-normal">Desde:</p>
                       <span className="text-3xl">
-                        {formatPrice(getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0))}
+                        {formatNumber(getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0))}
                       </span>
                     </div>
-                    <div className="text-center dark:text-red-400 text-red-500 transition-colors">
+                    <div className="dark:text-red-400 text-red-500 transition-colors">
                       <span className="text-md font-normal">Antes</span>
-                      <span className="block text-xl font-normal ">{formatPrice(variantPrice)}</span>
+                      <span className="block text-xl font-normal ">{formatNumber(variantPrice)}</span>
                     </div>
                   </div>
                   :
-                  <p className="text-2xl">{formatPrice(variantPrice)}</p>
+                  <p className="text-2xl">{formatNumber(variantPrice)}</p>
               ) : (
                 onOffer === "yes" && offerType === "percentage" ?
                   <div className="flex gap-4 items-center">
                     <span className="text-3xl">
-                      {formatPrice(getDiscountPrice(price ?? 0, discountPercentage ?? 0))}
+                      {formatNumber(getDiscountPrice(price ?? 0, discountPercentage ?? 0))}
                     </span>
-                    <div className="text-center dark:text-red-400 text-red-500 transition-colors">
+                    <div className="dark:text-red-400 text-red-500 transition-colors">
                       <span className="text-md font-normal">Antes</span>
-                      <span className="block text-xl font-normal ">{formatPrice(price)}</span>
+                      <span className="block text-xl font-normal ">{formatNumber(price)}</span>
                     </div>
                   </div>
                   :
-                  <p className="text-2xl">{formatPrice(price)}</p>
+                  <p className="text-2xl">{formatNumber(price)}</p>
               )}
             </div>
           </div>

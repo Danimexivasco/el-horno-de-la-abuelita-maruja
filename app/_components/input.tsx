@@ -133,11 +133,11 @@ export default function Input({ name, type, label, value, placeholder="", requir
           min="1"
           onWheel={type === "number" ? (e) => (e.target as HTMLElement).blur() : () => {}}
           pattern={pattern}
-          {...props}
           className={combine(
             "focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black placeholder:text-base",
             className
           )}
+          {...props}
         />
       </label>
     ) :
@@ -152,11 +152,11 @@ export default function Input({ name, type, label, value, placeholder="", requir
         min="1"
         onWheel={type === "number" ? (e) => (e.target as HTMLElement).blur() : () => {}}
         pattern={pattern}
-        {...props}
         className={combine(
           "focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black",
           className
         )}
+        {...props}
       />
   );
 }

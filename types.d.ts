@@ -47,6 +47,14 @@ export type ProductVariant = {
 
 type Allergens = "gluten" | "lactosa" | "frutos secos" | "huevos" | "soja" | "sésamo";
 
+type Review = {
+  id: string
+    reviewer: Pick<User, "id" | "username">
+    variant?: string
+    rating: number
+    comment: string
+};
+
 export type Product = {
   id: string,
   name: string,
@@ -63,6 +71,8 @@ export type Product = {
   allergens?: Allergens[]
   createdAt?: Date
   new?: "no" | "yes"
+  rating?: number[]
+  reviews?: Review[]
 };
 
 export type MinOrder = {

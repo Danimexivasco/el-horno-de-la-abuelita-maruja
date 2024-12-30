@@ -57,10 +57,11 @@ export default function PriceRangeSlider({ label, priceFrom, priceTo, onChange }
           Min. €
           <Input
             id="price-min"
-            type="tel"
+            type="number"
             name="price-min"
             value={Number(value[0]).toString()}
-            min={0}
+            min={priceFrom}
+            max={priceTo}
             onChange={(e) => handleInput([parseInt(e.target.value) > 0 ? parseInt(e.target.value) : 0, value[1]])}
             className="w-1/2 lg:w-1/4 !min-w-16 text-center"
           />
@@ -72,10 +73,11 @@ export default function PriceRangeSlider({ label, priceFrom, priceTo, onChange }
           Max. €
           <Input
             id="price-max"
-            type="tel"
+            type="number"
             name="price-max"
             value={Number(value[1]).toString()}
-            min={0}
+            min={priceFrom}
+            max={priceTo}
             onChange={(e) => handleInput([value[0], parseInt(e.target.value) > 0 ? parseInt(e.target.value) : 0])}
             className="w-1/2 lg:w-1/4 !min-w-16 text-center"
             ref={hackRef}

@@ -17,6 +17,10 @@
  
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* Set the range slider bg color */
 .track-1 {
   background-color: #DBB052 !important;

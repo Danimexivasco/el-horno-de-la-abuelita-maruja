@@ -1,5 +1,14 @@
-import { getProduct } from "@/app/_libs/firebase/products";
 import { Metadata } from "next";
+import { Product } from "@/types";
+import { PRODUCTS_PATH } from "@/routes";
+import { getProduct, getProducts } from "@/app/_libs/firebase/products";
+import Carousel from "@/app/_components/carousel";
+import Container from "@/app/_components/container";
+import Headline from "@/app/_components/headline";
+import Link from "@/app/_components/link";
+import ProductPurchase from "@/app/_components/productPurchase";
+import { RightArrowIcon } from "@/app/_icons";
+import { shuffleArray } from "@/app/_utils/shuffleArray";
 
 type ProductDetailPageprops = {
   params: Promise<{
@@ -22,9 +31,38 @@ export async function generateMetadata(
 
 export default async function ProductDetailPage({ params }: ProductDetailPageprops) {
   const { id } = await params;
-  const product = await getProduct(id);
+  const products = await getProducts();
+  const product = products.find(product => product.id === id);
+  const shuffleredProducts = shuffleArray(products.filter(_product => (_product.category === product?.category) && product?.id !== _product.id)).slice(0, 4);
 
   return (
-    <h1>{product.name}</h1>
+    <Container className="!py-12">
+      <Link
+        href={PRODUCTS_PATH}
+        className="flex gap-2 items-center no-underline mb-12"
+      >
+        <RightArrowIcon className="w-4 h-4 rotate-180"/> Volver a los productos
+      </Link>
+      <ProductPurchase
+        product={product as Product}
+      />
+      <Headline
+        as="h3"
+        className="!mb-0"
+      >
+        Productos similares
+      </Headline>
+      <Carousel
+        items={shuffleredProducts}
+        className="!pt-0"
+      />
+      <div className="grid place-items-center">
+        <Link
+          href={PRODUCTS_PATH}
+          asButton
+        >VOLVER A LOS PRODUCTOS
+        </Link>
+      </div>
+    </Container>
   );
 }

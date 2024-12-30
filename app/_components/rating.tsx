@@ -2,7 +2,7 @@ import { combine } from "../_utils/combineClassnames";
 
 type RatingProps = {
     rating: number;
-    setRating?: React.Dispatch<React.SetStateAction<number>> | (() => void)
+    setRating?: React.Dispatch<React.SetStateAction<number | null>> | (() => void)
 };
 
 export default function Rating({ rating, setRating }: RatingProps) {

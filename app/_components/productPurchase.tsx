@@ -4,7 +4,7 @@ import { Allergens, Product, ProductVariant } from "@/types";
 import Headline from "./headline";
 import { formatNumber } from "../_utils/formatNumber";
 import Button from "./button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "./input";
 import { MAXIMUM_PRODUCTS_PURCHASE } from "@/constants";
 import { LogoIcon } from "../_icons";
@@ -19,9 +19,15 @@ type ProductPruchaseProps = {
 };
 export default function ProductPurchase({ product }: ProductPruchaseProps) {
   const [rating, setRating] = useState(4);
+  const [userRating, setUserRating] = useState<null | number>(null);
   const [quantity, setQuantity] = useState(1);
   const [variant, setVariant] = useState(product.variants?.[0] ?? null);
   const { name, description, category, image, multiPrice, price, variants, onOffer, offerType, discountPercentage, multiplierAmount, allergens, new: isNew } = product;
+  // TODO remove until line 30, just added to avoid TS errors
+  useEffect(() => {
+    setRating(4);
+  }, []);
+  console.log("category", category);
 
   const renderPricing = () => {
     if ((multiPrice !== "yes" || !multiPrice) && onOffer !== "yes") {
@@ -43,10 +49,10 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
               as="h2"
               className="!mb-0"
             >
-              {formatNumber(price - (price * discountPercentage) / 100)}
+              {discountPercentage && formatNumber(price - (price * discountPercentage) / 100)}
             </Headline>
             <span className="italic text-2xl text-cake-500 font-extrabold">
-              -{formatNumber(discountPercentage, "percent")}
+              -{discountPercentage && formatNumber(discountPercentage, "percent")}
             </span>
           </div>
           <p className="block mt-1 dark:text-red-400 text-red-500 transition-colors line-through">
@@ -97,12 +103,12 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
               as="h2"
               className="!mb-0"
             >
-              {formatNumber(
+              {variant?.offerData?.discountPercentage && formatNumber(
                 variant?.value - (variant?.value * variant?.offerData?.discountPercentage) / 100
               )}
             </Headline>
             <span className="italic text-2xl text-cake-500 font-extrabold">
-              -{formatNumber(variant?.offerData?.discountPercentage, "percent")}
+              -{variant?.offerData?.discountPercentage && formatNumber(variant?.offerData?.discountPercentage, "percent")}
             </span>
           </div>
           <p className="block mt-1 dark:text-red-400 text-red-500 transition-colors">
@@ -248,6 +254,12 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           >
             Opiniones
           </Headline>
+
+          Escribe tu propia opinion (si estas logueado)
+          <Rating
+            rating={userRating ?? 0}
+            setRating={setUserRating}
+          />
 
         </section>
         TODO: Añadir funcionalidad de opiniones

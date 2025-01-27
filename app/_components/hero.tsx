@@ -23,15 +23,15 @@ export default function Hero({ bottomText, image }: HeroProps) {
   };
 
   return (
-    <section className="min-h-[calc(100vh-96px)] lg:min-h-[calc(100vh-144px)]">
+    <section className="min-h-[calc(100dvh-96px)] lg:min-h-[calc(100dvh-144px)]">
       <Image
         src={image}
         alt="Hero-img"
         width={1200}
         height={1200}
-        className="absolute top-0 left-0 object-cover w-full h-screen"
+        className="absolute top-0 left-0 object-cover w-full h-[100dvh]"
       />
-      <div className="absolute z-10 top-0 left-0 w-full h-screen bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+      <div className="absolute z-10 top-0 left-0 w-full h-[100dvh] bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
       <div className="absolute z-20 bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-4 w-full">
         {bottomText &&
           <Headline

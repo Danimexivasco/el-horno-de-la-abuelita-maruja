@@ -51,7 +51,7 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
         </Link>
         <Cart />
       </Container>
-      <div className={combine("absolute top-full right-full w-full h-full min-h-[calc(100vh-96px)] dark:bg-cake-950 bg-cake-200 transition-all ease-linear duration-200", showMenu && "!right-0")}>
+      <div className={combine("absolute top-full right-full w-full h-full min-h-[calc(100dvh-96px)] dark:bg-cake-950 bg-cake-200 transition-all ease-linear duration-200", showMenu && "!right-0")}>
         <Container className="h-full">
           <div className="h-full flex flex-col justify-between">
             <nav>

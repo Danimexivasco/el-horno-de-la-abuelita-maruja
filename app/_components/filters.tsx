@@ -106,6 +106,12 @@ export default function Filters({ availableFilters }: FiltersProps) {
     setFilterHeight(0);
   };
 
+  const closeFilters = () => {
+    setTimeout(() => {
+      setFilterHeight(0);
+    }, 300);
+  };
+
   return (
     <section className=" dark:bg-cake-950/60 bg-cake-200/40 shadow-md">
       <Container className="h-8 flex items-center justify-end py-8 lg:px-24">
@@ -164,6 +170,7 @@ export default function Filters({ availableFilters }: FiltersProps) {
               <Button
                 type="submit"
                 className="w-full lg:w-fit lg:px-24 justify-center"
+                onClick={closeFilters}
               >Filtrar
               </Button>
               <Button

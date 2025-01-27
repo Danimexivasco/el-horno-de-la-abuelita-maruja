@@ -62,7 +62,7 @@ export default function Search() {
   };
 
   return (
-    <section className="grid place-items-end justify-items-center min-h-[15vh] dark:bg-cake-950 bg-cake-200/70 p-8">
+    <section className="grid place-items-end justify-items-center min-h-[15dvh] dark:bg-cake-950 bg-cake-200/70 p-8">
       <div
         className="w-full lg:w-2/4 lg:max-w-2xl flex justify-center items-center bg-white rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-cake-600 shadow-md"
       >

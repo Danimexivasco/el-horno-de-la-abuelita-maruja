@@ -32,6 +32,10 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
       document.body.style.overflowY = "visible";
     }
   }, [showMenu]);
+  const handleLogin = () => {
+    setShowMenu(false);
+    router.push(SIGN_IN_PATH);
+  };
 
   return (
     <>
@@ -91,7 +95,7 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
                   <>
                     <p className="dark:text-white text-black mb-2">Todavía no estás logueado</p>
                     <Button
-                      onClick={() => router.push(SIGN_IN_PATH)}
+                      onClick={handleLogin}
                     >
                       Inicia Sesión
                     </Button>

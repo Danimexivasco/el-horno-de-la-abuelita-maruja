@@ -33,7 +33,7 @@ export default function Highlight({ boxPosition="right", headline, text, image, 
           {boxTopHeadline ?
             <Headline
               as="h2"
-              className="!text-3xl lg:text-5xl"
+              className="!text-3xl lg:!text-5xl"
               empathized
             >
               {boxTopHeadline}
@@ -56,7 +56,7 @@ export default function Highlight({ boxPosition="right", headline, text, image, 
           {boxBottomHeadline ?
             <Headline
               as="h2"
-              className="!text-3xl lg:text-5xl"
+              className="!text-3xl lg:!text-5xl"
               empathized
             >
               {boxBottomHeadline}

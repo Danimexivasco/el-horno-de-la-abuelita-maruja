@@ -15,6 +15,7 @@ type UserActionsProps = {
 export default function UserActions({ user }: UserActionsProps) {
   const router = useRouter();
 
+  // TODO: adjust bg-cake-400/60 due to glass remove
   return (
     <div className="flex items-center gap-4">
       <div className="group relative">
@@ -24,7 +25,7 @@ export default function UserActions({ user }: UserActionsProps) {
         />
         <div className="hidden p-4 absolute group-hover:block group-hover:flex flex-col gap-2 top-full right-0 translate-x-1/2">
           <div
-            className="relative right-4 flex flex-col gap-2 p-4 items-center rounded-md glass !bg-opacity-35 shadow-lg"
+            className="relative right-4 flex flex-col gap-2 p-4 items-center rounded-md bg-cake-400/60 shadow-lg"
           >
             {user ? (
               <>

@@ -28,7 +28,7 @@ export default function Cart({ className }: CartProps) {
     >
       <CartIcon
         className={combine(
-          "w-10 h-10 dark:active:text-cake-600 active:text-cake-700",
+          "w-8 lg:w-10 h-8 lg:h-10 dark:active:text-cake-600 active:text-cake-700",
           className
         )}
         role="button"

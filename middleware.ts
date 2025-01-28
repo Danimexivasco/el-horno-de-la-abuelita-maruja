@@ -30,7 +30,7 @@ export async function middleware(request: NextRequest) {
         process.env.API_BASE_URL_DEV;
 
       const url = `${baseUrl}/api/user?userId=${sessionCookie}`;
-
+      console.log("url", url);
       try {
         const apiResponse = await fetch(url, {
           method:  "GET",
@@ -41,6 +41,7 @@ export async function middleware(request: NextRequest) {
             revalidate: 60
           }
         });
+        console.log("apiResponse", apiResponse);
 
         if (!apiResponse.ok) {
           return NextResponse.json(

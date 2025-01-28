@@ -12,7 +12,7 @@
   }
 
   .glass {
-    @apply bg-cake-400 bg-clip-padding backdrop-filter backdrop-blur-md !bg-opacity-15
+    @apply bg-clip-padding backdrop-filter backdrop-blur-md
   }
  
 }

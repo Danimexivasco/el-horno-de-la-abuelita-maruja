@@ -39,11 +39,13 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
 
   return (
     <>
-      <Container className={combine("flex items-center justify-between !p-4 relative", className)}>
+      <Container className={combine("flex items-center justify-between !px-4 py-3 relative", className)}>
         <div className="dark:text-cake-400 text-cake-600 transition-colors">
           <Hamburger
             rounded
+            size={28}
             toggled={showMenu}
+            distance="lg"
             onToggle={() => setShowMenu(!showMenu)}
           />
         </div>
@@ -51,11 +53,11 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
           href={HOME_PATH}
           onClick={() => setShowMenu(false)}
         >
-          <LogoIcon className="w-16 h-16 "/>
+          <LogoIcon className="w-12 h-12"/>
         </Link>
         <Cart />
       </Container>
-      <div className={combine("absolute top-full right-full w-full h-full min-h-[calc(100dvh-96px)] dark:bg-cake-950 bg-cake-200 transition-all ease-linear duration-200", showMenu && "!right-0")}>
+      <div className={combine("absolute top-full right-full w-full h-full min-h-[calc(100dvh-72px)] dark:bg-cake-950 bg-cake-200 transition-all ease-linear duration-200", showMenu && "!right-0")}>
         <Container className="h-full">
           <div className="h-full flex flex-col justify-between">
             <nav>

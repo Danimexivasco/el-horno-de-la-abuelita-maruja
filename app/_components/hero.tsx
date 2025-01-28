@@ -23,7 +23,7 @@ export default function Hero({ bottomText, image }: HeroProps) {
   };
 
   return (
-    <section className="min-h-[calc(100dvh-96px)] lg:min-h-[calc(100dvh-144px)]">
+    <section className="min-h-[calc(100dvh-72px)] lg:min-h-[calc(100dvh-144px)]">
       <Image
         src={image}
         alt="Hero-img"

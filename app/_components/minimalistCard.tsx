@@ -21,12 +21,11 @@ export default function MinimalistCard({ id, name, price, multiPrice, variants=[
     multiplierAmount: variantMultiplierAmount
   } = getCheapestVariant(variants);
 
-  // TODO: adjust color due to remove glass
   return (
     <li
       className={
         combine(
-          "relative flex flex-col gap-4 h-full w-full rounded-md shadow-xl overflow-hidden",
+          "relative flex flex-col gap-4 h-full w-full dark:bg-cake-800 bg-cake-200 rounded-md shadow-xl overflow-hidden",
           className
         )
       }

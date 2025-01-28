@@ -7,6 +7,7 @@ import { getDiscountPrice } from "../_utils/getDiscountPrice";
 import getCheapestVariant from "../_utils/getCheapestVariant";
 import Link from "./link";
 import { PRODUCT_DETAIL_PATH } from "@/routes";
+import { formatNumber } from "../_utils/formatNumber";
 
 type MinimalistCardProps = Partial<Product> & {
   className?: string,
@@ -74,31 +75,31 @@ export default function MinimalistCard({ id, name, price, multiPrice, variants=[
         </div>
         <div className="flex gap-4 justify-between items-center">
           <div className="grid mt-4">
-            {multiPrice &&
+            {multiPrice === "yes" &&
                 <p className="text-lg font-normal">Desde:</p>
             }
             <div className="flex gap-2 items-center font-bold text-xl">
-              {multiPrice ? (
+              {multiPrice === "yes" ? (
                 variantOnOffer === "yes" && variantOfferType === "percentage"
                   ?
                   <>
                     <span className="text-3xl">
-                      {getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0)}€
+                      {formatNumber(getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0))}
                     </span>
-                    <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{variantPrice}€</span>
+                    <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{formatNumber(variantPrice)}</span>
                   </>
                   :
-                  <p className="text-2xl">{variantPrice}€</p>
+                  <p className="text-2xl">{formatNumber(variantPrice)}</p>
               ) : (
                 onOffer === "yes" && offerType === "percentage" ?
                   <>
                     <span className="text-3xl">
-                      {getDiscountPrice(price ?? 0, discountPercentage ?? 0)}€
+                      {formatNumber(getDiscountPrice(price ?? 0, discountPercentage ?? 0))}
                     </span>
-                    <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{price}€</span>
+                    <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{formatNumber(price)}</span>
                   </>
                   :
-                  <p className="text-2xl">{price}€</p>
+                  <p className="text-2xl">{formatNumber(price)}</p>
               )}
             </div>
           </div>

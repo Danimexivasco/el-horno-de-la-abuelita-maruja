@@ -251,7 +251,7 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
       } else {
         await createProduct({
           ..._formData,
-          createdAt: new Date()
+          createdAt: Date.now()
         });
       }
       if (redirectTo) {

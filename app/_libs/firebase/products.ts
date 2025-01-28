@@ -47,10 +47,13 @@ export const getProduct = async (id: string): Promise<Product> => {
 export const getProducts = async (): Promise<Product[]> => {
   try {
     const querySnapshot = await getDocs(_collection);
-    const products = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+    const products = querySnapshot.docs.map(doc => {
+
+      return ({
+        ...doc.data(),
+        id: doc.id
+      });
+    });
 
     return products as Product[];
   } catch (error) {

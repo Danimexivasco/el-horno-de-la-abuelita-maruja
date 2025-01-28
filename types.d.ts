@@ -67,9 +67,9 @@ export type Product = {
   onOffer: string
   offerType?: "percentage" | "multiplier" | ""
   discountPercentage?: number
-  multiplierAmount?: string
+  multiplierAmount?: strings
   allergens?: Allergens[]
-  createdAt?: Date
+  createdAt?: Date | number
   new?: "no" | "yes"
   rating?: number[]
   reviews?: Review[]

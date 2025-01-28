@@ -96,10 +96,10 @@ export default function MinimalistCard({ id, name, price, multiPrice, variants=[
                     <span className="text-3xl">
                       {formatNumber(getDiscountPrice(price ?? 0, discountPercentage ?? 0))}
                     </span>
-                    <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{formatNumber(price)}</span>
+                    <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{price && formatNumber(price)}</span>
                   </>
                   :
-                  <p className="text-2xl">{formatNumber(price)}</p>
+                  <p className="text-2xl">{price && formatNumber(price)}</p>
               )}
             </div>
           </div>

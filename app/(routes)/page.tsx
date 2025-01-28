@@ -39,7 +39,7 @@ export default async function Home() {
       />
       <Highlight
         boxTopHeadline="Frescura"
-        image={<GuaranteeIcon className="w-1/3 h-auto"/>}
+        image={<GuaranteeIcon className="w-1/3 h-auto max-w-36"/>}
         boxBottomHeadline="Garantizada"
         headline="Siempre frescos, siempre gratis"
         text={`Y por gratis nos referimos a nuestros envíos! Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti cupiditate, quis facilis, animi deleniti a excepturi reiciendis laborum quaerat, rem eaque sunt doloribus consequatur itaque?  

@@ -25,11 +25,12 @@ export default function Card({ name, description, category, price, multiPrice, v
 
   const isMultiPrice = multiPrice === "yes";
 
+  // TODO: adjust colors due to glass effect remove
   return (
     <li
       className={
         combine(
-          "relative flex flex-col gap-4 h-full w-full rounded-md glass shadow-xl overflow-hidden transition-shadow",
+          "relative flex flex-col gap-4 h-full w-full rounded-md shadow-xl overflow-hidden transition-shadow",
           className
         )
       }

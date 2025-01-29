@@ -1,6 +1,6 @@
 "use client";
 
-import { Allergens, Product, ProductVariant } from "@/types";
+import { Allergens, Product, ProductVariant, User } from "@/types";
 import Headline from "./headline";
 import { formatNumber } from "../_utils/formatNumber";
 import Button from "./button";
@@ -26,6 +26,7 @@ import { getLoggedUser } from "@/actions/authActions";
 import TextArea from "./textarea";
 import { updateProduct } from "../_libs/firebase/products";
 import { generateId } from "../_utils/generateId";
+import { getAverage } from "../_utils/getAverage";
 
 type ProductPruchaseProps = {
     product: Product
@@ -42,14 +43,13 @@ export const ALLERGENS_MAPPED_ICONS = {
 };
 
 export default function ProductPurchase({ product }: ProductPruchaseProps) {
-  const [rating, setRating] = useState(4);
   const [userRating, setUserRating] = useState<null | number>(null);
   const [quantity, setQuantity] = useState(1);
   const [variant, setVariant] = useState(product.variants?.[0] ?? null);
   const [reviewComment, setReviewComment] = useState("");
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
 
-  const { name, description, category, image, multiPrice, price, variants, onOffer, offerType, discountPercentage, multiplierAmount, allergens, new: isNew, reviews } = product;
+  const { name, description, image, multiPrice, price, variants, onOffer, offerType, discountPercentage, multiplierAmount, allergens, new: isNew, reviews } = product;
 
   useEffect(() => {
     const getUser = async () => {
@@ -66,8 +66,15 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
       await updateProduct(product.id, {
         ...product,
         reviews: [...(product.reviews ?? []), {
-          id:        generateId(),
-          rating,
+          id:       generateId(),
+          userRating,
+          reviewer: {
+            id:       user?.id ?? "",
+            username: user?.email ?? "Usuario anónimo" // TODO: add username and not use email
+          },
+          ...(variant && {
+            variant
+          }),
           comment:   reviewComment,
           createdAt: product.createdAt ?? Date.now()
         }]
@@ -219,10 +226,13 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
             <div>
               {renderPricing()}
             </div>
-            <div className="flex items-center gap-4">
-              <Rating rating={rating}/>
-              <Link href="#opiniones">Ver opiniones</Link>
-            </div>
+            {reviews && reviews.length > 0 ? (
+              <div className="flex items-center gap-4">
+                <Rating rating={getAverage(reviews)}/>
+                <Link href="#opiniones">Ver opiniones</Link>
+              </div>
+
+            ) : null}
           </div>
           <div className="flex justify-between lg:justify-start gap-4 lg:gap-20">
             {multiPrice === "yes" && variants && variants.length > 0 &&
@@ -349,11 +359,35 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
               <Button onClick={handleReview}>Enviar</Button>
             </div>
           ) : null}
-          <div className="mt-8">
-            {reviews && reviews?.length > 0 ? (
-              <p>opiniones MAPEADAS</p>
-            ) : null}
-          </div>
+          {reviews && reviews?.length > 0 ? (
+            <div className="mt-8 grid gap-8">
+              {reviews.map(review => {
+                const { id, reviewer, variant, rating, comment, createdAt } = review;
+
+                return (
+                  <div
+                    key={id}
+                    className="grid gap-4 py-4 px-8 bg-cake-200/90 dark:bg-cake-700 p-4 rounded-3xl"
+                  >
+                    <div className="flex justify-between items-center">
+                      <div className="grid lg:flex items-center gap-4">
+                        <div className="flex items-center gap-4 mr-8">
+                          <div className="rounded-full bg-cake-500 w-12 h-12 flex items-center justify-center">FOTO</div>
+                          <div className="grid gap-1">
+                            <p>{reviewer?.username}</p>
+                            <small className="italic">{new Date(createdAt).toLocaleDateString()}</small>
+                          </div>
+                          {variant && <p>Variante: {variant}</p>}
+                        </div>
+                        <Rating rating={rating}/>
+                      </div>
+                    </div>
+                    {comment && <p className="pl-14">{comment}</p>}
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
         </section>
       </div>
     </>

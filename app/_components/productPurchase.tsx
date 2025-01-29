@@ -7,27 +7,75 @@ import Button from "./button";
 import { useEffect, useState } from "react";
 import Input from "./input";
 import { MAXIMUM_PRODUCTS_PURCHASE } from "@/constants";
-import { LogoIcon } from "../_icons";
+import {
+  EggsIcon,
+  GlutenIcon,
+  LogoIcon,
+  MilkIcon,
+  NutsIcon,
+  PeanutsIcon,
+  SesameIcon,
+  SoyIcon
+} from "../_icons";
 import Image from "next/image";
 import Rating from "./rating";
 import Select from "./select";
 import Link from "./link";
+import Tooltip from "./tooltip";
+import { getLoggedUser } from "@/actions/authActions";
+import TextArea from "./textarea";
+import { updateProduct } from "../_libs/firebase/products";
+import { generateId } from "../_utils/generateId";
 
 type ProductPruchaseProps = {
     product: Product
-
 };
+
+export const ALLERGENS_MAPPED_ICONS = {
+  "gluten":       <GlutenIcon className="peer w-12 h-12" />,
+  "lactosa":      <MilkIcon className="peer w-12 h-12" />,
+  "frutos secos": <NutsIcon className="peer w-12 h-12" />,
+  "cacahuetes":   <PeanutsIcon className="peer w-12 h-12" />,
+  "huevo":        <EggsIcon className="peer w-12 h-12" />,
+  "soja":         <SoyIcon className="peer w-12 h-12" />,
+  "sésamo":       <SesameIcon className="peer w-12 h-12" />
+};
+
 export default function ProductPurchase({ product }: ProductPruchaseProps) {
   const [rating, setRating] = useState(4);
   const [userRating, setUserRating] = useState<null | number>(null);
   const [quantity, setQuantity] = useState(1);
   const [variant, setVariant] = useState(product.variants?.[0] ?? null);
-  const { name, description, category, image, multiPrice, price, variants, onOffer, offerType, discountPercentage, multiplierAmount, allergens, new: isNew } = product;
-  // TODO remove until line 30, just added to avoid TS errors
+  const [reviewComment, setReviewComment] = useState("");
+  const [user, setUser] = useState(null);
+
+  const { name, description, category, image, multiPrice, price, variants, onOffer, offerType, discountPercentage, multiplierAmount, allergens, new: isNew, reviews } = product;
+
   useEffect(() => {
-    setRating(4);
+    const getUser = async () => {
+      const user = await getLoggedUser(true);
+      if (user && typeof user === "string") {
+        setUser(JSON.parse(user));
+      }
+    };
+    getUser();
   }, []);
-  console.log("category", category);
+
+  const handleReview = async () => {
+    try {
+      await updateProduct(product.id, {
+        ...product,
+        reviews: [...(product.reviews ?? []), {
+          id:        generateId(),
+          rating,
+          comment:   reviewComment,
+          createdAt: product.createdAt ?? Date.now()
+        }]
+      });
+    } catch {
+      throw new Error("Algo fue mal añadiendo la opinión. Inténtalo de nuevo en unos minutos");
+    }
+  };
 
   const renderPricing = () => {
     if ((multiPrice !== "yes" || !multiPrice) && onOffer !== "yes") {
@@ -176,11 +224,11 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
               <Link href="#opiniones">Ver opiniones</Link>
             </div>
           </div>
-          <div className="grid gap-4">
+          <div className="flex justify-between lg:justify-start gap-4 lg:gap-20">
             {multiPrice === "yes" && variants && variants.length > 0 &&
               <Select
                 name="variant"
-                label="Opciones de compra"
+                label="Opciones"
                 value={variant?.name ?? ""}
                 onChange={(e) => {
                   setVariant(variants.find(variant => variant.name === e.target.value) as ProductVariant);
@@ -195,7 +243,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
             }
             <div>
               <p className="mb-2">Cantidad</p>
-              <div className="flex gap-4">
+              <div className="flex gap-2">
                 <Button
                   type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -220,31 +268,57 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           </div>
 
           <div className="grid gap-4 mt-8">
-            <Button type="submit">Añadir al carrito</Button>
-            <Button type="submit">Comprar</Button>
+            <Button
+              type="submit"
+              className="!w-full lg:!w-fit"
+            >Añadir al carrito
+            </Button>
+            <Button
+              type="submit"
+              className="!w-full lg:!w-fit"
+            >Comprar
+            </Button>
           </div>
         </form>
       </div>
-      <div>
-        <Headline as="h3">
-          Sobre el producto
-        </Headline>
-        <p>{description}</p>
-        {allergens && allergens?.length > 0 ?
-          <>
-            <Headline as="h4">
-              Lista de alérgenos:
-            </Headline>
-            <ul className="flex gap-4">
-              {allergens?.map((allergen: Allergens) => {
-                return (
-                  <p key={allergen}>{allergen}</p>
-                );
-              })}
-            </ul>
-          </>
-          : null
-        }
+      <div className="grid gap-12">
+        <section>
+          <Headline as="h3">
+            Sobre el producto
+          </Headline>
+          <p className="mb-4">{description}</p>
+          {allergens && allergens?.length > 0 ?
+            <>
+              <Headline
+                as="h4"
+                className="!mb-2"
+              >
+                Alérgenos:
+              </Headline>
+              <ul className="flex flex-wrap gap-6 lg:gap-2">
+                {allergens?.map((allergen: Allergens) => {
+                  return (
+                    <li
+                      key={allergen}
+                      className="relative"
+                    >
+                      <div className="peer grid place-items-center dark:text-cake-400 text-cake-500">
+                        {ALLERGENS_MAPPED_ICONS[allergen]}
+                        <p className="block lg:hidden capitalize text-black">{allergen}</p>
+                      </div>
+                      <Tooltip
+                        text={allergen}
+                        position="top"
+                        className="capitalize"
+                      />
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
+            : null
+          }
+        </section>
         <section
           id="opiniones"
           className="scroll-mt-4"
@@ -254,16 +328,33 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           >
             Opiniones
           </Headline>
-
-          Escribe tu propia opinion (si estas logueado)
-          <Rating
-            rating={userRating ?? 0}
-            setRating={setUserRating}
-          />
-
+          {user ? (
+            <div className="grid gap-3">
+              {reviews && reviews?.length > 0? (
+                <p>Añade tu opinión</p>
+              ) : (
+                <p>Todavía no hay opiniones, sé el primero en opinar</p>
+              )}
+              <Rating
+                rating={userRating ?? 0}
+                setRating={setUserRating}
+              />
+              <TextArea
+                name="reviewComment"
+                value={reviewComment}
+                placeholder="Que te ha parecido? Danos tu opinión para que podamos seguir mejorando 😊"
+                className="lg:w-2/3 min-h-52 lg:min-h-40"
+                onChange={(e) => setReviewComment(e.target.value)}
+              />
+              <Button onClick={handleReview}>Enviar</Button>
+            </div>
+          ) : null}
+          <div className="mt-8">
+            {reviews && reviews?.length > 0 ? (
+              <p>opiniones MAPEADAS</p>
+            ) : null}
+          </div>
         </section>
-        TODO: Añadir funcionalidad de opiniones
-
       </div>
     </>
 

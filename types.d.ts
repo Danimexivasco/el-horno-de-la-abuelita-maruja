@@ -45,14 +45,15 @@ export type ProductVariant = {
   }
 };
 
-type Allergens = "gluten" | "lactosa" | "frutos secos" | "huevos" | "soja" | "sésamo";
+type Allergens = "gluten" | "lactosa" | "frutos secos" | "huevo" | "soja" | "sésamo";
 
 type Review = {
   id: string
-    reviewer: Pick<User, "id" | "username">
-    variant?: string
-    rating: number
-    comment: string
+  reviewer: Pick<User, "id" | "username">
+  variant?: string
+  rating: number
+  comment: string
+  createdAt: Date | number
 };
 
 export type Product = {

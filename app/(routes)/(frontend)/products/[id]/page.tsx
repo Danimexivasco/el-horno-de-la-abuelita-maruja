@@ -46,16 +46,18 @@ export default async function ProductDetailPage({ params }: ProductDetailPagepro
       <ProductPurchase
         product={product as Product}
       />
-      <Headline
-        as="h3"
-        className="!mb-0"
-      >
-        Productos similares
-      </Headline>
-      <Carousel
-        items={shuffleredProducts}
-        className="!pt-0"
-      />
+      <section className="mt-12">
+        <Headline
+          as="h3"
+          className="!mb-0"
+        >
+          Productos similares
+        </Headline>
+        <Carousel
+          items={shuffleredProducts}
+          className="!pt-0"
+        />
+      </section>
       <div className="grid place-items-center">
         <Link
           href={PRODUCTS_PATH}

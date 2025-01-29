@@ -78,25 +78,25 @@ export default function MinimalistCard({ id, name, price, multiPrice, variants=[
             {multiPrice === "yes" &&
                 <p className="text-lg font-normal">Desde:</p>
             }
-            <div className="flex gap-2 items-center font-bold text-xl">
+            <div className="grid items-center font-bold text-xl">
               {multiPrice === "yes" ? (
                 variantOnOffer === "yes" && variantOfferType === "percentage"
                   ?
                   <>
+                    <small className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{formatNumber(variantPrice)}</small>
                     <span className="text-3xl">
                       {formatNumber(getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0))}
                     </span>
-                    <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{formatNumber(variantPrice)}</span>
                   </>
                   :
                   <p className="text-2xl">{formatNumber(variantPrice)}</p>
               ) : (
                 onOffer === "yes" && offerType === "percentage" ?
                   <>
+                    <small className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{price && formatNumber(price)}</small>
                     <span className="text-3xl">
                       {formatNumber(getDiscountPrice(price ?? 0, discountPercentage ?? 0))}
                     </span>
-                    <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{price && formatNumber(price)}</span>
                   </>
                   :
                   <p className="text-2xl">{price && formatNumber(price)}</p>
@@ -107,7 +107,7 @@ export default function MinimalistCard({ id, name, price, multiPrice, variants=[
             <Link
               asButton
               href={PRODUCT_DETAIL_PATH.replace(":id", id)}
-              className="mt-4"
+              className="mt-4 self-end"
             >Descubrir
             </Link>
             :

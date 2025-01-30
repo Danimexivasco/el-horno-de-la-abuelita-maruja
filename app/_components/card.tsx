@@ -1,4 +1,5 @@
 import { Product } from "@/types";
+import ReactMarkdown from "react-markdown";
 import Headline from "./headline";
 import Image from "next/image";
 import { combine } from "../_utils/combineClassnames";
@@ -79,7 +80,7 @@ export default function Card({ name, description, category, price, multiPrice, v
             className="mb-4"
           />
           <Headline as="h2">{name}</Headline>
-          <p className="line-clamp-2">{description}</p>
+          <ReactMarkdown className="line-clamp-2">{description}</ReactMarkdown>
         </div>
         <div className="flex items-center justify-between gap-4 mt-8">
           <div className="grid">

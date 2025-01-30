@@ -36,6 +36,7 @@ import { getAverage } from "../_utils/getAverage";
 import { useRouter } from "next/navigation";
 import { SIGN_IN_PATH } from "@/routes";
 import { combine } from "../_utils/combineClassnames";
+import ReactMarkdown from "react-markdown";
 
 type ProductPruchaseProps = {
     product: Product
@@ -344,7 +345,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           <Headline as="h3">
             Sobre el producto
           </Headline>
-          <p className="mb-4">{description}</p>
+          <ReactMarkdown className="mb-4 prose-base">{description}</ReactMarkdown>
           {allergens && allergens?.length > 0 ?
             <>
               <Headline
@@ -450,7 +451,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
                         </div>
                       </div>
                     </div>
-                    {comment && <p>{comment}</p>}
+                    {comment && <ReactMarkdown className="prose-base">{comment}</ReactMarkdown>}
                     {reviewer.id === user?.id &&
                     <Button
                       onClick={handleEditingReview(review)}

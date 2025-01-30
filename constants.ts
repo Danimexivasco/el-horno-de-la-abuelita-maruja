@@ -62,6 +62,10 @@ export const ALLERGENS_OPTIONS = [
     label: "Frutos secos"
   },
   {
+    value: "cacahuetes",
+    label: "Cacahuetes"
+  },
+  {
     value: "huevo",
     label: "Huevo"
   },

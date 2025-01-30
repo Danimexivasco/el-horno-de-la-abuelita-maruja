@@ -72,14 +72,21 @@ export const createProduct = async (data: Product) => {
   }
 };
 
-export const updateProduct = async (id: string, data: Product | DocumentData) => {
+export const updateProduct = async (id: string, data: Product | DocumentData, reviewType?: "updateReview" | "createReview") => {
   const productDoc = doc(db, "products", id);
 
   try {
     await setDoc(productDoc, data);
-    showMsg("Product updated", "success");
+
+    if (reviewType === "createReview") {
+      return showMsg("Opinión creada", "success");
+    } else if (reviewType === "updateReview") {
+      return showMsg("Opinión actualizada", "success");
+    }
+
+    return showMsg("Producto actualizado", "success");
   } catch {
-    showMsg("Something went wrong", "error");
+    showMsg("Algo ha ido mal", "error");
   }
 };
 

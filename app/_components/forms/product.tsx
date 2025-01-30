@@ -22,6 +22,7 @@ import Headline from "../headline";
 import { removeZeroValue } from "../input";
 import Spinner from "../spinner";
 import ProductVariantField from "./productVariantFields";
+import Link from "../link";
 
 type ProductFormProps = {
   headline: string
@@ -464,6 +465,12 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
           >
             {isPending ? "Please wait..." : submitBtnText}
           </Button>
+          <small>*Puedes usar <Link
+            external
+            href="https://www.markdownguide.org/cheat-sheet/"
+          >Markdown
+          </Link> para darle formato a la descripción
+          </small>
         </div>
       </form>
     </>

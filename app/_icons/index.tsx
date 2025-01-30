@@ -19,6 +19,14 @@ import { GuaranteeIcon } from "./guarantee";
 import { LensIcon } from "./lens";
 import { CrossIcon } from "./cross";
 import { FilterIcon } from "./filter";
+import { GlutenIcon } from "./gluten";
+import { NutsIcon } from "./nuts";
+import { PeanutsIcon } from "./peanuts";
+import { EggsIcon } from "./eggs";
+import { MilkIcon } from "./milk";
+import { MustardIcon } from "./mustard";
+import { SesameIcon } from "./sesame";
+import { SoyIcon } from "./soy";
 
 export type IconProps = {
   className?: string
@@ -65,5 +73,13 @@ export {
   GuaranteeIcon,
   LensIcon,
   CrossIcon,
-  FilterIcon
+  FilterIcon,
+  NutsIcon,
+  GlutenIcon,
+  PeanutsIcon,
+  EggsIcon,
+  MilkIcon,
+  MustardIcon,
+  SesameIcon,
+  SoyIcon
 };

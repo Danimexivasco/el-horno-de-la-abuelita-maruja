@@ -34,6 +34,7 @@ import { updateProduct } from "../_libs/firebase/products";
 import { generateId } from "../_utils/generateId";
 import { getAverage } from "../_utils/getAverage";
 import { useRouter } from "next/navigation";
+import { SIGN_IN_PATH } from "@/routes";
 
 type ProductPruchaseProps = {
     product: Product
@@ -85,7 +86,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
             }
             return review;
           })
-        }, true);
+        }, "updateReview");
 
         setEditingReview(null);
         setUserRating(null);
@@ -113,7 +114,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           comment:   reviewComment,
           createdAt: product.createdAt ?? Date.now()
         }]
-      }, true);
+      }, "createReview");
 
       setUserRating(null);
       setReviewComment("");
@@ -384,7 +385,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           >
             Opiniones
           </Headline>
-          {user ? (
+          {(user && !reviews?.find(review => review.reviewer?.id === user?.id) || editingReview) ? (
             <div className="grid gap-3">
               {reviews && reviews?.length > 0? (
                 <p>Comparte tu opinión con otros clientes</p>
@@ -459,6 +460,9 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
                 );
               })}
             </div>
+          ) : null}
+          {!reviews && !user ? (
+            <p>Todavía no hay opiniones. <Link href={SIGN_IN_PATH}>Inicia sesión</Link> y sé el primero en opinar</p>
           ) : null}
         </section>
       </div>

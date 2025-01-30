@@ -7,7 +7,8 @@ const mockReviews: Review[] = [
     id:       "S7azdDVyVLzR3YHgdRZg",
     reviewer: {
       id:       "reviewer-id-1",
-      username: "oneUserToRuleThemAll"
+      username: "oneUserToRuleThemAll",
+      photoURL: "awesome url to your profile image"
     },
     variant:   "xs",
     rating:    5,
@@ -18,7 +19,8 @@ const mockReviews: Review[] = [
     id:       "S7azdDVyVLzR3YHgdRZg",
     reviewer: {
       id:       "reviewer-id-1",
-      username: "oneUserToRuleThemAll"
+      username: "oneUserToRuleThemAll",
+      photoURL: "awesome url to your profile image"
     },
     variant:   "xs",
     rating:    2,

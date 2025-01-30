@@ -402,14 +402,22 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
                 name="reviewComment"
                 value={reviewComment}
                 placeholder="Que te ha parecido? Danos tu opinión para que podamos seguir mejorando 😊"
-                className="min-h-52"
+                className="h-52"
                 onChange={(e) => setReviewComment(e.target.value)}
               />
-              <Button
-                onClick={handleReview}
-                className="w-full lg:w-fit mt-1"
-              > {editingReview ? "Actualizar" : "Enviar"}
-              </Button>
+              <div className="mt-1 grid lg:flex items-center gap-4">
+                <Button
+                  onClick={handleReview}
+                  className="w-full lg:w-fit"
+                > {editingReview ? "Actualizar" : "Enviar"}
+                </Button>
+                <p>Puedes usar <Link
+                  external
+                  href="https://www.markdownguide.org/cheat-sheet/"
+                >Markdown
+                </Link> para darle formato al mensaje
+                </p>
+              </div>
             </div>
           ) : null}
           {reviews && reviews?.length > 0 ? (
@@ -451,7 +459,12 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
                         </div>
                       </div>
                     </div>
-                    {comment && <ReactMarkdown className="prose-base">{comment}</ReactMarkdown>}
+                    {comment &&
+                    <ReactMarkdown
+                      className="prose-base"
+                      disallowedElements={["a"]}
+                    >{comment}
+                    </ReactMarkdown>}
                     {reviewer.id === user?.id &&
                     <Button
                       onClick={handleEditingReview(review)}

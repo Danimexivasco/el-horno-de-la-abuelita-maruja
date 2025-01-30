@@ -7,8 +7,11 @@ export const MustardIcon = ({ className }: IconProps) => (
     height={133.333}
     width={133.347}
     xmlSpace="preserve"
+    aria-labelledby="svg-desc"
+    role="img"
     className={className}
   >
+    <desc id="svg-desc">Imágen de alérgeno de mostaza</desc>
     <path
       style={{
         fill:        "currentColor",

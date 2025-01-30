@@ -8,12 +8,14 @@ import getCheapestVariant from "../_utils/getCheapestVariant";
 import Link from "./link";
 import { PRODUCT_DETAIL_PATH } from "@/routes";
 import { formatNumber } from "../_utils/formatNumber";
+import Rating from "./rating";
+import { getAverage } from "../_utils/getAverage";
 
 type MinimalistCardProps = Partial<Product> & {
   className?: string,
 };
 
-export default function MinimalistCard({ id, name, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, className="" }: MinimalistCardProps) {
+export default function MinimalistCard({ id, name, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, reviews, className="" }: MinimalistCardProps) {
   const {
     price: variantPrice,
     onOffer: variantOnOffer,
@@ -72,6 +74,15 @@ export default function MinimalistCard({ id, name, price, multiPrice, variants=[
       <div className="flex flex-col justify-between px-6 pb-6 pt-2 flex-1">
         <div>
           <Headline as="h4">{name}</Headline>
+          {reviews && reviews?.length > 0 ? (
+            <div className="flex items-center gap-2">
+              <Rating
+                rating={getAverage(reviews)}
+                size="small"
+              />
+              <p className="italic text-sm">{reviews.length === 1 ? "1 opinión" : `${reviews.length} opiniones`}</p>
+            </div>
+          ) : null}
         </div>
         <div className="flex gap-4 justify-between items-center">
           <div className="grid mt-4">

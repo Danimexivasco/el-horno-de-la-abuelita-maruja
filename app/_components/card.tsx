@@ -9,13 +9,15 @@ import { getDiscountPrice } from "../_utils/getDiscountPrice";
 import getCheapestVariant from "../_utils/getCheapestVariant";
 import Button from "./button";
 import { formatNumber } from "../_utils/formatNumber";
+import Rating from "./rating";
+import { getAverage } from "../_utils/getAverage";
 
 type CardProps = Omit<Product, "id" | "createdAt"> & {
   showBuyBtn?: boolean
   className?: string,
 };
 
-export default function Card({ name, description, category, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, showBuyBtn=false, className="" }: CardProps) {
+export default function Card({ name, description, category, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, reviews, showBuyBtn=false, className="" }: CardProps) {
   const {
     price: variantPrice,
     onOffer: variantOnOffer,
@@ -80,6 +82,15 @@ export default function Card({ name, description, category, price, multiPrice, v
             className="mb-4"
           />
           <Headline as="h2">{name}</Headline>
+          {reviews && reviews?.length > 0 ? (
+            <div className="flex items-center gap-2 mb-4">
+              <Rating
+                rating={getAverage(reviews)}
+                size="small"
+              />
+              <p className="italic text-sm">{reviews.length === 1 ? "1 opinión" : `${reviews.length} opiniones`}</p>
+            </div>
+          ) : null}
           <ReactMarkdown className="line-clamp-2">{description}</ReactMarkdown>
         </div>
         <div className="flex items-center justify-between gap-4 mt-8">

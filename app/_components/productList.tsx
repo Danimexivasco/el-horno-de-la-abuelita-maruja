@@ -35,33 +35,37 @@ export default function ProductList({ products, isAdminPage = false }: ProductLi
         <p className="font-bold">Mostrando {filteredItems?.length} productos</p>
       )}
       <ul className="grid gap-12 grid-cols-auto-fill my-12">
-        {filteredItems?.length > 0 ? filteredItems?.map((product: Product) =>
-          <Link
-            key={product.id}
-            href={isAdminPage ? ADMIN_PRODUCT_DETAIL_PATH.replace(":id", product.id) : PRODUCT_DETAIL_PATH.replace(":id", product.id)}
-            className="group text-decoration-none no-underline dark:!text-white !text-black transition-all duration-200 ease-linear"
-          >
-            <Card
+        {filteredItems?.length > 0 ? filteredItems?.map((product: Product) => {
+
+          return (
+            <Link
               key={product.id}
-              name={product.name}
-              description={product.description}
-              category={product.category}
-              price={product.price}
-              multiPrice={product.multiPrice}
-              variants={product.variants}
-              image={product.image}
-              onOffer={product.onOffer}
-              offerType={product.offerType}
-              discountPercentage={product.discountPercentage}
-              multiplierAmount={product.multiplierAmount}
-              showBuyBtn={!isAdminPage}
-              className={
-                combine("group-hover:shadow-lg dark:group-hover:shadow-cake-500/40 group-hover:shadow-black/30",
-                  product?.image && "justify-center"
-                )
-              }
-            />
-          </Link>
+              href={isAdminPage ? ADMIN_PRODUCT_DETAIL_PATH.replace(":id", product.id) : PRODUCT_DETAIL_PATH.replace(":id", product.id)}
+              className="group text-decoration-none no-underline dark:!text-white !text-black transition-all duration-200 ease-linear"
+            >
+              <Card
+                key={product.id}
+                name={product.name}
+                description={product.description}
+                category={product.category}
+                price={product.price}
+                multiPrice={product.multiPrice}
+                variants={product.variants}
+                image={product.image}
+                onOffer={product.onOffer}
+                offerType={product.offerType}
+                discountPercentage={product.discountPercentage}
+                multiplierAmount={product.multiplierAmount}
+                reviews={product.reviews}
+                showBuyBtn={!isAdminPage}
+                className={
+                  combine("group-hover:shadow-lg dark:group-hover:shadow-cake-500/40 group-hover:shadow-black/30",
+                    product?.image && "justify-center"
+                  )
+                }
+              />
+            </Link>);
+        }
         )
           :
           (

@@ -72,12 +72,17 @@ export const createProduct = async (data: Product) => {
   }
 };
 
-export const updateProduct = async (id: string, data: Product | DocumentData) => {
+export const updateProduct = async (id: string, data: Product | DocumentData, reviewUpdate?: boolean) => {
   const productDoc = doc(db, "products", id);
 
   try {
     await setDoc(productDoc, data);
-    showMsg("Product updated", "success");
+
+    if (reviewUpdate) {
+      return showMsg("Opinión creada", "success");
+    }
+
+    return showMsg("Producto actualizado", "success");
   } catch {
     showMsg("Something went wrong", "error");
   }

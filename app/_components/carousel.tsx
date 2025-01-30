@@ -75,6 +75,7 @@ export default function Carousel({ headline, items = [], className }: CarouselPr
                 offerType={item.offerType}
                 discountPercentage={item.discountPercentage}
                 multiplierAmount={item.multiplierAmount}
+                reviews={item.reviews}
                 className="select-none"
               />
             </SwiperSlide>

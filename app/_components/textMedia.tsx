@@ -34,10 +34,11 @@ export default function TextMedia({ headline, subHeadline, text, cta, media, med
         <Headline
           as="h5"
           empathized
+          className="mb-6"
         >
           {subHeadline}
         </Headline>
-        <ReactMarkdown className={combine(Boolean(cta) && "mb-8")}>{text}</ReactMarkdown>
+        <ReactMarkdown className={combine(Boolean(cta) && "mb-8 prose-base")}>{text}</ReactMarkdown>
         <div>
           {cta && cta}
         </div>
@@ -55,10 +56,11 @@ export default function TextMedia({ headline, subHeadline, text, cta, media, med
         <Headline
           as="h5"
           empathized
+          className="mb-6"
         >
           {subHeadline}
         </Headline>
-        <ReactMarkdown className={combine(Boolean(cta) && "mb-8")}>{text}</ReactMarkdown>
+        <ReactMarkdown className={combine(Boolean(cta) && "mb-8 prose-base")}>{text}</ReactMarkdown>
         <div>
           {cta && cta}
         </div>

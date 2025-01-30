@@ -19,8 +19,6 @@ export default function Header() {
   const { scrollY, scrollDirection } = useScrollPosition();
 
   useEffect(() => {
-    window?.scroll(0, 0);
-
     const getUser = async () => {
       const user = await getLoggedUser(true);
       if (user && typeof user === "string") {

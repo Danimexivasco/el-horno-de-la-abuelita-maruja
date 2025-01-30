@@ -28,7 +28,7 @@ export async function generateMetadata(
 export default async function ProductDetail({ params }: ProductDetailProps) {
 
   const { id } = await params;
-  const { name, description, category, price, image="", onOffer, offerType, discountPercentage, multiplierAmount, multiPrice, variants, new: isNew, allergens } = await getProduct(id);
+  const { name, description, category, price, image="", onOffer, offerType, discountPercentage, multiplierAmount, multiPrice, variants, new: isNew, allergens, reviews } = await getProduct(id);
 
   return (
     <>
@@ -57,7 +57,8 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
           discountPercentage: discountPercentage,
           multiplierAmount:   multiplierAmount,
           new:                isNew,
-          allergens:          allergens
+          allergens:          allergens,
+          reviews:            reviews
         }}
       />
     </>

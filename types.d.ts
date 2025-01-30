@@ -45,14 +45,20 @@ export type ProductVariant = {
   }
 };
 
-type Allergens = "gluten" | "lactosa" | "frutos secos" | "huevos" | "soja" | "sésamo";
+type Allergens = "gluten" | "lactosa" | "frutos secos" | "huevo" | "soja" | "sésamo";
 
 type Review = {
   id: string
-    reviewer: Pick<User, "id" | "username">
-    variant?: string
-    rating: number
-    comment: string
+  reviewer: {
+    id: User["id"]
+    username: User["username"]
+    photoURL: User["photoURL"]
+  }
+  variant?: string
+  rating: number
+  comment: string
+  createdAt: number
+  updatedAt?: number
 };
 
 export type Product = {
@@ -67,9 +73,9 @@ export type Product = {
   onOffer: string
   offerType?: "percentage" | "multiplier" | ""
   discountPercentage?: number
-  multiplierAmount?: string
+  multiplierAmount?: strings
   allergens?: Allergens[]
-  createdAt?: Date
+  createdAt?: Date | number
   new?: "no" | "yes"
   rating?: number[]
   reviews?: Review[]

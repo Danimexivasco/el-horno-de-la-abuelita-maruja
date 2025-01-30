@@ -7,12 +7,15 @@ import { getDiscountPrice } from "../_utils/getDiscountPrice";
 import getCheapestVariant from "../_utils/getCheapestVariant";
 import Link from "./link";
 import { PRODUCT_DETAIL_PATH } from "@/routes";
+import { formatNumber } from "../_utils/formatNumber";
+import Rating from "./rating";
+import { getAverage } from "../_utils/getAverage";
 
 type MinimalistCardProps = Partial<Product> & {
   className?: string,
 };
 
-export default function MinimalistCard({ id, name, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, className="" }: MinimalistCardProps) {
+export default function MinimalistCard({ id, name, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, reviews, className="" }: MinimalistCardProps) {
   const {
     price: variantPrice,
     onOffer: variantOnOffer,
@@ -21,12 +24,11 @@ export default function MinimalistCard({ id, name, price, multiPrice, variants=[
     multiplierAmount: variantMultiplierAmount
   } = getCheapestVariant(variants);
 
-  // TODO: adjust color due to remove glass
   return (
     <li
       className={
         combine(
-          "relative flex flex-col gap-4 h-full w-full rounded-md shadow-xl overflow-hidden",
+          "relative flex flex-col gap-4 h-full w-full dark:bg-cake-800 bg-cake-200 rounded-md shadow-xl overflow-hidden",
           className
         )
       }
@@ -72,34 +74,43 @@ export default function MinimalistCard({ id, name, price, multiPrice, variants=[
       <div className="flex flex-col justify-between px-6 pb-6 pt-2 flex-1">
         <div>
           <Headline as="h4">{name}</Headline>
+          {reviews && reviews?.length > 0 ? (
+            <div className="flex items-center gap-2">
+              <Rating
+                rating={getAverage(reviews)}
+                size="small"
+              />
+              <p className="italic text-sm">{reviews.length === 1 ? "1 opinión" : `${reviews.length} opiniones`}</p>
+            </div>
+          ) : null}
         </div>
         <div className="flex gap-4 justify-between items-center">
           <div className="grid mt-4">
-            {multiPrice &&
+            {multiPrice === "yes" &&
                 <p className="text-lg font-normal">Desde:</p>
             }
-            <div className="flex gap-2 items-center font-bold text-xl">
-              {multiPrice ? (
+            <div className="grid items-center font-bold text-xl">
+              {multiPrice === "yes" ? (
                 variantOnOffer === "yes" && variantOfferType === "percentage"
                   ?
                   <>
+                    <small className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{formatNumber(variantPrice)}</small>
                     <span className="text-3xl">
-                      {getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0)}€
+                      {formatNumber(getDiscountPrice(variantPrice ?? 0, variantDiscount ?? 0))}
                     </span>
-                    <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{variantPrice}€</span>
                   </>
                   :
-                  <p className="text-2xl">{variantPrice}€</p>
+                  <p className="text-2xl">{formatNumber(variantPrice)}</p>
               ) : (
                 onOffer === "yes" && offerType === "percentage" ?
                   <>
+                    <small className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{price && formatNumber(price)}</small>
                     <span className="text-3xl">
-                      {getDiscountPrice(price ?? 0, discountPercentage ?? 0)}€
+                      {formatNumber(getDiscountPrice(price ?? 0, discountPercentage ?? 0))}
                     </span>
-                    <span className="font-normal line-through dark:text-red-400 text-red-500 transition-colors">{price}€</span>
                   </>
                   :
-                  <p className="text-2xl">{price}€</p>
+                  <p className="text-2xl">{price && formatNumber(price)}</p>
               )}
             </div>
           </div>
@@ -107,7 +118,7 @@ export default function MinimalistCard({ id, name, price, multiPrice, variants=[
             <Link
               asButton
               href={PRODUCT_DETAIL_PATH.replace(":id", id)}
-              className="mt-4"
+              className="mt-4 self-end"
             >Descubrir
             </Link>
             :

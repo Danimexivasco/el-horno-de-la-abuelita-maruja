@@ -47,10 +47,13 @@ export const getProduct = async (id: string): Promise<Product> => {
 export const getProducts = async (): Promise<Product[]> => {
   try {
     const querySnapshot = await getDocs(_collection);
-    const products = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+    const products = querySnapshot.docs.map(doc => {
+
+      return ({
+        ...doc.data(),
+        id: doc.id
+      });
+    });
 
     return products as Product[];
   } catch (error) {
@@ -69,14 +72,21 @@ export const createProduct = async (data: Product) => {
   }
 };
 
-export const updateProduct = async (id: string, data: Product | DocumentData) => {
+export const updateProduct = async (id: string, data: Product | DocumentData, reviewType?: "updateReview" | "createReview") => {
   const productDoc = doc(db, "products", id);
 
   try {
     await setDoc(productDoc, data);
-    showMsg("Product updated", "success");
+
+    if (reviewType === "createReview") {
+      return showMsg("Opinión creada", "success");
+    } else if (reviewType === "updateReview") {
+      return showMsg("Opinión actualizada", "success");
+    }
+
+    return showMsg("Producto actualizado", "success");
   } catch {
-    showMsg("Something went wrong", "error");
+    showMsg("Algo ha ido mal", "error");
   }
 };
 

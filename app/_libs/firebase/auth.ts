@@ -40,7 +40,7 @@ export async function signInWithGoogle() {
         id:        uid,
         email:     email ?? "",
         username:  displayName ?? "",
-        createdAt: new Date(),
+        createdAt: Date.now(),
         photoURL:  photoURL ?? "",
         emailVerified,
         role:      "customer"
@@ -75,7 +75,7 @@ export const signUpWithEmailAndPassword = async (formData: { email: string; pass
         id:        uid,
         email:     _email ?? "",
         username:  displayName ?? "",
-        createdAt: new Date(),
+        createdAt: Date.now(),
         photoURL:  photoURL ?? "",
         emailVerified,
         role:      "customer"

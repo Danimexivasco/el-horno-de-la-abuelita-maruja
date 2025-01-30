@@ -35,6 +35,7 @@ import { generateId } from "../_utils/generateId";
 import { getAverage } from "../_utils/getAverage";
 import { useRouter } from "next/navigation";
 import { SIGN_IN_PATH } from "@/routes";
+import { combine } from "../_utils/combineClassnames";
 
 type ProductPruchaseProps = {
     product: Product
@@ -418,7 +419,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
                 return (
                   <div
                     key={id}
-                    className="grid gap-4 py-4 px-8 bg-cake-200/90 dark:bg-cake-700 p-4 rounded-3xl"
+                    className={combine("grid gap-4 py-4 px-8 bg-cake-200/90 dark:bg-cake-700 p-4 rounded-3xl", editingReview?.id === id && "opacity-50")}
                   >
                     <div className="flex justify-between items-center">
                       <div className="grid lg:flex items-center gap-4">

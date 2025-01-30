@@ -1,6 +1,12 @@
 "use client";
 
-import { Allergens, Product, ProductVariant, User } from "@/types";
+import {
+  Allergens,
+  Product,
+  ProductVariant,
+  Review,
+  User
+} from "@/types";
 import Headline from "./headline";
 import { formatNumber } from "../_utils/formatNumber";
 import Button from "./button";
@@ -27,6 +33,7 @@ import TextArea from "./textarea";
 import { updateProduct } from "../_libs/firebase/products";
 import { generateId } from "../_utils/generateId";
 import { getAverage } from "../_utils/getAverage";
+import { useRouter } from "next/navigation";
 
 type ProductPruchaseProps = {
     product: Product
@@ -48,6 +55,8 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
   const [variant, setVariant] = useState(product.variants?.[0] ?? null);
   const [reviewComment, setReviewComment] = useState("");
   const [user, setUser] = useState<User | null>(null);
+  const [editingReview, setEditingReview] = useState<Review | null>(null);
+  const router = useRouter();
 
   const { name, description, image, multiPrice, price, variants, onOffer, offerType, discountPercentage, multiplierAmount, allergens, new: isNew, reviews } = product;
 
@@ -63,6 +72,29 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
 
   const handleReview = async () => {
     try {
+      if(editingReview) {
+        await updateProduct(product.id, {
+          ...product,
+          reviews: reviews?.map(review => {
+            if (review.id === editingReview.id) {
+              return {
+                ...review,
+                rating:  userRating,
+                comment: reviewComment
+              };
+            }
+            return review;
+          })
+        }, true);
+
+        setEditingReview(null);
+        setUserRating(null);
+        setReviewComment("");
+
+        router.refresh();
+
+        return;
+      }
       await updateProduct(product.id, {
         ...product,
         reviews: [...(product.reviews ?? []), {
@@ -70,18 +102,32 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           rating:   userRating,
           reviewer: {
             id:       user?.id ?? "",
-            username: user?.email ?? "Usuario anónimo" // TODO: add username and not use email
+            username: user?.username ?? "Usuario anónimo", // TODO: add username and not use email
+            ...(user?.photoURL && {
+              photoURL: user.photoURL
+            })
           },
           ...(variant && {
-            variant
+            variant: variant.name
           }),
           comment:   reviewComment,
           createdAt: product.createdAt ?? Date.now()
         }]
-      });
+      }, true);
+
+      setUserRating(null);
+      setReviewComment("");
+
+      router.refresh();
     } catch {
       throw new Error("Algo fue mal añadiendo la opinión. Inténtalo de nuevo en unos minutos");
     }
+  };
+
+  const handleEditingReview = (review: Review) => () => {
+    setEditingReview(review);
+    setReviewComment(review.comment);
+    setUserRating(review.rating);
   };
 
   const renderPricing = () => {
@@ -200,7 +246,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
 
   return (
     <>
-      <div className="grid md:grid-cols-2 gap-12 md:gap-24 mb-24">
+      <div className="grid md:grid-cols-2 gap-12 md:gap-24 mb-16 lg:mb-24">
         {image ?
           <Image
             src={image}
@@ -229,7 +275,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
             {reviews && reviews.length > 0 ? (
               <div className="flex items-center gap-4">
                 <Rating rating={getAverage(reviews)}/>
-                <Link href="#opiniones">Ver opiniones</Link>
+                <Link href="#opiniones">{reviews.length === 1 ? "Ver 1 opinión" : `Ver ${reviews.length} opiniones`}</Link>
               </div>
 
             ) : null}
@@ -277,7 +323,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
             </div>
           </div>
 
-          <div className="grid gap-4 mt-8">
+          <div className="grid gap-4 mt-12">
             <Button
               type="submit"
               className="!w-full lg:!w-fit"
@@ -331,7 +377,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
         </section>
         <section
           id="opiniones"
-          className="scroll-mt-4"
+          className="scroll-mt-4 lg:w-1/2"
         >
           <Headline
             as="h3"
@@ -341,7 +387,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           {user ? (
             <div className="grid gap-3">
               {reviews && reviews?.length > 0? (
-                <p>Añade tu opinión</p>
+                <p>Comparte tu opinión con otros clientes</p>
               ) : (
                 <p>Todavía no hay opiniones, sé el primero en opinar</p>
               )}
@@ -353,15 +399,19 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
                 name="reviewComment"
                 value={reviewComment}
                 placeholder="Que te ha parecido? Danos tu opinión para que podamos seguir mejorando 😊"
-                className="lg:w-2/3 min-h-52 lg:min-h-40"
+                className="min-h-52"
                 onChange={(e) => setReviewComment(e.target.value)}
               />
-              <Button onClick={handleReview}>Enviar</Button>
+              <Button
+                onClick={handleReview}
+                className="w-full lg:w-fit mt-1"
+              > {editingReview ? "Actualizar" : "Enviar"}
+              </Button>
             </div>
           ) : null}
           {reviews && reviews?.length > 0 ? (
             <div className="mt-8 grid gap-8">
-              {reviews.map(review => {
+              {reviews.sort((a, b) => b.createdAt - a.createdAt).map(review => {
                 const { id, reviewer, variant, rating, comment, createdAt } = review;
 
                 return (
@@ -371,18 +421,40 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
                   >
                     <div className="flex justify-between items-center">
                       <div className="grid lg:flex items-center gap-4">
-                        <div className="flex items-center gap-4 mr-8">
-                          <div className="rounded-full bg-cake-500 w-12 h-12 flex items-center justify-center">FOTO</div>
+                        <div className="flex flex-wrap gap-4 mr-8">
+                          {reviewer?.photoURL ? (
+                            <Image
+                              src={reviewer.photoURL}
+                              alt={"reviewer-profile-image"}
+                              width={48}
+                              height={48}
+                              className="rounded-full w-12 h-12"
+                            />
+                          ) : (
+                            <div className="rounded-full bg-cake-400 w-12 h-12 flex items-center justify-center">
+                              <LogoIcon className="w-8 h-8"/>
+                            </div>
+                          )}
                           <div className="grid gap-1">
-                            <p>{reviewer?.username}</p>
+                            <strong>{reviewer?.username}</strong>
                             <small className="italic">{new Date(createdAt).toLocaleDateString()}</small>
+                            {variant && <p>Opción: <i>{variant}</i></p>}
                           </div>
-                          {variant && <p>Variante: {variant}</p>}
+                          <Rating
+                            rating={rating}
+                            size="small"
+                            className="-mt-1"
+                          />
                         </div>
-                        <Rating rating={rating}/>
                       </div>
                     </div>
-                    {comment && <p className="pl-14">{comment}</p>}
+                    {comment && <p>{comment}</p>}
+                    {reviewer.id === user?.id &&
+                    <Button
+                      onClick={handleEditingReview(review)}
+                      className="ml-auto text-sm mt-2 lg:mt-0"
+                    >Editar opinión
+                    </Button>}
                   </div>
                 );
               })}
@@ -391,6 +463,5 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
         </section>
       </div>
     </>
-
   );
 }

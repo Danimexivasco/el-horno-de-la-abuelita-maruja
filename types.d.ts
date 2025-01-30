@@ -57,7 +57,8 @@ type Review = {
   variant?: string
   rating: number
   comment: string
-  createdAt: Date | number
+  createdAt: number
+  updatedAt: number
 };
 
 export type Product = {

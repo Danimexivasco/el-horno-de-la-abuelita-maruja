@@ -50,8 +50,8 @@ type Allergens = "gluten" | "lactosa" | "frutos secos" | "huevo" | "soja" | "sé
 type Review = {
   id: string
   reviewer: {
-    id: Pick<User, "id">
-    username: Pick<User, "username">
+    id: User["id"]
+    username: User["username"]
   }
   variant?: string
   rating: number

@@ -67,7 +67,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
         ...product,
         reviews: [...(product.reviews ?? []), {
           id:       generateId(),
-          userRating,
+          rating:   userRating,
           reviewer: {
             id:       user?.id ?? "",
             username: user?.email ?? "Usuario anónimo" // TODO: add username and not use email

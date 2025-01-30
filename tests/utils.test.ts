@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { getAverage } from "@/app/_utils/getAverage";
+import { Review } from "@/types";
 
-const mockReviews = [
+const mockReviews: Review[] = [
   {
     id:       "S7azdDVyVLzR3YHgdRZg",
     reviewer: {

@@ -21,6 +21,18 @@ html {
   scroll-behavior: smooth;
 }
 
+a[target="_blank"]::after {
+  content: "";
+  margin: 0 0px 0px 3px;
+  display: inline-block;
+  width: 12px;
+  height: 16px;
+  background-color: currentColor;
+  mask-repeat: no-repeat;
+  mask-image: url("/external_link.svg");
+  -webkit-mask-image: url("/external_link.svg");
+}
+
 /* Set the range slider bg color */
 .track-1 {
   background-color: #DBB052 !important;

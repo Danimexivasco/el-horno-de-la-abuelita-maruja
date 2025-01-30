@@ -52,6 +52,7 @@ type Review = {
   reviewer: {
     id: User["id"]
     username: User["username"]
+    photoURL: User["photoURL"]
   }
   variant?: string
   rating: number

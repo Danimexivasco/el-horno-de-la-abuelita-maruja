@@ -50,7 +50,7 @@ export default async function ProductDetail({ params }: ProductDetailProps) {
           category:           category,
           image:              image,
           multiPrice:         multiPrice,
-          variants:           variants,
+          variants:           variants ?? [],
           price:              price,
           onOffer:            onOffer,
           offerType:          offerType,

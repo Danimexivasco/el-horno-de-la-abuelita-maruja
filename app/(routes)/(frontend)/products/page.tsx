@@ -1,4 +1,3 @@
-
 import Container from "@/app/_components/container";
 import Filters from "@/app/_components/filters";
 import ProductList from "@/app/_components/productList";

@@ -45,7 +45,7 @@ export type ProductVariant = {
   }
 };
 
-type Allergens = "gluten" | "lactosa" | "frutos secos" | "huevo" | "soja" | "sésamo";
+type Allergens = "gluten" | "lactosa" | "frutos secos" | "huevo" | "soja" | "sésamo" | "cacahuetes";
 
 type Review = {
   id: string

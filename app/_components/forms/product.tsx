@@ -205,6 +205,7 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
 
   const handleProductData = (data: Product): Product => {
     let _data = data;
+
     if (_data?.onOffer === "no") {
       _data = {
         ...data,
@@ -218,7 +219,7 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
         ..._data,
         variants: []
       };
-    } else {
+    } else if (_data?.multiPrice === "yes") {
       _data = {
         ..._data,
         price:    0,

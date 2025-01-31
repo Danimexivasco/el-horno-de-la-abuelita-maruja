@@ -17,6 +17,7 @@ import {
 } from "react-firebase-hooks/firestore";
 import { Product } from "@/types";
 import { showMsg } from "@/utils/showMsg";
+import { revalidateCache } from "@/actions/revalidate";
 
 const _collection = collection(db, "products");
 
@@ -56,8 +57,7 @@ export const getProducts = async (): Promise<Product[]> => {
     });
 
     return products as Product[];
-  } catch (error) {
-    console.error("Error fetching products:", error);
+  } catch {
     showMsg("Error fetching products", "error");
     return [];
   }
@@ -66,6 +66,9 @@ export const getProducts = async (): Promise<Product[]> => {
 export const createProduct = async (data: Product) => {
   try {
     await addDoc(_collection, data);
+
+    await revalidateCache();
+
     showMsg("Product created", "success");
   } catch {
     showMsg("Something went wrong", "error");
@@ -77,6 +80,8 @@ export const updateProduct = async (id: string, data: Product | DocumentData, re
 
   try {
     await setDoc(productDoc, data);
+
+    await revalidateCache();
 
     if (reviewType === "createReview") {
       return showMsg("Opinión creada", "success");

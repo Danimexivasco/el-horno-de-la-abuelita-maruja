@@ -283,7 +283,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
 
             ) : null}
           </div>
-          <div className="flex justify-between lg:justify-start gap-4 lg:gap-20">
+          <div className="flex flex-wrap justify-between lg:justify-start gap-4 lg:gap-20">
             {multiPrice === "yes" && variants && variants.length > 0 &&
               <Select
                 name="variant"

@@ -36,6 +36,7 @@ export const getFiltersFromProducts = (products: Product[]) => {
       filters.priceTo = filters.priceTo !== 0 ? Math.max(filters.priceTo, product.price): product.price;
     }
   });
+  filters.allergens = [...new Set(filters.allergens)];
 
   return filters;
 };

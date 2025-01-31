@@ -109,3 +109,8 @@ export const LEGAL_ROUTES: Route[] = [
     label: "Condiciones de venta, envío y devolución"
   }
 ];
+
+export const REVALIDATION_ROUTES: string[] = [
+  ADMIN_PRODUCTS_PATH,
+  PRODUCTS_PATH
+];

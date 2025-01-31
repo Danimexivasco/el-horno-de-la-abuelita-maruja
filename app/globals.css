@@ -21,7 +21,7 @@ html {
   scroll-behavior: smooth;
 }
 
-a[target="_blank"]::after {
+a[target="_blank"]:not(.no-icon)::after {
   content: "";
   margin: 0 0px 0px 3px;
   display: inline-block;

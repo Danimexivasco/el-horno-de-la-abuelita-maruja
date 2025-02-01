@@ -62,19 +62,19 @@ export async function signInWithGoogle() {
   }
 }
 
-export const signUpWithEmailAndPassword = async (formData: { email: string; password: string }) => {
-  const { email, password } = formData;
-  if (!email || !password) throw new Error("Email and password are required");
+export const signUpWithEmailAndPassword = async (formData: { username: string, email: string; password: string }) => {
+  const { username, email, password } = formData;
+  if (!username ||!email || !password) throw new Error("Todos los campos son requeridos");
   try {
     const userCredential = await _createUserWithEmailAndPassword(firebaseAuth, email, password);
-    const { user: { uid, email: _email, displayName, photoURL, emailVerified } } = userCredential;
+    const { user: { uid, email: _email, photoURL, emailVerified } } = userCredential;
     const existingUser = await (await getDoc(doc(db, "users", uid))).data();
 
     if (!existingUser) {
       await createUser(uid, {
         id:        uid,
         email:     _email ?? "",
-        username:  displayName ?? "",
+        username:  username ?? "Usuario anónimo",
         createdAt: Date.now(),
         photoURL:  photoURL ?? "",
         emailVerified,
@@ -99,6 +99,7 @@ export const signInWithEmailAndPassword = async (formData: { email: string; pass
   if (!email || !password) throw new Error("Email and password are required");
   try {
     const userCredential = await _signInWithEmailAndPassword(firebaseAuth, email, password);
+    console.log("userCredential", userCredential);
     if (!userCredential || !userCredential.user) {
       throw new Error("Something failed during sing in");
     }

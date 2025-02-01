@@ -100,6 +100,9 @@ export const deleteProduct = async (id: string) => {
 
   try {
     await deleteDoc(productDoc);
+
+    await revalidateCache();
+
     showMsg("Product deleted", "success");
   } catch {
     showMsg("Something went wrong", "error");

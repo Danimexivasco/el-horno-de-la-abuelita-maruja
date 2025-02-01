@@ -75,7 +75,7 @@ export const createProduct = async (data: Product) => {
   }
 };
 
-export const updateProduct = async (id: string, data: Product | DocumentData, reviewType?: "updateReview" | "createReview") => {
+export const updateProduct = async (id: string, data: Product | DocumentData, reviewType?: "updateReview" | "createReview" | "deleteReview") => {
   const productDoc = doc(db, "products", id);
 
   try {
@@ -85,8 +85,12 @@ export const updateProduct = async (id: string, data: Product | DocumentData, re
 
     if (reviewType === "createReview") {
       return showMsg("Opinión creada", "success");
+
     } else if (reviewType === "updateReview") {
       return showMsg("Opinión actualizada", "success");
+
+    } else if (reviewType === "deleteReview") {
+      return showMsg("Opinión eliminada", "success");
     }
 
     return showMsg("Producto actualizado", "success");

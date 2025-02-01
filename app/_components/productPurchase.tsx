@@ -37,6 +37,7 @@ import { useRouter } from "next/navigation";
 import { SIGN_IN_PATH } from "@/routes";
 import { combine } from "../_utils/combineClassnames";
 import ReactMarkdown from "react-markdown";
+import { showMsg } from "../_utils/showMsg";
 
 type ProductPruchaseProps = {
     product: Product
@@ -123,6 +124,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
 
       router.refresh();
     } catch {
+      showMsg("Algo fue mal añadiendo la opinión. Inténtalo de nuevo en unos minutos", "error");
       throw new Error("Algo fue mal añadiendo la opinión. Inténtalo de nuevo en unos minutos");
     }
   };
@@ -131,6 +133,20 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
     setEditingReview(review);
     setReviewComment(review.comment);
     setUserRating(review.rating);
+  };
+
+  const handleDeleteReview = (id: Review["id"]) => async () => {
+    try {
+      await updateProduct(product.id, {
+        ...product,
+        reviews: product.reviews?.filter(review => review.id !== id)
+      }, "deleteReview");
+
+      router.refresh();
+    } catch {
+      showMsg("Algo fue mal eliminando la opinión. Inténtalo de nuevo en unos minutos", "error");
+      throw new Error("Algo fue mal eliminando la opinión. Inténtalo de nuevo en unos minutos");
+    }
   };
 
   const renderPricing = () => {
@@ -465,12 +481,22 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
                       disallowedElements={["a"]}
                     >{comment}
                     </ReactMarkdown>}
-                    {reviewer.id === user?.id &&
-                    <Button
-                      onClick={handleEditingReview(review)}
-                      className="ml-auto text-sm mt-2 lg:mt-0"
-                    >Editar opinión
-                    </Button>}
+                    <div className="flex items-center gap-4 ml-auto text-sm mt-2 lg:mt-0 w-full lg:w-fit">
+                      {reviewer.id === user?.id &&
+                      <Button
+                        onClick={handleEditingReview(review)}
+                        className="w-full lg:w-fit text-sm"
+                      >Editar opinión
+                      </Button>}
+                      {user && user.role === "admin" &&
+                      <Button
+                        onClick={handleDeleteReview(review.id)}
+                        className="w-full lg:w-fit text-sm"
+                        isRed
+                      >
+                        Eliminar Opinión
+                      </Button>}
+                    </div>
                   </div>
                 );
               })}

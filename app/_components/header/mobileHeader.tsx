@@ -32,6 +32,7 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
       document.body.style.overflowY = "visible";
     }
   }, [showMenu]);
+
   const handleLogin = () => {
     setShowMenu(false);
     router.push(SIGN_IN_PATH);

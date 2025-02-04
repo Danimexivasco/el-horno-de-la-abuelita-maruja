@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { getAverage } from "@/app/_utils/getAverage";
-import { Product, Review } from "@/types";
+import { Product, ProductVariant, Review } from "@/types";
 import { getFiltersFromProducts } from "@/app/_utils/getFilters";
+import { formatNumber } from "@/app/_utils/formatNumber";
+import { getPrices } from "@/app/_utils/getPrices";
 
-describe.skip("getAverage", () => {
+describe("getAverage", () => {
 
   it("should throw an error if there are no reviews", () => {
     expect(() => getAverage([])).toThrowError("No hay reviews");
@@ -33,7 +35,90 @@ describe("getFilters", () => {
         "cacahuetes"
       ]));
   });
+});
 
+describe("getPrices", () => {
+
+  it("should throw error if no product is provided", () => {
+    expect(() => getPrices()).toThrowError("No se ha pasado un producto");
+  });
+
+  it("should return base price if the product is not on offer or multiprice", () => {
+    expect(getPrices({
+      price:            9,
+      multiPrice:       "no",
+      onOffer:          "no",
+      multiplierAmount: ""
+    })).toEqual({
+      base: 9
+    });
+  });
+
+  it("should return base and offer price if the product is on offer", () => {
+    expect(getPrices(productOnOffer)).toEqual({
+      base:     5,
+      offer:    4.25,
+      discount: formatNumber(15, "percent")
+    });
+  });
+
+  it("should return correct prices if discount is multiplier", () => {
+    expect(getPrices(productWithAmountOffer, 3)).toEqual({
+      base:     6,
+      offer:    4,
+      discount: "3x2"
+    });
+  });
+
+  it("should return variant base price if it's not on offer", () => {
+    expect(getPrices(productWithVariants, 1, {
+      "offerData": {
+        "onOffer":            "no",
+        "multiplierAmount":   "",
+        "offerType":          "",
+        "discountPercentage": 0
+      },
+      "value": 5,
+      "name":  "xs",
+      "id":    "WMFcZXcP8QGkSnPNcFWy"
+    })).toEqual({
+      base: 5
+    });
+  });
+
+  it("should return variant prices if it's on offer type percentage", () => {
+    expect(getPrices(productWithVariants, 1, {
+      "name":      "md",
+      "value":     8,
+      "offerData": {
+        "multiplierAmount":   "",
+        "offerType":          "percentage",
+        "onOffer":            "yes",
+        "discountPercentage": 40
+      }
+    })).toEqual({
+      base:     8,
+      offer:    4.8,
+      discount: formatNumber(40, "percent")
+    });
+  });
+
+  it("should return variant prices if it's on offer type multiplier", () => {
+    expect(getPrices(productWithVariants, 3, {
+      "name":      "xl",
+      "value":     24,
+      "offerData": {
+        "onOffer":            "yes",
+        "offerType":          "multiplier",
+        "discountPercentage": 0,
+        "multiplierAmount":   "2x1"
+      }
+    })).toEqual({
+      base:     24,
+      offer:    16,
+      discount: "2x1"
+    });
+  });
 });
 
 const mockReviews: Review[] = [
@@ -62,6 +147,78 @@ const mockReviews: Review[] = [
     createdAt: 1738154020874
   }
 ];
+
+const productOnOffer: Partial<Product> = {
+  "offerType":          "percentage",
+  "discountPercentage": 15,
+  "price":              5,
+  "multiPrice":         "no",
+  "onOffer":            "yes",
+  "multiplierAmount":   ""
+};
+
+const productWithAmountOffer = {
+  "offerType":          "multiplier",
+  "discountPercentage": 0,
+  "onOffer":            "yes",
+  "multiplierAmount":   "3x2",
+  "price":              "6"
+};
+
+const productWithVariants: Product = {
+  "discountPercentage": 0,
+  "multiPrice":         "yes",
+  "price":              0,
+  "onOffer":            "no",
+  "offerType":          "",
+  "variants":           [
+    {
+      "offerData": {
+        "onOffer":            "no",
+        "multiplierAmount":   "",
+        "offerType":          "",
+        "discountPercentage": 0
+      },
+      "value": 5,
+      "name":  "xs",
+      "id":    "WMFcZXcP8QGkSnPNcFWy"
+    },
+    {
+      "name":      "md",
+      "value":     8,
+      "offerData": {
+        "multiplierAmount":   "",
+        "offerType":          "percentage",
+        "onOffer":            "yes",
+        "discountPercentage": 40
+      },
+      "id": "fLRWjW3cj0kUK74tJXst"
+    },
+    {
+      "name":      "lg",
+      "offerData": {
+        "offerType":          "percentage",
+        "onOffer":            "yes",
+        "discountPercentage": 25,
+        "multiplierAmount":   ""
+      },
+      "value": 12,
+      "id":    "3uc0tb1aHsMYoGeTm5Go"
+    },
+    {
+      "name":      "xl",
+      "value":     24,
+      "id":        "HHL4wl5LVrzQVSEqec5v",
+      "offerData": {
+        "onOffer":            "yes",
+        "offerType":          "multiplier",
+        "discountPercentage": 0,
+        "multiplierAmount":   "2x1"
+      }
+    }
+  ],
+  "multiplierAmount": ""
+};
 
 const products: Product[] = [
   {
@@ -149,7 +306,7 @@ const products: Product[] = [
           "multiplierAmount":   "",
           "offerType":          "percentage",
           "onOffer":            "yes",
-          "discountPercentage": "40"
+          "discountPercentage": 40
         },
         "id": "fLRWjW3cj0kUK74tJXst"
       },
@@ -158,7 +315,7 @@ const products: Product[] = [
         "offerData": {
           "offerType":          "percentage",
           "onOffer":            "yes",
-          "discountPercentage": "25",
+          "discountPercentage": 25,
           "multiplierAmount":   ""
         },
         "value": 12,
@@ -183,7 +340,7 @@ const products: Product[] = [
     "multiplierAmount": ""
   },
   {
-    "price":     "8",
+    "price":     8,
     "category":  "galletas",
     "allergens": [
       "huevo",

@@ -84,3 +84,18 @@ export type Product = {
 export type MinOrder = {
   minOrder: number
 };
+
+type CartItem = {
+  id: Product["id"] | ProductVariant["id"]
+  quantity: number
+  variant?: Productvariant["name"]
+  price: {
+    base: number,
+    offer?: number,
+    discount?: string
+  }
+  product: Product
+  addedAt: number
+};
+
+type Cart = CartItem[];

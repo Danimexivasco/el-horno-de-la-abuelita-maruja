@@ -7,7 +7,7 @@ export const ONE_DAY = 60 * 60 * 24;
 export const DEFAULT_THEME = "light";
 export const MAXIMUM_PRODUCTS_PURCHASE = 100;
 
-export const AUTHENTICATION_FORM_INPUTS = [
+export const SIGN_IN_FORM_INPUTS = [
   {
     name:        "email",
     type:        "email",
@@ -24,7 +24,37 @@ export const AUTHENTICATION_FORM_INPUTS = [
   }
 ];
 
-export const AUTHENTICATION_FORM_INITIAL_STATE = {
+export const SIGN_UP_FORM_INPUTS = [
+  {
+    name:        "username",
+    type:        "username",
+    label:       "Username",
+    placeholder: "Introduce tu username",
+    required:    true
+  },
+  {
+    name:        "email",
+    type:        "email",
+    label:       "Email",
+    placeholder: "Introduce tu email",
+    required:    true
+  },
+  {
+    name:        "password",
+    type:        "password",
+    label:       "Contraseña",
+    placeholder: "Introduce tu contraseña",
+    required:    true
+  }
+];
+
+export const SIGN_IN_FORM_INITIAL_STATE = {
+  username: "",
+  email:    "",
+  password: ""
+};
+
+export const SIGN_UP_FORM_INITIAL_STATE = {
   email:    "",
   password: ""
 };

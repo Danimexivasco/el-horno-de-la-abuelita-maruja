@@ -78,7 +78,7 @@ export default function Form({ inputs, initialState, onSubmit, redirectTo, submi
         className={combine("mt-4", fullWidthBtn && "w-full")}
         disabled={isPending}
       >
-        {isPending ? "Please wait..." : submitBtnText}
+        {isPending ? "Espera por favor..." : submitBtnText}
       </Button>
     </form>
   );

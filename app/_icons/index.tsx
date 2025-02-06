@@ -27,6 +27,7 @@ import { MilkIcon } from "./milk";
 import { MustardIcon } from "./mustard";
 import { SesameIcon } from "./sesame";
 import { SoyIcon } from "./soy";
+import { NoResultIcon } from "./noResult";
 
 export type IconProps = {
   className?: string
@@ -81,5 +82,6 @@ export {
   MilkIcon,
   MustardIcon,
   SesameIcon,
-  SoyIcon
+  SoyIcon,
+  NoResultIcon
 };

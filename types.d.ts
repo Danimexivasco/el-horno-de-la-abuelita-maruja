@@ -21,6 +21,8 @@ export type Select = {
   required?: boolean
 };
 
+type UserRoles = "customer" | "admin";
+
 export type User = {
   id: string,
   email: string
@@ -28,10 +30,12 @@ export type User = {
   createdAt: Date | Timestamp
   photoURL?: string
   emailVerified?: boolean
-  role?: "customer" | "admin"
+  role?: UserRoles
 };
 
 type Categories = "tartas" | "galletas" | "bizcochos";
+
+type OfferTypes = "percentage" | "multiplier" | "";
 
 export type ProductVariant = {
   id: string
@@ -39,7 +43,7 @@ export type ProductVariant = {
   value: number
   offerData: {
     onOffer: "yes" | "no",
-    offerType?: "percentage" | "multiplier" | ""
+    offerType?: OfferTypes
     discountPercentage?: number
     multiplierAmount?: string
   }
@@ -71,7 +75,7 @@ export type Product = {
   price: number,
   variants?: ProductVariant[]
   onOffer: string
-  offerType?: "percentage" | "multiplier" | ""
+  offerType?: OfferTypes
   discountPercentage?: number
   multiplierAmount?: strings
   allergens?: Allergens[]
@@ -92,7 +96,10 @@ type CartItem = {
   price: {
     base: number,
     offer?: number,
-    discount?: string
+    discount?: {
+      type: OfferTypes
+      label: string
+    }
   }
   product: Product
   addedAt: number

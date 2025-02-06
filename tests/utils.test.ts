@@ -58,7 +58,10 @@ describe("getPrices", () => {
     expect(getPrices(productOnOffer)).toEqual({
       base:     5,
       offer:    4.25,
-      discount: formatNumber(15, "percent")
+      discount: {
+        type:  "percentage",
+        label: formatNumber(15, "percent")
+      }
     });
   });
 
@@ -66,7 +69,10 @@ describe("getPrices", () => {
     expect(getPrices(productWithAmountOffer, 3)).toEqual({
       base:     6,
       offer:    4,
-      discount: "3x2"
+      discount: {
+        type:  "multiplier",
+        label: "3x2"
+      }
     });
   });
 
@@ -99,7 +105,10 @@ describe("getPrices", () => {
     })).toEqual({
       base:     8,
       offer:    4.8,
-      discount: formatNumber(40, "percent")
+      discount: {
+        type:  "percentage",
+        label: formatNumber(40, "percent")
+      }
     });
   });
 
@@ -116,7 +125,10 @@ describe("getPrices", () => {
     })).toEqual({
       base:     24,
       offer:    16,
-      discount: "2x1"
+      discount: {
+        type:  "multiplier",
+        label: "2x1"
+      }
     });
   });
 });

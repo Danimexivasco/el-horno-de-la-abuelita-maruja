@@ -1,3 +1,4 @@
+/* eslint-disable @stylistic/js/max-len */
 import { Product, ProductVariant } from "@/types";
 import { formatNumber } from "./formatNumber";
 
@@ -9,7 +10,10 @@ export const getPrices = (product: Partial<Product>, quantity: number = 1, varia
   if ((multiPrice !== "yes" || !multiPrice) && onOffer === "yes" && offerType === "percentage") return {
     base:     price && Number(price),
     offer:    price && discountPercentage && Number(price - (price * discountPercentage) / 100),
-    discount: discountPercentage && formatNumber(discountPercentage, "percent")
+    discount: {
+      type:  "percentage",
+      label: discountPercentage && formatNumber(discountPercentage, "percent")
+    }
   };
 
   if ((multiPrice !== "yes" || !multiPrice) && onOffer === "yes" && offerType === "multiplier") {
@@ -19,7 +23,10 @@ export const getPrices = (product: Partial<Product>, quantity: number = 1, varia
     return {
       base:     Number(product.price),
       offer:    product.price && Number((effectiveQuantity * product.price) / quantity),
-      discount: multiplierAmount
+      discount: {
+        type:  "multiplier",
+        label: multiplierAmount
+      }
     };
   }
 
@@ -36,7 +43,10 @@ export const getPrices = (product: Partial<Product>, quantity: number = 1, varia
       return {
         base:     Number(variant.value),
         offer:    variant?.value && variant?.offerData?.discountPercentage && Number(variant?.value - (variant?.value * variant?.offerData?.discountPercentage) / 100),
-        discount: variant?.offerData?.discountPercentage && formatNumber(variant?.offerData?.discountPercentage, "percent")
+        discount: {
+          type:  "percentage",
+          label: variant?.offerData?.discountPercentage && formatNumber(variant?.offerData?.discountPercentage, "percent")
+        }
       };
     }
   }
@@ -48,7 +58,10 @@ export const getPrices = (product: Partial<Product>, quantity: number = 1, varia
       return {
         base:     Number(variant.value),
         offer:    variant.value && Number((effectiveQuantity * variant.value) / quantity),
-        discount: variant?.offerData?.multiplierAmount
+        discount: {
+          type:  "multiplier",
+          label: variant?.offerData?.multiplierAmount
+        }
       };
     }
   }

@@ -95,7 +95,7 @@ type CartItem = {
   variant?: Productvariant["name"]
   price: {
     base: number,
-    offer: number,
+    offer?: number,
     discount?: {
       type: OfferTypes
       label: string

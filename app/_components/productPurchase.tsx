@@ -3,6 +3,7 @@
 import {
   Allergens,
   Cart,
+  OfferTypes,
   Product,
   ProductVariant,
   Review,
@@ -177,12 +178,15 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           quantity,
           variant: variant?.name ?? null,
           price:   {
-            base: base,
+            base: base ?? 0,
             ...(offer && {
               offer: offer
             }),
             ...(discount && {
-              discount: discount
+              discount: {
+                type:  discount.type as OfferTypes,
+                label: discount.label
+              }
             })
           },
           product: product,

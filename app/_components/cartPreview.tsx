@@ -23,11 +23,11 @@ export default function CartPreview({ opened, cartItems, setItems, setCartOpened
     price: 0
   });
 
-  // TODO: Add tests to getTotals
+  // TODO: Add tests to getTotals and also to check that price is never 0
   const getTotals = () => cartItems?.reduce((acc, item) => {
     acc.units += item.quantity;
     if (item.price.discount) {
-      acc.price += item.price.offer * item.quantity;
+      acc.price += (item.price.offer ?? 0) * item.quantity;
     } else {
       acc.price += item.price.base * item.quantity;
     }

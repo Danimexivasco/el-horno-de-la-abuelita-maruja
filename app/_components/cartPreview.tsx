@@ -18,13 +18,29 @@ type CartPreviewProps = {
 
 export default function CartPreview({ opened, cartItems, setItems, setCartOpened }: CartPreviewProps) {
   const pathname = usePathname();
-  const [totalUnits, setTotalUnits] = useState(0);
+  const [totals, setTotals] = useState({
+    units: 0,
+    price: 0
+  });
 
-  const getTotals = () => cartItems?.reduce((acc, item) => acc + item.quantity, 0);
+  // TODO: Add tests to getTotals
+  const getTotals = () => cartItems?.reduce((acc, item) => {
+    acc.units += item.quantity;
+    if (item.price.discount) {
+      acc.price += item.price.offer * item.quantity;
+    } else {
+      acc.price += item.price.base * item.quantity;
+    }
+    return acc;
+  }, {
+    units: 0,
+    price: 0
+  });
 
   useEffect(() => {
     if (cartItems?.length > 0) {
-      setTotalUnits(getTotals());
+      const totals = getTotals();
+      setTotals(totals);
     }
   }, [cartItems]);
 
@@ -95,8 +111,12 @@ export default function CartPreview({ opened, cartItems, setItems, setCartOpened
                             : null
                           }
                           <div className="flex items-center gap-2 mb-2">
-                            <p className="font-bold">{formatNumber(base)}</p>
-                            {discount && <small className="bg-cake-400 p-1.5 text-xs rounded-full">{discount}</small>}
+                            {discount ? (
+                              <p className="font-bold">{offer && formatNumber(offer)}</p>
+                            ) : (
+                              <p className="font-bold">{formatNumber(base)}</p>
+                            )}
+                            {discount && discount.type === "multiplier" && <small className="dark:text-cake-400 text-cake-600 text-xs">{discount.label}</small>}
                           </div>
                           <p className="text-sm">Cantidad: <span className="font-bold">{quantity}</span></p>
                         </div>
@@ -112,11 +132,11 @@ export default function CartPreview({ opened, cartItems, setItems, setCartOpened
                 <div className="grid gap-4 mb-8">
                   <div className="flex justify-between items-center">
                     <p>Cantidad Total</p>
-                    <p className="font-bold">{totalUnits}</p>
+                    <p className="font-bold">{totals.units}</p>
                   </div>
                   <div className="flex justify-between items-center">
                     <p>Total (IVA incluido)</p>
-                    <p className="font-bold">TOTAL.toFixed(2)</p>
+                    <p className="font-bold">{formatNumber(totals.price)}</p>
                   </div>
                 </div>
                 {pathname === CART_PATH ? (

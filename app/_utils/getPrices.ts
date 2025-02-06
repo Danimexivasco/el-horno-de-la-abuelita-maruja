@@ -67,6 +67,7 @@ export const getPrices = (product: Partial<Product>, quantity: number = 1, varia
   }
 
   return {
-    base: Number(price)
+    base:  Number(price),
+    offer: null
   };
 };

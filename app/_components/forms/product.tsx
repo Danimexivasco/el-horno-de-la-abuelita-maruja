@@ -45,7 +45,7 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
     ...initialState,
     offerType: initialState.offerType !== "" ? initialState.offerType : "percentage",
     variants:  initialState.variants?.map(variant => {
-      if (variant.offerData.onOffer === "no" && variant.offerData.offerType === "") {
+      if (variant.offerData?.onOffer === "no" && variant.offerData?.offerType === "") {
         return {
           ...variant,
           offerData: {

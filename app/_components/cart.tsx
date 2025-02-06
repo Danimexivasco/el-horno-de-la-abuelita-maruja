@@ -1,41 +1,63 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CART_PATH } from "@/routes";
-import Link from "./link";
 import { CartIcon } from "../_icons";
 import { combine } from "../_utils/combineClassnames";
+import { useLocalStorage } from "usehooks-ts";
+import { Cart as CartType } from "@/types";
+import CartPreview from "./cartPreview";
+import { usePathname } from "next/navigation";
 
 type CartProps = {
     className?: string
 };
 
 export default function Cart({ className }: CartProps) {
-  const [items, setItems] = useState(0);
+  const pathname = usePathname();
+  const [items, setItems] = useLocalStorage<CartType>("cart", []);
+  const [cartItems, setCartItems] = useState<CartType | null>(null);
+  const [cartOpened, setCartOpened] = useState(false);
 
-  // TODO: Create hook to check cart item changes
   useEffect(() => {
-    const items = localStorage.getItem("cart")?.length;
-    if (items && items > 0) {
-      setItems(items);
+    setCartItems(items || []);
+  }, [items]);
+
+  useEffect(() => {
+    setCartOpened(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (cartOpened && document) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "";
     }
-  }, []);
+  }, [cartOpened]);
 
   return (
-    <Link
-      href={CART_PATH}
-      className="relative"
-    >
-      <CartIcon
-        className={combine(
-          "w-8 lg:w-10 h-8 lg:h-10 dark:active:text-cake-600 active:text-cake-700",
-          className
-        )}
-        role="button"
+    <>
+      <button
+        className="relative dark:text-cake-400 dark:hover:text-cake-500 dark:active:text-cake-600 text-cake-600 hover:text-cake-700 active:text-cake-800"
+        onClick={() => setCartOpened(!cartOpened)}
+      >
+        <CartIcon
+          className={combine(
+            "w-8 h-8 dark:active:text-cake-600 active:text-cake-700",
+            className
+          )}
+          role="button"
+        />
+        {cartItems && cartItems.length > 0 &&
+          <span className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 lg:translate-x-1 lg:-translate-y-3 text-xs py-1 px-2 dark:bg-cake-400/90 bg-cake-600/90 rounded-full text-black font-bold">{cartItems.length}</span>
+        }
+      </button>
+
+      <CartPreview
+        opened={cartOpened}
+        cartItems={cartItems ?? []}
+        setItems={setItems}
+        setCartOpened={setCartOpened}
       />
-      {items > 0 &&
-        <span className="absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 lg:translate-x-1 lg:-translate-y-3 text-xs py-1 px-2 dark:bg-cake-400/90 bg-cake-600/90 rounded-full text-black font-bold">{items}</span>
-      }
-    </Link>
+    </>
   );
 }

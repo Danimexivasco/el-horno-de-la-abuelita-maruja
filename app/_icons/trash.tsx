@@ -1,11 +1,12 @@
 import { IconProps } from ".";
 
-export const TrashIcon = ({ className }: IconProps) => (
+export const TrashIcon = ({ className, ...props }: IconProps) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     className={className}
+    {...props}
   >
     <g strokeWidth={0} />
     <g

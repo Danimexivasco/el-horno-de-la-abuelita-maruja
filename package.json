@@ -25,7 +25,8 @@
     "react-markdown": "^9.0.1",
     "react-responsive-masonry": "^2.6.0",
     "react-slider": "^2.0.6",
-    "swiper": "^11.1.15"
+    "swiper": "^11.1.15",
+    "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

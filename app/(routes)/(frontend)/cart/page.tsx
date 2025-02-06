@@ -14,6 +14,8 @@ export const metadata: Metadata = {
 };
 
 export default function CartPage() {
+
+  // TODO: initialCheck with DB, check if product exist , if not delete, and if exist update the product on the localstorage
   return (
     <h1>Cart</h1>
   );

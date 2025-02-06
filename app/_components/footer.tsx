@@ -44,13 +44,14 @@ export default function Footer() {
             <Headline
               as="h5"
               className="mb-4"
-            >SOCIAL MEDIA
+            >Redes Sociales
             </Headline>
             <ul className="flex gap-4 justify-center sm:justify-start">
               <li>
                 <Link
                   href="https://dcano.dev"
                   external
+                  noExternalIcon
                 >
                   <InstagramIcon className="w-10 h-10"/>
                 </Link>
@@ -59,6 +60,7 @@ export default function Footer() {
                 <Link
                   href="https://dcano.dev"
                   external
+                  noExternalIcon
                 >
                   <YoutubeIcon className="w-10 h-10"/>
                 </Link>

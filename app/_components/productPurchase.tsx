@@ -2,6 +2,8 @@
 
 import {
   Allergens,
+  Cart,
+  OfferTypes,
   Product,
   ProductVariant,
   Review,
@@ -38,6 +40,8 @@ import { SIGN_IN_PATH } from "@/routes";
 import { combine } from "../_utils/combineClassnames";
 import ReactMarkdown from "react-markdown";
 import { showMsg } from "../_utils/showMsg";
+import { useLocalStorage } from "usehooks-ts";
+import { getPrices } from "../_utils/getPrices";
 
 type ProductPruchaseProps = {
     product: Product
@@ -61,6 +65,8 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
   const [user, setUser] = useState<User | null>(null);
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const router = useRouter();
+  // eslint-disable-next-line
+  const [items, setItems] = useLocalStorage<Cart>("cart", []);
 
   const { name, description, image, multiPrice, price, variants, onOffer, offerType, discountPercentage, multiplierAmount, allergens, new: isNew, reviews } = product;
 
@@ -146,6 +152,51 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
     } catch {
       showMsg("Algo fue mal eliminando la opinión. Inténtalo de nuevo en unos minutos", "error");
       throw new Error("Algo fue mal eliminando la opinión. Inténtalo de nuevo en unos minutos");
+    }
+  };
+
+  const handleAddToCart = async () => {
+    try {
+      const { base, offer, discount } = getPrices(product, quantity, variant);
+      setItems(prevItems => {
+        if (prevItems.some(item => item.id === product.id || item.id === variant?.id)) {
+          return prevItems.map(item => {
+
+            if (item.id === product.id || item.id === variant?.id) {
+              return {
+                ...item,
+                quantity: item.quantity + quantity
+              };
+            }
+
+            return item;
+          });
+        }
+
+        return [...prevItems, {
+          id:      variant?.id ?? product.id,
+          quantity,
+          variant: variant?.name ?? null,
+          price:   {
+            base: base ?? 0,
+            ...(offer && {
+              offer: offer
+            }),
+            ...(discount && {
+              discount: {
+                type:  discount.type as OfferTypes,
+                label: discount.label
+              }
+            })
+          },
+          product: product,
+          addedAt: Date.now()
+        }];
+      });
+
+      // TODO: await updateUser(updatedUser) --> Add cart to user DB
+    } catch {
+      showMsg("Algo ha ido mal", "error");
     }
   };
 
@@ -344,12 +395,13 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
 
           <div className="grid gap-4 mt-12">
             <Button
-              type="submit"
+              type="button"
+              onClick={handleAddToCart}
               className="!w-full lg:!w-fit"
             >Añadir al carrito
             </Button>
             <Button
-              type="submit"
+              type="button"
               className="!w-full lg:!w-fit"
             >Comprar
             </Button>

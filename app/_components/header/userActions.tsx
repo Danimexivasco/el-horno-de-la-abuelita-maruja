@@ -54,9 +54,7 @@ export default function UserActions({ user }: UserActionsProps) {
           </div>
         </div>
       </div>
-      <Cart
-        className="w-8 h-8"
-      />
+      <Cart />
     </div>
   );
 }

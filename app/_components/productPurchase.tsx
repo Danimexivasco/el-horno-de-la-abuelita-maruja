@@ -6,13 +6,12 @@ import {
   OfferTypes,
   Product,
   ProductVariant,
-  Review,
-  User
+  Review
 } from "@/types";
 import Headline from "./headline";
 import { formatNumber } from "../_utils/formatNumber";
 import Button from "./button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Input from "./input";
 import { MAXIMUM_PRODUCTS_PURCHASE } from "@/constants";
 import {
@@ -30,7 +29,6 @@ import Rating from "./rating";
 import Select from "./select";
 import Link from "./link";
 import Tooltip from "./tooltip";
-import { getLoggedUser } from "@/actions/authActions";
 import TextArea from "./textarea";
 import { updateProduct } from "../_libs/firebase/products";
 import { generateId } from "../_utils/generateId";
@@ -42,9 +40,11 @@ import ReactMarkdown from "react-markdown";
 import { showMsg } from "../_utils/showMsg";
 import { useLocalStorage } from "usehooks-ts";
 import { getPrices } from "../_utils/getPrices";
+import { updateUser } from "../_libs/firebase/users";
 
 type ProductPruchaseProps = {
     product: Product
+    user: string
 };
 
 export const ALLERGENS_MAPPED_ICONS = {
@@ -57,28 +57,19 @@ export const ALLERGENS_MAPPED_ICONS = {
   "sésamo":       <SesameIcon className="peer w-12 h-12" />
 };
 
-export default function ProductPurchase({ product }: ProductPruchaseProps) {
+export default function ProductPurchase({ product, user }: ProductPruchaseProps) {
   const [userRating, setUserRating] = useState<null | number>(null);
   const [quantity, setQuantity] = useState(1);
   const [variant, setVariant] = useState(product.variants?.[0] ?? null);
   const [reviewComment, setReviewComment] = useState("");
-  const [user, setUser] = useState<User | null>(null);
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const router = useRouter();
   // eslint-disable-next-line
   const [items, setItems] = useLocalStorage<Cart>("cart", []);
 
-  const { name, description, image, multiPrice, price, variants, onOffer, offerType, discountPercentage, multiplierAmount, allergens, new: isNew, reviews } = product;
+  const parsedUser = JSON.parse(user);
 
-  useEffect(() => {
-    const getUser = async () => {
-      const user = await getLoggedUser(true);
-      if (user && typeof user === "string") {
-        setUser(JSON.parse(user));
-      }
-    };
-    getUser();
-  }, []);
+  const { name, description, image, multiPrice, price, variants, onOffer, offerType, discountPercentage, multiplierAmount, allergens, new: isNew, reviews } = product;
 
   const handleReview = async () => {
     try {
@@ -111,10 +102,10 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           id:       generateId(),
           rating:   userRating,
           reviewer: {
-            id:       user?.id ?? "",
-            username: user?.username ?? "Usuario anónimo",
-            ...(user?.photoURL && {
-              photoURL: user.photoURL
+            id:       parsedUser?.id ?? "",
+            username: parsedUser?.username ?? "Usuario anónimo",
+            ...(parsedUser?.photoURL && {
+              photoURL: parsedUser.photoURL
             })
           },
           ...(variant && {
@@ -159,8 +150,9 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
     try {
       const { base, offer, discount } = getPrices(product, quantity, variant);
       setItems(prevItems => {
-        if (prevItems.some(item => item.id === product.id || item.id === variant?.id)) {
-          return prevItems.map(item => {
+        let updatedCart = prevItems ?? [];
+        if (prevItems?.some(item => item.id === product.id || item.id === variant?.id)) {
+          updatedCart = updatedCart.map(item => {
 
             if (item.id === product.id || item.id === variant?.id) {
               return {
@@ -171,30 +163,38 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
 
             return item;
           });
+        } else {
+          updatedCart = [...updatedCart, {
+            id:      variant?.id ?? product.id,
+            quantity,
+            variant: variant?.name ?? null,
+            price:   {
+              base: base ?? 0,
+              ...(offer && {
+                offer: offer
+              }),
+              ...(discount && {
+                discount: {
+                  type:  discount.type as OfferTypes,
+                  label: discount.label
+                }
+              })
+            },
+            product: product,
+            addedAt: Date.now()
+          }];
         }
 
-        return [...prevItems, {
-          id:      variant?.id ?? product.id,
-          quantity,
-          variant: variant?.name ?? null,
-          price:   {
-            base: base ?? 0,
-            ...(offer && {
-              offer: offer
-            }),
-            ...(discount && {
-              discount: {
-                type:  discount.type as OfferTypes,
-                label: discount.label
-              }
-            })
-          },
-          product: product,
-          addedAt: Date.now()
-        }];
+        if (parsedUser) {
+          updateUser(parsedUser?.id ?? "", {
+            ...parsedUser,
+            cart: updatedCart
+          }, false);
+        }
+
+        return updatedCart;
       });
       showMsg("Producto agregado al carrito", "success");
-      // TODO: await updateUser(updatedUser) --> Add cart to user DB
     } catch {
       showMsg("Algo ha ido mal", "error");
     }
@@ -455,7 +455,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           >
             Opiniones
           </Headline>
-          {(user && !reviews?.find(review => review.reviewer?.id === user?.id) || editingReview) ? (
+          {(parsedUser && !reviews?.find(review => review.reviewer?.id === parsedUser?.id) || editingReview) ? (
             <div className="grid gap-3">
               {reviews && reviews?.length > 0? (
                 <p>Comparte tu opinión con otros clientes</p>
@@ -534,13 +534,13 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
                     >{comment}
                     </ReactMarkdown>}
                     <div className="flex items-center gap-4 ml-auto text-sm mt-2 lg:mt-0 w-full lg:w-fit">
-                      {reviewer.id === user?.id &&
+                      {reviewer.id === parsedUser?.id &&
                       <Button
                         onClick={handleEditingReview(review)}
                         className="w-full lg:w-fit text-sm"
                       >Editar opinión
                       </Button>}
-                      {user && user.role === "admin" &&
+                      {parsedUser && parsedUser.role === "admin" &&
                       <Button
                         onClick={handleDeleteReview(review.id)}
                         className="w-full lg:w-fit text-sm"
@@ -554,7 +554,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
               })}
             </div>
           ) : null}
-          {!reviews && !user ? (
+          {!reviews && !parsedUser ? (
             <p>Todavía no hay opiniones. <Link href={SIGN_IN_PATH}>Inicia sesión</Link> y sé el primero en opinar</p>
           ) : null}
         </section>

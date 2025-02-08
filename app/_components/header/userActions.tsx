@@ -9,7 +9,7 @@ import Button from "../button";
 import Cart from "../cart";
 
 type UserActionsProps = {
-    user: User | null
+    user: User
 };
 
 export default function UserActions({ user }: UserActionsProps) {
@@ -54,7 +54,7 @@ export default function UserActions({ user }: UserActionsProps) {
           </div>
         </div>
       </div>
-      <Cart />
+      <Cart user={user}/>
     </div>
   );
 }

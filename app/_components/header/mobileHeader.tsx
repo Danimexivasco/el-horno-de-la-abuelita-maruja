@@ -17,7 +17,7 @@ import ThemeSwitchButton from "../themeSwitchButton";
 type MobileHeaderProps = {
     navRoutes: Route[]
     activePathname?: string
-    user: User | null
+    user: User
     className?: string
 };
 
@@ -56,7 +56,7 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
         >
           <LogoIcon className="w-12 h-12"/>
         </Link>
-        <Cart />
+        <Cart user={user}/>
       </Container>
       <div className={combine("absolute top-full right-full w-full h-full min-h-[calc(100dvh-72px)] dark:bg-cake-950 bg-cake-200 transition-all ease-linear duration-200", showMenu && "!right-0")}>
         <Container className="h-full">

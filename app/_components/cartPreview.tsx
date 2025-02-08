@@ -2,22 +2,24 @@ import { CART_PATH, PRODUCT_DETAIL_PATH, PRODUCTS_PATH } from "@/routes";
 import Link from "./link";
 import { combine } from "../_utils/combineClassnames";
 import { CrossIcon, LogoIcon, NoResultIcon, TrashIcon } from "../_icons";
-import { Cart } from "@/types";
+import { Cart, User } from "@/types";
 import { usePathname } from "next/navigation";
 import Button from "./button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { formatNumber } from "../_utils/formatNumber";
 import { showMsg } from "../_utils/showMsg";
+import { updateUser } from "../_libs/firebase/users";
 
 type CartPreviewProps = {
   opened: boolean
+  user: User
   cartItems: Cart
   setItems: (_items: Cart) => void
   setCartOpened: (_opened: boolean) => void
 };
 
-export default function CartPreview({ opened, cartItems, setItems, setCartOpened }: CartPreviewProps) {
+export default function CartPreview({ opened, user, cartItems, setItems, setCartOpened }: CartPreviewProps) {
   const pathname = usePathname();
   const [totals, setTotals] = useState({
     units: 0,
@@ -45,12 +47,19 @@ export default function CartPreview({ opened, cartItems, setItems, setCartOpened
     }
   }, [cartItems]);
 
-  const handleDeleteItem = (id: string) => () => {
+  const handleDeleteItem = (id: string) => async () => {
     if (!id) return null;
     try {
-      setItems(cartItems?.filter(item => item.id !== id));
+      const updatedCart = cartItems?.filter(item => item.id !== id);
+
+      setItems(updatedCart);
+      if (user) {
+        updateUser(user?.id ?? "", {
+          ...user,
+          cart: updatedCart
+        }, false);
+      }
       showMsg("Producto eliminado", "success");
-      // TODO: await update user with updatedcart
     } catch {
       showMsg("Error al eliminar el producto de la cesta", "error");
       throw new Error("Error al eliminar el producto de la cesta");

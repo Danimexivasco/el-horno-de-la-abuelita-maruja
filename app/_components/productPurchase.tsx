@@ -193,7 +193,7 @@ export default function ProductPurchase({ product }: ProductPruchaseProps) {
           addedAt: Date.now()
         }];
       });
-
+      showMsg("Producto agregado al carrito", "success");
       // TODO: await updateUser(updatedUser) --> Add cart to user DB
     } catch {
       showMsg("Algo ha ido mal", "error");

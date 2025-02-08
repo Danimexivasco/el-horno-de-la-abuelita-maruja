@@ -8,6 +8,7 @@ import Button from "./button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { formatNumber } from "../_utils/formatNumber";
+import { showMsg } from "../_utils/showMsg";
 
 type CartPreviewProps = {
   opened: boolean
@@ -46,8 +47,14 @@ export default function CartPreview({ opened, cartItems, setItems, setCartOpened
 
   const handleDeleteItem = (id: string) => () => {
     if (!id) return null;
-    setItems(cartItems?.filter(item => item.id !== id));
-    // TODO: await update user with updatedcart
+    try {
+      setItems(cartItems?.filter(item => item.id !== id));
+      showMsg("Producto eliminado", "success");
+      // TODO: await update user with updatedcart
+    } catch {
+      showMsg("Error al eliminar el producto de la cesta", "error");
+      throw new Error("Error al eliminar el producto de la cesta");
+    }
   };
 
   return (

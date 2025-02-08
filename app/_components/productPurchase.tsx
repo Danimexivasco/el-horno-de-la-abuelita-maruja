@@ -11,7 +11,7 @@ import {
 import Headline from "./headline";
 import { formatNumber } from "../_utils/formatNumber";
 import Button from "./button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "./input";
 import { MAXIMUM_PRODUCTS_PURCHASE } from "@/constants";
 import {
@@ -33,7 +33,7 @@ import TextArea from "./textarea";
 import { updateProduct } from "../_libs/firebase/products";
 import { generateId } from "../_utils/generateId";
 import { getAverage } from "../_utils/getAverage";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { SIGN_IN_PATH } from "@/routes";
 import { combine } from "../_utils/combineClassnames";
 import ReactMarkdown from "react-markdown";
@@ -58,14 +58,34 @@ export const ALLERGENS_MAPPED_ICONS = {
 };
 
 export default function ProductPurchase({ product, user }: ProductPruchaseProps) {
+  const searchParams = useSearchParams();
   const [userRating, setUserRating] = useState<null | number>(null);
   const [quantity, setQuantity] = useState(1);
-  const [variant, setVariant] = useState(product.variants?.[0] ?? null);
+  const [variant, setVariant] = useState<ProductVariant | null>(product.variants?.[0] ?? null);
   const [reviewComment, setReviewComment] = useState("");
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const router = useRouter();
   // eslint-disable-next-line
   const [items, setItems] = useLocalStorage<Cart>("cart", []);
+
+  useEffect(() => {
+    if (searchParams.get("var")) {
+      const targetVariant = product.variants?.find((variant) => variant.name === searchParams.get("var"));
+      if (targetVariant) {
+        setVariant(targetVariant);
+      }
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (variant) {
+      const currentParams = new URLSearchParams(searchParams.toString());
+      currentParams.set("var", variant.name);
+
+      router.replace(`?${currentParams.toString()}`);
+    }
+
+  }, [variant]);
 
   const parsedUser = JSON.parse(user);
 

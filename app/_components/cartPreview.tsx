@@ -117,14 +117,23 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                           </div>
                         }
                         <div className="flex flex-col flex-1 items-start text-start">
-                          <Link
-                            href={PRODUCT_DETAIL_PATH.replace(":id", id)}
-                            className="font-bold no-underline"
-                          >{name}
-                          </Link>
                           {variant ?
-                            <p className="text-sm">Opción: <span className="font-bold">{variant}</span></p>
-                            : null
+                            <>
+                              <Link
+                                href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variant}`}
+                                className="font-bold no-underline"
+                                onClick={() => setCartOpened(false)}
+                              >{name}
+                              </Link>
+                              <p className="text-sm">Opción: <span className="font-bold">{variant}</span></p>
+                            </>
+                            :
+                            <Link
+                              href={PRODUCT_DETAIL_PATH.replace(":id", id)}
+                              className="font-bold no-underline"
+                              onClick={() => setCartOpened(false)}
+                            >{name}
+                            </Link>
                           }
                           <div className="flex items-center gap-2 mb-2">
                             {discount ? (

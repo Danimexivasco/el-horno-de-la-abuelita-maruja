@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title:       "El Horno de la Abuelita Maruja",
     description: "Quieres probar un sabor a la vieja usanza? Prueba nuestros productos!",
-    url:         "https://el-horno-de-la-abuelita-maruja.vercel.app/",
+    url:         "https://elhornodelaabuelitamaruja.vercel.app/",
     siteName:    "El Horno de la Abuelita Maruja",
     locale:      "es-ES",
     type:        "website"

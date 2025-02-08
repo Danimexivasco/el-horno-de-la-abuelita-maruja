@@ -19,12 +19,7 @@ export default function Cart({ user, className }: CartProps) {
   const [cartItems, setCartItems] = useState<CartType | null>(null);
   const [cartOpened, setCartOpened] = useState(false);
 
-  useEffect(() => {
-    if (user.cart && user.cart?.length !== items.length) {
-      setItems(user.cart);
-    }
-
-  }, [user]);
+  // TODO: Find a way to update cart on the localstorage from DB user
 
   useEffect(() => {
     setCartItems(items || []);

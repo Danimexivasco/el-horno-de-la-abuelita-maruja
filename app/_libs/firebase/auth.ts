@@ -99,7 +99,6 @@ export const signInWithEmailAndPassword = async (formData: { email: string; pass
   if (!email || !password) throw new Error("Email and password are required");
   try {
     const userCredential = await _signInWithEmailAndPassword(firebaseAuth, email, password);
-    console.log("userCredential", userCredential);
     if (!userCredential || !userCredential.user) {
       throw new Error("Something failed during sing in");
     }

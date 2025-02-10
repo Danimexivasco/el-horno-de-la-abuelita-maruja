@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { formatNumber } from "../_utils/formatNumber";
 import { showMsg } from "../_utils/showMsg";
 import { updateUser } from "../_libs/firebase/users";
+import { getTotals } from "../_utils/getTotals";
 
 type CartPreviewProps = {
   opened: boolean
@@ -27,22 +28,10 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
   });
 
   // TODO: Add tests to getTotals and also to check that price is never 0
-  const getTotals = () => cartItems?.reduce((acc, item) => {
-    acc.units += item.quantity;
-    if (item.price.discount) {
-      acc.price += (item.price.offer ?? 0) * item.quantity;
-    } else {
-      acc.price += item.price.base * item.quantity;
-    }
-    return acc;
-  }, {
-    units: 0,
-    price: 0
-  });
 
   useEffect(() => {
     if (cartItems?.length > 0) {
-      const totals = getTotals();
+      const totals = getTotals(cartItems);
       setTotals(totals);
     }
   }, [cartItems]);

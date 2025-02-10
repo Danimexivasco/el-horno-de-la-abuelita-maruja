@@ -1,9 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { getAverage } from "@/app/_utils/getAverage";
-import { Product, ProductVariant, Review } from "@/types";
+import { Cart, Product, Review } from "@/types";
 import { getFiltersFromProducts } from "@/app/_utils/getFilters";
 import { formatNumber } from "@/app/_utils/formatNumber";
 import { getPrices } from "@/app/_utils/getPrices";
+import { getTotals } from "@/app/_utils/getTotals";
 
 describe("getAverage", () => {
 
@@ -50,7 +51,8 @@ describe("getPrices", () => {
       onOffer:          "no",
       multiplierAmount: ""
     })).toEqual({
-      base: 9
+      base:  9,
+      offer: null
     });
   });
 
@@ -131,6 +133,29 @@ describe("getPrices", () => {
       }
     });
   });
+});
+
+describe("getTotals", () => {
+  it("should return 0 units and 0 price as default", () => {
+    expect(getTotals([])).toEqual({
+      units: 0,
+      price: 0
+    });
+  });
+
+  it("should return correct units and price", () => {
+    expect(getTotals(mockCart)).toEqual({
+      units: 2,
+      price: 59.8
+    });
+  });
+
+  it("should never have a price 0", () => {
+    const hasInvalidOfferPrice = mockCart.some(item => item.price.offer === 0 || item?.price.base === 0);
+
+    expect(hasInvalidOfferPrice).toBe(false);
+  });
+
 });
 
 const mockReviews: Review[] = [
@@ -375,5 +400,31 @@ const products: Product[] = [
     "createdAt":          1738326490899,
     "variants":           [],
     "description":        "Un prod revalidando"
+  }
+];
+
+const mockCart: Partial<Cart> = [
+  {
+    "variant":  "md",
+    "addedAt":  1739010087571,
+    "id":       "fLRWjW3cj0kUK74tJXst",
+    "quantity": 1,
+    "price":    {
+      "offer":    4.8,
+      "discount": {
+        "label": "40 %",
+        "type":  "percentage"
+      },
+      "base": 8
+    }
+  },
+  {
+    "id":       "4UV6qXL7r2mlho8t5i4s",
+    "quantity": 1,
+    "variant":  null,
+    "price":    {
+      "base": 55
+    },
+    "addedAt": 1739013859862
   }
 ];

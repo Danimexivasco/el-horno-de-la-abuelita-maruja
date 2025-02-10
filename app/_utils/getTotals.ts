@@ -1,12 +1,10 @@
 import { Cart } from "@/types";
 
-const INITIAL_VALUES = {
-  units: 0,
-  price: 0
-};
-
 export const getTotals = (cartItems: Cart) => {
-  if (!cartItems) return INITIAL_VALUES;
+  if (!cartItems) return {
+    units: 0,
+    price: 0
+  };
 
   return cartItems?.reduce((acc, item) => {
     acc.units += item.quantity;
@@ -16,5 +14,8 @@ export const getTotals = (cartItems: Cart) => {
       acc.price += item.price.base * item.quantity;
     }
     return acc;
-  }, INITIAL_VALUES);
+  }, {
+    units: 0,
+    price: 0
+  });
 };

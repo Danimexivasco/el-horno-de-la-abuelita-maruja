@@ -27,8 +27,6 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
     price: 0
   });
 
-  // TODO: Add tests to getTotals and also to check that price is never 0
-
   useEffect(() => {
     if (cartItems?.length > 0) {
       const totals = getTotals(cartItems);

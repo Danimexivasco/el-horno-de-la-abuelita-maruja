@@ -17,8 +17,6 @@ import {
 } from "@/actions/authActions";
 import { doc, getDoc } from "firebase/firestore";
 import { createUser } from "./users";
-import { redirect } from "next/navigation";
-import { SIGN_IN_PATH } from "@/routes";
 
 // returns [user, loading, error]
 export const useAuthState = () => _useAuthState(firebaseAuth);

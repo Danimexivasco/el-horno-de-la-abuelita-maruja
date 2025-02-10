@@ -182,7 +182,7 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                   <Link
                     href={PRODUCTS_PATH}
                     asButton
-                  >Descubrir prodcutos
+                  >Descubrir productos
                   </Link>
                 )}
               </div>

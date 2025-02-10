@@ -6,6 +6,7 @@ import Footer from "../_components/footer";
 import Header from "../_components/header";
 import ThemeSwitchButton from "../_components/themeSwitchButton";
 import { nunito } from "../_fonts";
+import { getLoggedUser } from "@/actions/authActions";
 
 // TODO: Change url when the website is on prod
 export const metadata: Metadata = {
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title:       "El Horno de la Abuelita Maruja",
     description: "Quieres probar un sabor a la vieja usanza? Prueba nuestros productos!",
-    url:         "https://el-horno-de-la-abuelita-maruja.vercel.app/",
+    url:         "https://elhornodelaabuelitamaruja.vercel.app/",
     siteName:    "El Horno de la Abuelita Maruja",
     locale:      "es-ES",
     type:        "website"
@@ -38,6 +39,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getLoggedUser();
 
   return (
     <html
@@ -46,7 +48,7 @@ export default async function RootLayout({
     >
       <body className="dark:bg-cake-900 bg-cake-100 dark:text-white text-black transition-colors scroll-mt-24 lg:scroll-mt-36">
         <Toaster position="top-center" />
-        <Header />
+        <Header user={JSON.stringify(user ?? "")}/>
         <main className="flex flex-col min-h-screen">
           <div className="flex-1">
             {children}

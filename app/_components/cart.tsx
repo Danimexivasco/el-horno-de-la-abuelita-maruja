@@ -4,19 +4,22 @@ import { useEffect, useState } from "react";
 import { CartIcon } from "../_icons";
 import { combine } from "../_utils/combineClassnames";
 import { useLocalStorage } from "usehooks-ts";
-import { Cart as CartType } from "@/types";
+import { Cart as CartType, User } from "@/types";
 import CartPreview from "./cartPreview";
 import { usePathname } from "next/navigation";
 
 type CartProps = {
-    className?: string
+  user: User
+  className?: string
 };
 
-export default function Cart({ className }: CartProps) {
+export default function Cart({ user, className }: CartProps) {
   const pathname = usePathname();
   const [items, setItems] = useLocalStorage<CartType>("cart", []);
   const [cartItems, setCartItems] = useState<CartType | null>(null);
   const [cartOpened, setCartOpened] = useState(false);
+
+  // TODO: Find a way to update cart on the localstorage from DB user
 
   useEffect(() => {
     setCartItems(items || []);
@@ -54,6 +57,7 @@ export default function Cart({ className }: CartProps) {
 
       <CartPreview
         opened={cartOpened}
+        user={user}
         cartItems={cartItems ?? []}
         setItems={setItems}
         setCartOpened={setCartOpened}

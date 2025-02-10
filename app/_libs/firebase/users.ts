@@ -52,13 +52,17 @@ export const createUser = async (uid: string, data: User) => {
   }
 };
 
-export const updateUser = async (id: string, data: User | DocumentData) => {
+export const updateUser = async (id: string, data: User | DocumentData, withMsg: boolean = true) => {
   const userDoc = doc(db, "users", id);
   try {
     await setDoc(userDoc, data);
-    showMsg("User updated", "success");
+    if (withMsg) {
+      showMsg("User updated", "success");
+    }
   } catch {
-    showMsg("Something went wrong", "error");
+    if (withMsg) {
+      showMsg("Something went wrong", "error");
+    }
   }
 };
 

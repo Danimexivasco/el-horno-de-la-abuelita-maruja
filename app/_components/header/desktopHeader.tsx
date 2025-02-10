@@ -9,7 +9,7 @@ import Link from "../link";
 type DesktopHeaderProps = {
     navRoutes: Route[]
     activePathname?: string
-    user: User | null
+    user: User
     className?: string
 };
 

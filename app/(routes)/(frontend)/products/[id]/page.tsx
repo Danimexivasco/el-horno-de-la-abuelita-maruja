@@ -9,6 +9,7 @@ import Link from "@/app/_components/link";
 import ProductPurchase from "@/app/_components/productPurchase";
 import { RightArrowIcon } from "@/app/_icons";
 import { shuffleArray } from "@/app/_utils/shuffleArray";
+import { getLoggedUser } from "@/actions/authActions";
 
 type ProductDetailPageprops = {
   params: Promise<{
@@ -31,9 +32,12 @@ export async function generateMetadata(
 
 export default async function ProductDetailPage({ params }: ProductDetailPageprops) {
   const { id } = await params;
+
   const products = await getProducts();
   const product = products.find(product => product.id === id);
   const shuffleredProducts = shuffleArray(products.filter(_product => (_product.category === product?.category) && product?.id !== _product.id)).slice(0, 4);
+
+  const user = await getLoggedUser();
 
   return (
     <Container className="!py-12">
@@ -45,6 +49,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagepro
       </Link>
       <ProductPurchase
         product={product as Product}
+        user={JSON.stringify(user)}
       />
       <section className="mt-12">
         <Headline

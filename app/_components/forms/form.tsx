@@ -48,6 +48,8 @@ export default function Form({ inputs, initialState, onSubmit, redirectTo, submi
       await onSubmit(formData);
       if (redirectTo) {
         router.push(redirectTo);
+      } else {
+        router.back();
       }
     } catch (error) {
       setIsPending(false);

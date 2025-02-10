@@ -2,21 +2,24 @@ import { CART_PATH, PRODUCT_DETAIL_PATH, PRODUCTS_PATH } from "@/routes";
 import Link from "./link";
 import { combine } from "../_utils/combineClassnames";
 import { CrossIcon, LogoIcon, NoResultIcon, TrashIcon } from "../_icons";
-import { Cart } from "@/types";
+import { Cart, User } from "@/types";
 import { usePathname } from "next/navigation";
 import Button from "./button";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { formatNumber } from "../_utils/formatNumber";
+import { showMsg } from "../_utils/showMsg";
+import { updateUser } from "../_libs/firebase/users";
 
 type CartPreviewProps = {
   opened: boolean
+  user: User
   cartItems: Cart
   setItems: (_items: Cart) => void
   setCartOpened: (_opened: boolean) => void
 };
 
-export default function CartPreview({ opened, cartItems, setItems, setCartOpened }: CartPreviewProps) {
+export default function CartPreview({ opened, user, cartItems, setItems, setCartOpened }: CartPreviewProps) {
   const pathname = usePathname();
   const [totals, setTotals] = useState({
     units: 0,
@@ -44,10 +47,23 @@ export default function CartPreview({ opened, cartItems, setItems, setCartOpened
     }
   }, [cartItems]);
 
-  const handleDeleteItem = (id: string) => () => {
+  const handleDeleteItem = (id: string) => async () => {
     if (!id) return null;
-    setItems(cartItems?.filter(item => item.id !== id));
-    // TODO: await update user with updatedcart
+    try {
+      const updatedCart = cartItems?.filter(item => item.id !== id);
+
+      setItems(updatedCart);
+      if (user) {
+        updateUser(user?.id ?? "", {
+          ...user,
+          cart: updatedCart
+        }, false);
+      }
+      showMsg("Producto eliminado", "success");
+    } catch {
+      showMsg("Error al eliminar el producto de la cesta", "error");
+      throw new Error("Error al eliminar el producto de la cesta");
+    }
   };
 
   return (
@@ -101,14 +117,23 @@ export default function CartPreview({ opened, cartItems, setItems, setCartOpened
                           </div>
                         }
                         <div className="flex flex-col flex-1 items-start text-start">
-                          <Link
-                            href={PRODUCT_DETAIL_PATH.replace(":id", id)}
-                            className="font-bold no-underline"
-                          >{name}
-                          </Link>
                           {variant ?
-                            <p className="text-sm">Opción: <span className="font-bold">{variant}</span></p>
-                            : null
+                            <>
+                              <Link
+                                href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variant}`}
+                                className="font-bold no-underline"
+                                onClick={() => setCartOpened(false)}
+                              >{name}
+                              </Link>
+                              <p className="text-sm">Opción: <span className="font-bold">{variant}</span></p>
+                            </>
+                            :
+                            <Link
+                              href={PRODUCT_DETAIL_PATH.replace(":id", id)}
+                              className="font-bold no-underline"
+                              onClick={() => setCartOpened(false)}
+                            >{name}
+                            </Link>
                           }
                           <div className="flex items-center gap-2 mb-2">
                             {discount ? (

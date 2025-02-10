@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph:   {
     title:       "Panel de Control",
     description: "Panel de Control",
-    url:         "https://el-horno-de-la-abuelita-maruja.vercel.app/admin/dashboard",
+    url:         "https://elhornodelaabuelitamaruja.vercel.app/admin/dashboard",
     siteName:    "El Horno de la Abuelita Maruja",
     locale:      "es-ES",
     type:        "website"

@@ -31,6 +31,7 @@ export type User = {
   photoURL?: string
   emailVerified?: boolean
   role?: UserRoles
+  cart?: Cart
 };
 
 type Categories = "tartas" | "galletas" | "bizcochos";

@@ -16,12 +16,7 @@ import {
   signInWithGoogle,
   signUpWithEmailAndPassword
 } from "@/libs/firebase/auth";
-import {
-  ADMIN_DASHBOARD_PATH,
-  HOME_PATH,
-  SIGN_IN_PATH,
-  SIGN_UP_PATH
-} from "@/routes";
+import { ADMIN_DASHBOARD_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "@/routes";
 import { AuthenticationPages } from "@/types";
 import { showMsg } from "@/utils/showMsg";
 import { useRouter } from "next/navigation";
@@ -45,7 +40,11 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
         if (id) {
           await createSession(id);
         }
-        router.push(isAdmin ? ADMIN_DASHBOARD_PATH : HOME_PATH);
+        if(isAdmin) {
+          router.push(ADMIN_DASHBOARD_PATH);
+        } else {
+          router.back();
+        }
         setLoading(false);
       }
     } catch (error) {
@@ -92,7 +91,6 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
         initialState={type === "signUp" ? SIGN_UP_FORM_INITIAL_STATE : SIGN_IN_FORM_INITIAL_STATE}
         onSubmit={type === "signUp" ? signUpWithEmailAndPassword : signInWithEmailAndPassword}
         submitBtnText={type === "signUp" ? "Regístrarse" : "Iniciar Sesión"}
-        redirectTo={HOME_PATH}
         fullWidthBtn
       />
       <p className="flex flex-col sm:flex-row items-center sm:gap-2 mt-6">

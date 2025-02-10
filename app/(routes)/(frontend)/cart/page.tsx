@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   openGraph:   {
     title:       "Carrito",
     description: "Carrito",
-    url:         "https://el-horno-de-la-abuelita-maruja.vercel.app/cart",
+    url:         "https://elhornodelaabuelitamaruja.vercel.app/cart",
     siteName:    "El Horno de la Abuelita Maruja",
     locale:      "es-ES",
     type:        "website"

@@ -27,7 +27,15 @@ export default function Filters({ availableFilters }: FiltersProps) {
   const searchParams = useSearchParams();
   const [filterHeight, setFilterHeight] = useState<"auto" | number>(0);
   const [filters, setFilters] = useState<FiltersState>(FILTERS_INITIAL_STATE);
+  const [activeFilters, setActiveFilters] = useState(0);
   const [currentParams, setCurrentParams] = useState(new URLSearchParams(searchParams.toString()));
+
+  useEffect(() => {
+    if (filters) {
+      const priceFilterActive = filters.priceFrom !== availableFilters.priceFrom || filters.priceTo !== availableFilters.priceTo;
+      setActiveFilters(filters.category.length + filters.allergens.length + (priceFilterActive ? 1 : 0));
+    }
+  }, [filters]);
 
   useEffect(() => {
     setCurrentParams(new URLSearchParams(searchParams.toString()));
@@ -113,7 +121,7 @@ export default function Filters({ availableFilters }: FiltersProps) {
   };
 
   return (
-    <section className=" dark:bg-cake-950/60 bg-cake-200/40 shadow-md">
+    <section className=" dark:bg-cake-950/60 bg-cake-200/40 shadow-md select-none">
       <Container className="h-8 flex items-center justify-end py-8 lg:px-24">
         <div
           role="button"
@@ -123,7 +131,12 @@ export default function Filters({ availableFilters }: FiltersProps) {
           )}
         >
           <span className="text-lg font-bold dark:text-cake-400 text-cake-600">Filtros</span>
-          <FilterIcon className="w-8 h-8 dark:text-cake-400 text-cake-600"/>
+          <div className="relative">
+            {activeFilters > 0 ? (
+              <span className="absolute top-1 -right-0 translate-x-1/2 -translate-y-1/2 text-xs py-1 px-2 dark:bg-cake-400/90 bg-cake-600/90 rounded-full text-black font-bold">{activeFilters}</span>
+            ) : null}
+            <FilterIcon className="w-8 h-8 dark:text-cake-400 text-cake-600"/>
+          </div>
         </div>
       </Container>
       <AnimateHeight

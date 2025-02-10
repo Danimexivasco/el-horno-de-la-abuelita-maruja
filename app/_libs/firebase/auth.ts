@@ -17,8 +17,6 @@ import {
 } from "@/actions/authActions";
 import { doc, getDoc } from "firebase/firestore";
 import { createUser } from "./users";
-import { redirect } from "next/navigation";
-import { SIGN_IN_PATH } from "@/routes";
 
 // returns [user, loading, error]
 export const useAuthState = () => _useAuthState(firebaseAuth);
@@ -99,7 +97,6 @@ export const signInWithEmailAndPassword = async (formData: { email: string; pass
   if (!email || !password) throw new Error("Email and password are required");
   try {
     const userCredential = await _signInWithEmailAndPassword(firebaseAuth, email, password);
-    console.log("userCredential", userCredential);
     if (!userCredential || !userCredential.user) {
       throw new Error("Something failed during sing in");
     }
@@ -121,6 +118,4 @@ export async function signOut() {
     showMsg(message, "error");
     throw new Error(message);
   }
-
-  return redirect(SIGN_IN_PATH);
 }

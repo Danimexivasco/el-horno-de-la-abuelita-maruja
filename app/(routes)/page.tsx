@@ -60,10 +60,7 @@ export default async function Home() {
       <TextMedia
         headline="Quiénes somos"
         subHeadline="detrás de cada creación"
-        text={`Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is advertised as the most popular gun in American crime. Do you believe that shit?
-          It actually says that in the little book that comes with it: the most popular gun in American crime. Like they're actually proud of that shit.  
-          &nbsp;  
-          The path of the righteous man is beset on all sides by the iniquities of the selfish and the tyranny of evil men.`}
+        text={`Rocío y Daniel, una pareja con muchas ganas e ilusión por emprender una nueva aventura juntos. Yo, Rocío, soy la que elabora los productos con mucho cariño y dedicación mientras que Daniel, me apoya y me anima a llegar lo más lejos posible, él ha sido el creador de la página para que pudiera llegar a más gente.  \n\n Queremos compartir contigo nuestro viaje por lo que esperamos y deseamos que saborees y disfrutes lo que hacemos tanto como nosotros.`}
         cta={<Link
           asButton
           href={ABOUT_US_PATH}

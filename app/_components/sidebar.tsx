@@ -10,6 +10,7 @@ import { combine } from "../_utils/combineClassnames";
 import SidebarNavItem from "./sidebarNavItem";
 import ThemeSwitchButton from "./themeSwitchButton";
 import Tooltip from "./tooltip";
+import { useRouter } from "next/navigation";
 
 type SidebarProps = {
   routes: Route[]
@@ -19,6 +20,12 @@ type SidebarProps = {
 export default function Sidebar({ routes=[], className="" }: SidebarProps) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { isMobile } = useWindowSize();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.refresh(); // Trick to enable header detection
+  };
 
   return (
     <section
@@ -49,7 +56,7 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
           <Button
             className="peer w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg !text-black rounded-xl cursor-pointer p-0"
             isRed
-            onClick={async () => await signOut()}
+            onClick={handleSignOut}
           >
             <SignOutIcon className="w-6 h-6"/>
           </Button>

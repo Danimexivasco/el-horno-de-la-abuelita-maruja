@@ -120,6 +120,4 @@ export async function signOut() {
     showMsg(message, "error");
     throw new Error(message);
   }
-
-  return redirect(SIGN_IN_PATH);
 }

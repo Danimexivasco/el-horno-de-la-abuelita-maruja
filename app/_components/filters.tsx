@@ -32,7 +32,7 @@ export default function Filters({ availableFilters }: FiltersProps) {
 
   useEffect(() => {
     if (filters) {
-      const priceFilterActive = filters.priceFrom !== availableFilters.priceFrom || filters.priceTo !== availableFilters.priceTo;
+      const priceFilterActive = (filters.priceFrom !== 0 && filters.priceFrom !== availableFilters.priceFrom) || (filters.priceTo !== 0 && filters.priceTo !== availableFilters.priceTo);
       setActiveFilters(filters.category.length + filters.allergens.length + (priceFilterActive ? 1 : 0));
     }
   }, [filters]);

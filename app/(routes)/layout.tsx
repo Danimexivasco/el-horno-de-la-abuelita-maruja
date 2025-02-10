@@ -46,13 +46,11 @@ export default async function RootLayout({
       lang="es"
       className={nunito.className}
     >
-      <body className="dark:bg-cake-900 bg-cake-100 dark:text-white text-black transition-colors scroll-mt-24 lg:scroll-mt-36">
+      <body className="flex flex-col min-h-screen dark:bg-cake-900 bg-cake-100 dark:text-white text-black transition-colors scroll-mt-24 lg:scroll-mt-36">
         <Toaster position="top-center" />
         <Header user={JSON.stringify(user ?? "")}/>
-        <main className="flex flex-col min-h-screen">
-          <div className="flex-1">
-            {children}
-          </div>
+        <main className="flex-1">
+          {children}
         </main>
         <ThemeSwitchButton
           className="hidden lg:block fixed bottom-4 right-4 lg:bottom-8 lg:right-8"

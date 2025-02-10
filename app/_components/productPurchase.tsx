@@ -171,6 +171,7 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
       const { base, offer, discount } = getPrices(product, quantity, variant);
       setItems(prevItems => {
         let updatedCart = prevItems ?? [];
+
         if (prevItems?.some(item => item.id === product.id || item.id === variant?.id)) {
           updatedCart = updatedCart.map(item => {
 

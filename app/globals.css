@@ -8,7 +8,7 @@
   }
 
   .sidebar-item {
-    @apply  w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg dark:bg-cake-900 dark:hover:bg-cake-500 bg-cake-100 hover:bg-cake-500 hover:text-black hover:rounded-xl transition-all duration-200 ease-linear cursor-pointer
+    @apply w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg dark:bg-cake-900 dark:hover:bg-cake-500 bg-cake-100 hover:bg-cake-500 hover:text-black hover:rounded-xl transition-all duration-200 ease-linear cursor-pointer
   }
 
   .glass {
@@ -36,6 +36,33 @@ a[target="_blank"]:not(.no-icon)::after {
   mask-image: url("/external_link.svg");
   -webkit-mask-image: url("/external_link.svg");
 }
+
+
+/* Give color to Markdown links */
+.dark .prose-base a {
+  color: #DBB052;
+}
+
+.dark .prose-base a:hover {
+  color: #CF9A2B;
+}
+
+.dark .prose-base a:active {
+  color: #A57B22;
+}
+
+.prose-base a {
+  color: #A57B22;
+}
+
+.prose-base a:hover {
+  color: #7A5C19;
+}
+
+.prose-base a:active {
+  color: #543F12;
+}
+
 
 /* Set the range slider bg color */
 .track-1 {

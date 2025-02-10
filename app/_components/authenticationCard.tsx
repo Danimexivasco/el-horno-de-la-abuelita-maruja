@@ -16,12 +16,7 @@ import {
   signInWithGoogle,
   signUpWithEmailAndPassword
 } from "@/libs/firebase/auth";
-import {
-  ADMIN_DASHBOARD_PATH,
-  HOME_PATH,
-  SIGN_IN_PATH,
-  SIGN_UP_PATH
-} from "@/routes";
+import { ADMIN_DASHBOARD_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "@/routes";
 import { AuthenticationPages } from "@/types";
 import { showMsg } from "@/utils/showMsg";
 import { useRouter } from "next/navigation";

@@ -85,6 +85,6 @@ input[type=number] {
   height: 100%;
 }
 
-.leaflet-pane, .leaflet-bottom {
+.leaflet-pane, .leaflet-bottomm, .leaflet-control, .leaflet-top, .leaflet-left, .leaflet-right {
   z-index: 1 !important;
 }

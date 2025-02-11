@@ -19,7 +19,7 @@ export default function AboutPage() {
         </Link>}
         media="https://res.cloudinary.com/danimexivasco/image/upload/v1732700977/el_horno_de_la_abuelita_maruja/nyceqhsxseikqeon4c9e.jpg"
         mediaAspect="square"
-        className="py-0"
+        className="!py-0"
       />
     </Container>
   );

@@ -73,6 +73,7 @@ const handleSubmit = async (_: FormState, formData: FormData) => {
 
 export default function ContactForm() {
   const [actionState, submitAction, isPending] = useActionState(handleSubmit, INITIAL_STATE);
+
   return (
     <form
       action={submitAction}

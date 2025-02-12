@@ -56,19 +56,31 @@ const handleSubmit = async (_: FormState, formData: FormData) => {
       }
     };
   };
+  const response = await sendEmail(inputs);
 
-  await sendEmail(inputs);
-
-  return {
-    success: true,
-    message: "El formulario se envió con éxito, gracias por escribirnos 🥳",
-    errors:  {},
-    data:    {
-      name:    "",
-      email:   "",
-      message: ""
-    }
-  };
+  if (response.success) {
+    showMsg(response.message, "success");
+    return {
+      success: true,
+      message: response.message,
+      errors:  {},
+      data:    {
+        name:    "",
+        email:   "",
+        message: ""
+      }
+    };
+  } else {
+    showMsg(response.message, "error");
+    return {
+      success: false,
+      message: response.message,
+      errors:  {},
+      data:    {
+        ...inputs
+      }
+    };
+  }
 };
 
 export default function ContactForm() {

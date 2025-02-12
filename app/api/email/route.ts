@@ -51,11 +51,13 @@ export async function POST(req: NextRequest) {
     await sendMailPromise(emailForUsOptions);
     await sendMailPromise(emailForCustomerOptions);
     return NextResponse.json({
+      success: true,
       message: "El formulario se envió con éxito, gracias por escribirnos 🥳"
     });
-  } catch (err) {
+  } catch {
     return NextResponse.json({
-      error: err
+      success: false,
+      message: "Ha habido un problema al enviar el mail. Por favor, intentalo de nuevo en unos minutos"
     }, {
       status: 500
     });

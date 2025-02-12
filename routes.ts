@@ -18,6 +18,7 @@ export const PRODUCT_DETAIL_PATH = "/products/:id";
 export const ABOUT_US_PATH = "/about";
 export const CONTACT_PATH = "/contact";
 export const CART_PATH = "/cart";
+export const FAQS_PATH = "/faqs";
 export const LEGAL_PATH = "/legal";
 export const PRIVACY_PATH = "/privacy";
 export const COOKIES_PATH = "/cookies";
@@ -82,12 +83,17 @@ export const ROUTES: Route[] = [
     label: "Cart"
   },
   {
+    path:       FAQS_PATH,
+    label:      "Preguntas Precuentes",
+    isNavRoute: true
+  },
+  {
     path: PRODUCT_DETAIL_PATH
   },
   {
-    path:       COMPONENTS_PREVIEW_PATH,
-    label:      "Preview Componentes",
-    isNavRoute: process.env.NODE_ENV !== "production"
+    path:  COMPONENTS_PREVIEW_PATH,
+    label: "Preview Componentes"
+    // isNavRoute: process.env.NODE_ENV !== "production"
   }
 ];
 

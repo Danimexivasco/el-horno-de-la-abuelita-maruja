@@ -1,12 +1,13 @@
 import { IconProps } from ".";
 
-export const RightArrowIcon = ({ className }: IconProps) => (
+export const RightArrowIcon = ({ className, ...props }: IconProps) => (
   <svg
     viewBox="-4.5 0 20 20"
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
     fill="currentColor"
     className={className}
+    {...props}
   >
     <g strokeWidth={0} />
     <g

@@ -73,6 +73,7 @@ const handleSubmit = async (_: FormState, formData: FormData) => {
 
 export default function ContactForm() {
   const [actionState, submitAction, isPending] = useActionState(handleSubmit, INITIAL_STATE);
+  // TODO: Add telephone/whatsapp number
 
   return (
     <form
@@ -89,7 +90,8 @@ export default function ContactForm() {
         <input
           type="text"
           name="name"
-          placeholder="Helena"
+          placeholder="Daniel"
+          autoComplete="off"
           className={"focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black"}
           defaultValue={actionState?.data?.name}
         />
@@ -109,6 +111,7 @@ export default function ContactForm() {
           type="text"
           name="email"
           placeholder="tuemail@gmail.com"
+          autoComplete="off"
           className={"focus:outline-none focus:ring ring-cake-400 px-4 py-2 rounded-lg text-black"}
           defaultValue={actionState?.data?.email}
         />

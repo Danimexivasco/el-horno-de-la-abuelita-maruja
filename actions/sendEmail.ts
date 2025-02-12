@@ -10,6 +10,10 @@ export async function sendEmail(data: FormState["data"]) {
   })
     .then((res) => res.json())
     .then((response) => {
+      if (response.error) {
+        showMsg("Ha habido un problema al enviar el mail. Por favor, intentalo de nuevo en unos minutos", "error");
+        return;
+      }
       showMsg(response.message, "success");
     })
     .catch((err) => {

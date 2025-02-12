@@ -1,0 +1,67 @@
+.Container {
+  @apply w-full;
+  min-height: 120px; 
+  overflow: hidden
+ }
+ 
+ .Item {
+   @apply relative mt-[1px];
+ }
+
+ .Item:first-of-type {
+  margin-top: 0;
+ }
+ 
+ .Header {
+   @apply relative;
+ }
+   
+ .Icon {
+   @apply dark:text-cake-400 text-cake-500 duration-300 transform;
+ }
+ 
+ .Trigger[data-state="open"] .Icon {
+   @apply rotate-[270deg];
+ }
+ 
+ .Trigger {
+   @apply relative flex gap-6 justify-between items-center w-full py-4 px-4 min-h-14 bg-white;
+ }
+ 
+ .Trigger span {
+   @apply text-lg font-bold;
+ }
+ 
+ .Content {
+   @apply relative pt-0 overflow-hidden;
+ }
+
+ .Content p {
+  @apply px-4 py-2;
+ }
+ 
+ .Content[data-state="open"] {
+   animation: openContent 300ms ease-in-out;
+ }
+ 
+ .Content[data-state="closed"] {
+   animation: closedContent 300ms ease-in-out;
+ }
+ 
+ @keyframes openContent {
+   from {
+     height: 0
+   }
+   to {
+     height: var(--radix-accordion-content-height)
+   }
+ }
+ 
+ @keyframes closedContent {
+   from {
+     height: var(--radix-accordion-content-height)
+   }
+   to {
+     height: 0
+   }
+ }

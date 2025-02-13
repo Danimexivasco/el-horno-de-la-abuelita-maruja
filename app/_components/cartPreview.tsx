@@ -97,7 +97,7 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                           :
                           <div
                             className={
-                              "self-start w-16 aspect-square overflow-hidden rounded-lg flex items-center justify-center dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
+                              "self-start w-16 aspect-square overflow-hidden rounded-lg flex items-center justify-center shadow-md shadow-black/30 dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
                             }
                           >
                             <LogoIcon className="w-1/2 h-auto opacity-60"/>

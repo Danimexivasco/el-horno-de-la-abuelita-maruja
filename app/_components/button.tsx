@@ -12,9 +12,10 @@ type ButtonProps = {
   isRed?: boolean
   disabled?: boolean
   ariaLabel?: string
+  [prop: string]: any
 };
 
-export default function Button({ children, onClick, withIcon=false, type="button", isRed, disabled, className="", ariaLabel="" }: ButtonProps) {
+export default function Button({ children, onClick, withIcon=false, type="button", isRed, disabled, className="", ariaLabel="", ...props }: ButtonProps) {
   const redClass = isRed && "bg-red-500/90 hover:bg-red-600/90 active:bg-red-700/90";
   return (
     <button
@@ -23,6 +24,7 @@ export default function Button({ children, onClick, withIcon=false, type="button
       className={combine("button", sriracha.className, withIcon && "flex items-center gap-2", isRed && redClass, className)}
       disabled={disabled}
       aria-label={ariaLabel}
+      {...props}
     >
       {children}
     </button>

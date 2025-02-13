@@ -172,7 +172,7 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                 <div className="grid place-items-center rounded-full w-fit p-6 dark:bg-cake-600 bg-cake-400 mb-4">
                   <NoResultIcon className="w-16 h-auto"/>
                 </div>
-                <p className="text-2xl font-bold">Tu carrito está vacío</p>
+                <p className="text-2xl font-bold">Tu cesta está vacía</p>
                 <p className="text-xl text-center mb-8">Descubre nuestros deliciosos productos🤤</p>
                 {pathname === PRODUCTS_PATH ? (
                   <Button onClick={() => setCartOpened(false)}>

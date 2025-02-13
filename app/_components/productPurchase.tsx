@@ -168,6 +168,7 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
   const handleAddToCart = async () => {
     try {
       const { base, offer, discount } = getPrices(product, quantity, variant);
+
       setItems(prevItems => {
         let updatedCart = prevItems ?? [];
 
@@ -214,7 +215,8 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
 
         return updatedCart;
       });
-      showMsg("Producto agregado al carrito", "success");
+
+      showMsg("Producto agregado a la cesta", "success");
     } catch {
       showMsg("Algo ha ido mal", "error");
     }
@@ -396,19 +398,12 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
             </div>
           </div>
 
-          <div className="grid gap-4 mt-12">
-            <Button
-              type="button"
-              onClick={handleAddToCart}
-              className="!w-full lg:!w-fit"
-            >Añadir al carrito
-            </Button>
-            <Button
-              type="button"
-              className="!w-full lg:!w-fit"
-            >Comprar
-            </Button>
-          </div>
+          <Button
+            type="button"
+            onClick={handleAddToCart}
+            className="!w-full lg:!w-fit mt-12"
+          >Añadir a la cesta
+          </Button>
         </form>
       </div>
       <div className="grid gap-12">

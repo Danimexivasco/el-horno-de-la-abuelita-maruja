@@ -15,7 +15,7 @@ type ButtonProps = {
 };
 
 export default function Button({ children, onClick, withIcon=false, type="button", isRed, disabled, className="", ariaLabel="" }: ButtonProps) {
-  const redClass = isRed && "bg-red-500 hover:bg-red-600 active:bg-red-700";
+  const redClass = isRed && "bg-red-500/90 hover:bg-red-600/90 active:bg-red-700/90";
   return (
     <button
       onClick={onClick}

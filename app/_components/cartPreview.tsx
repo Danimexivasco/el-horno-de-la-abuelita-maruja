@@ -97,7 +97,7 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                           :
                           <div
                             className={
-                              "self-start w-16 aspect-square overflow-hidden rounded-lg flex items-center justify-center dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
+                              "self-start w-16 aspect-square overflow-hidden rounded-lg flex items-center justify-center shadow-md shadow-black/30 dark:bg-cake-100 bg-cake-900 transition-colors duration-100 ease-linear"
                             }
                           >
                             <LogoIcon className="w-1/2 h-auto opacity-60"/>
@@ -172,7 +172,7 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                 <div className="grid place-items-center rounded-full w-fit p-6 dark:bg-cake-600 bg-cake-400 mb-4">
                   <NoResultIcon className="w-16 h-auto"/>
                 </div>
-                <p className="text-2xl font-bold">Tu carrito está vacío</p>
+                <p className="text-2xl font-bold">Tu cesta está vacía</p>
                 <p className="text-xl text-center mb-8">Descubre nuestros deliciosos productos🤤</p>
                 {pathname === PRODUCTS_PATH ? (
                   <Button onClick={() => setCartOpened(false)}>

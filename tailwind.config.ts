@@ -34,10 +34,30 @@ const config: Config = {
           "100%": {
             height: "40px"
           }
+        },
+        overlayShow: {
+          from: {
+            opacity: "0"
+          },
+          to: {
+            opacity: "1"
+          }
+        },
+        contentShow: {
+          from: {
+            opacity:   "0",
+            transform: "translate(-50%, -48%) scale(0.96)"
+          },
+          to: {
+            opacity:   "1",
+            transform: "translate(-50%, -50%) scale(1)"
+          }
         }
       },
       animation: {
-        grow: "grow 0.3s ease-in-out"
+        grow:        "grow 0.3s ease-in-out",
+        overlayShow: "overlayShow 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+        contentShow: "contentShow 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
       },
       gridTemplateColumns: {
         "auto-fill": "repeat(auto-fill, minmax(300px, 1fr))",
@@ -48,6 +68,9 @@ const config: Config = {
       }
     }
   },
-  plugins: [typography]
+  plugins: [typography],
+  future:  {
+    hoverOnlyWhenSupported: true
+  }
 };
 export default config;

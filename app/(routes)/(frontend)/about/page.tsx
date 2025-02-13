@@ -15,6 +15,7 @@ export default function AboutPage() {
         cta={<Link
           asButton
           href={PRODUCTS_PATH}
+          className="w-full lg:w-fit text-center"
         >Descubre nuestros productos
         </Link>}
         media="https://res.cloudinary.com/danimexivasco/image/upload/v1732700977/el_horno_de_la_abuelita_maruja/nyceqhsxseikqeon4c9e.jpg"

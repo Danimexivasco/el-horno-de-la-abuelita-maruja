@@ -1,11 +1,14 @@
+import CartContent from "@/app/_components/cartContent";
+import Container from "@/app/_components/container";
+import Headline from "@/app/_components/headline";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title:       "Carrito",
-  description: "Carrito",
+  title:       "Mi cesta",
+  description: "Aquí podrás ver los artículos que has anadido a tu cesta",
   openGraph:   {
-    title:       "Carrito",
-    description: "Carrito",
+    title:       "Mi cesta",
+    description: "Aquí podrás ver los artículos que has anadido a tu cesta",
     url:         "https://elhornodelaabuelitamaruja.vercel.app/cart",
     siteName:    "El Horno de la Abuelita Maruja",
     locale:      "es-ES",
@@ -17,6 +20,9 @@ export default function CartPage() {
 
   // TODO: initialCheck with DB, check if product exist , if not delete, and if exist update the product on the localstorage
   return (
-    <h1>Cart</h1>
+    <Container>
+      <Headline>Mi cesta</Headline>
+      <CartContent />
+    </Container>
   );
 }

@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import Link from "../link";
 import Cart from "../cart";
 import Button from "../button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "@/app/_libs/firebase/auth";
 import ThemeSwitchButton from "../themeSwitchButton";
 
@@ -23,7 +23,12 @@ type MobileHeaderProps = {
 
 export default function MobileHeader({ navRoutes=[], activePathname, user, className }: MobileHeaderProps) {
   const router = useRouter();
+  const pathanme = usePathname();
   const [showMenu, setShowMenu] = useState(false);
+
+  useEffect(() => {
+    setShowMenu(false);
+  }, [pathanme]);
 
   useEffect(() => {
     if (showMenu && document) {

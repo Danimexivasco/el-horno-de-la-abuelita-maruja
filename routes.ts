@@ -19,6 +19,7 @@ export const ABOUT_US_PATH = "/about";
 export const CONTACT_PATH = "/contact";
 export const CART_PATH = "/cart";
 export const FAQS_PATH = "/faqs";
+export const CHECKOUT_PATH = "/checkout";
 export const LEGAL_PATH = "/legal";
 export const PRIVACY_PATH = "/privacy";
 export const COOKIES_PATH = "/cookies";

@@ -1,22 +1,26 @@
 import { FormState } from "@/app/_components/forms/contactForm";
-import { showMsg } from "@/app/_utils/showMsg";
 
-export async function sendEmail(data: FormState["data"]) {
+export async function sendEmail(data: FormState["data"]): Promise<{success: boolean, message: string}> {
   const apiEndpoint = "/api/email";
 
-  fetch(apiEndpoint, {
-    method: "POST",
-    body:   JSON.stringify(data)
-  })
-    .then((res) => res.json())
-    .then((response) => {
-      if (response.error) {
-        showMsg("Ha habido un problema al enviar el mail. Por favor, intentalo de nuevo en unos minutos", "error");
-        return;
-      }
-      showMsg(response.message, "success");
-    })
-    .catch((err) => {
-      alert(err);
+  try {
+    const response = await fetch(apiEndpoint, {
+      method:  "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
     });
+
+    if (!response.ok) {
+      throw new Error("Error al enviar el correo");
+    }
+
+    return await response.json();
+  } catch {
+    return {
+      success: false,
+      message: "Error al enviar el correo.Por favor, intentalo de nuevo en unos minutos"
+    };
+  }
 }

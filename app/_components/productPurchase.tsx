@@ -12,8 +12,6 @@ import Headline from "./headline";
 import { formatNumber } from "../_utils/formatNumber";
 import Button from "./button";
 import { useEffect, useState } from "react";
-import Input from "./input";
-import { MAXIMUM_PRODUCTS_PURCHASE } from "@/constants";
 import {
   EggsIcon,
   GlutenIcon,
@@ -41,6 +39,7 @@ import { showMsg } from "../_utils/showMsg";
 import { useLocalStorage } from "usehooks-ts";
 import { getPrices } from "../_utils/getPrices";
 import { updateUser } from "../_libs/firebase/users";
+import Counter from "./counter";
 
 type ProductPruchaseProps = {
     product: Product
@@ -169,6 +168,7 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
   const handleAddToCart = async () => {
     try {
       const { base, offer, discount } = getPrices(product, quantity, variant);
+
       setItems(prevItems => {
         let updatedCart = prevItems ?? [];
 
@@ -215,7 +215,8 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
 
         return updatedCart;
       });
-      showMsg("Producto agregado al carrito", "success");
+
+      showMsg("Producto agregado a la cesta", "success");
     } catch {
       showMsg("Algo ha ido mal", "error");
     }
@@ -390,43 +391,19 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
             }
             <div>
               <p className="mb-2">Cantidad</p>
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                >-
-                </Button>
-                <Input
-                  name="quantity"
-                  value={Number(quantity).toString()}
-                  type="number"
-                  step={1}
-                  max={MAXIMUM_PRODUCTS_PURCHASE}
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  className="text-center !w-fit"
-                />
-                <Button
-                  type="button"
-                  onClick={() => setQuantity(Math.min(quantity + 1, MAXIMUM_PRODUCTS_PURCHASE))}
-                >+
-                </Button>
-              </div>
+              <Counter
+                value={quantity}
+                setValue={setQuantity}
+              />
             </div>
           </div>
 
-          <div className="grid gap-4 mt-12">
-            <Button
-              type="button"
-              onClick={handleAddToCart}
-              className="!w-full lg:!w-fit"
-            >Añadir al carrito
-            </Button>
-            <Button
-              type="button"
-              className="!w-full lg:!w-fit"
-            >Comprar
-            </Button>
-          </div>
+          <Button
+            type="button"
+            onClick={handleAddToCart}
+            className="!w-full lg:!w-fit mt-12"
+          >Añadir a la cesta
+          </Button>
         </form>
       </div>
       <div className="grid gap-12">

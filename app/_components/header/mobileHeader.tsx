@@ -34,7 +34,7 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
     if (showMenu && document) {
       document.body.style.overflowY = "hidden";
     } else {
-      document.body.style.overflowY = "visible";
+      document.body.style.overflowY = "";
     }
   }, [showMenu]);
 

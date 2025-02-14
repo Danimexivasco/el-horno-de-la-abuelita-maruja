@@ -25,6 +25,10 @@ html {
   scrollbar-gutter: stable; 
 }
 
+body {
+  overflow-x: hidden;
+}
+
 a[target="_blank"]:not(.no-icon)::after {
   content: "";
   margin: 0 0px 0px 3px;

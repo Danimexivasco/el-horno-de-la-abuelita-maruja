@@ -18,15 +18,15 @@ export default function Header({ user }: HeaderProps) {
 
   const hideHeader = useHideLayoutElements();
 
-  const { scrollY, scrollDirection } = useScrollPosition();
+  const { scrollY } = useScrollPosition();
 
   const navRoutes = ROUTES.filter(route => route.isNavRoute && !route.protected);
 
   return (
     <header
       className={combine(
-        "sticky -top-24 lg:-top-36 z-50 lg:py-4 lg:px-8 flex items-center min-h-16 lg:h-36 dark:bg-cake-950 bg-cake-200 lg:glass lg:!bg-opacity-90 transition-all ease-linear duration-200",
-        (scrollDirection === "up" && scrollY > 0) && "!top-0 lg:!bg-opacity-70",
+        "fixed w-full top-0 left-0 z-50 lg:py-4 lg:px-8 flex items-center min-h-16 lg:h-36 bg-opacity-95 dark:bg-cake-950 bg-cake-200 transition-all ease-linear duration-200",
+        (scrollY > 0) && "glass !bg-opacity-80 shadow-md shadow-black/10",
         hideHeader && "hidden"
       )}
     >

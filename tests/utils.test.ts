@@ -44,6 +44,10 @@ describe("getPrices", () => {
     expect(() => getPrices()).toThrowError("No se ha pasado un producto");
   });
 
+  it("should throw error if quantity is less than 1", () => {
+    expect(() => getPrices(productOnOffer, 0)).toThrowError("La cantidad no puede ser negativa");
+  });
+
   it("should return base price if the product is not on offer or multiprice", () => {
     expect(getPrices({
       price:            9,
@@ -68,13 +72,46 @@ describe("getPrices", () => {
   });
 
   it("should return correct prices if discount is multiplier", () => {
-    expect(getPrices(productWithAmountOffer, 3)).toEqual({
-      base:     6,
-      offer:    4,
-      discount: {
-        type:  "multiplier",
-        label: "3x2"
-      }
+    const quantityOfferValues3x2 = new Map([
+      [1, 6],
+      [2, 6],
+      [3, 4],
+      [4, 4.5],
+      [5, 4.8],
+      [6, 4]
+    ]);
+
+    const quantityOfferValues2x1 = new Map([
+      [1, 5],
+      [2, 2.5],
+      [3, 3.33],
+      [4, 2.5],
+      [5, 3],
+      [6, 2.5],
+      [7, 2.86],
+      [8, 2.5],
+      [10, 2.5]
+    ]);
+
+    quantityOfferValues3x2.forEach((value, quantity) => {
+      expect(getPrices(productWithAmountOfferThreeForTwo, quantity)).toEqual({
+        base:     6,
+        offer:    value,
+        discount: {
+          type:  "multiplier",
+          label: "3x2"
+        }
+      });
+    });
+    quantityOfferValues2x1.forEach((value, quantity) => {
+      expect(getPrices(productWithAmountOfferTwoForOne, quantity)).toEqual({
+        base:     5,
+        offer:    value,
+        discount: {
+          type:  "multiplier",
+          label: "2x1"
+        }
+      });
     });
   });
 
@@ -96,6 +133,7 @@ describe("getPrices", () => {
 
   it("should return variant prices if it's on offer type percentage", () => {
     expect(getPrices(productWithVariants, 1, {
+      "id":        "testId",
       "name":      "md",
       "value":     8,
       "offerData": {
@@ -116,6 +154,7 @@ describe("getPrices", () => {
 
   it("should return variant prices if it's on offer type multiplier", () => {
     expect(getPrices(productWithVariants, 3, {
+      "id":        "testId",
       "name":      "xl",
       "value":     24,
       "offerData": {
@@ -194,12 +233,31 @@ const productOnOffer: Partial<Product> = {
   "multiplierAmount":   ""
 };
 
-const productWithAmountOffer = {
+const variant = {
+  "value":     5,
+  "id":        "WMFcZXcP8QGkSnPNcFWy",
+  "name":      "xs",
+  "offerData": {
+    "offerType":          "",
+    "multiplierAmount":   "",
+    "discountPercentage": 0,
+    "onOffer":            "no"
+  }
+};
+
+const productWithAmountOfferThreeForTwo = {
   "offerType":          "multiplier",
   "discountPercentage": 0,
   "onOffer":            "yes",
   "multiplierAmount":   "3x2",
-  "price":              "6"
+  "price":              6
+};
+const productWithAmountOfferTwoForOne = {
+  "offerType":          "multiplier",
+  "discountPercentage": 0,
+  "onOffer":            "yes",
+  "multiplierAmount":   "2x1",
+  "price":              5
 };
 
 const productWithVariants: Product = {

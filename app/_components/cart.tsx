@@ -7,6 +7,7 @@ import { useLocalStorage } from "usehooks-ts";
 import { Cart as CartType, User } from "@/types";
 import CartPreview from "./cartPreview";
 import { usePathname } from "next/navigation";
+import { useWindowSize } from "../_hooks/useWindowSize";
 
 type CartProps = {
   user: User
@@ -15,6 +16,7 @@ type CartProps = {
 
 export default function Cart({ user, className }: CartProps) {
   const pathname = usePathname();
+  const { isMobile } = useWindowSize();
   const [items, setItems] = useLocalStorage<CartType>("cart", []);
   const [cartItems, setCartItems] = useState<CartType | null>(null);
   const [cartOpened, setCartOpened] = useState(false);
@@ -30,10 +32,12 @@ export default function Cart({ user, className }: CartProps) {
   }, [pathname]);
 
   useEffect(() => {
-    if (cartOpened && document) {
-      document.body.style.overflowY = "hidden";
-    } else {
-      document.body.style.overflowY = "";
+    if (isMobile) {
+      if (cartOpened && document) {
+        document.body.style.overflowY = "hidden";
+      } else {
+        document.body.style.overflowY = "";
+      }
     }
   }, [cartOpened]);
 

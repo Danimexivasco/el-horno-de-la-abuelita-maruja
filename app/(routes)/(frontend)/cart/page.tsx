@@ -1,6 +1,5 @@
 import CartContent from "@/app/_components/cartContent";
 import Container from "@/app/_components/container";
-import Headline from "@/app/_components/headline";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -21,7 +20,6 @@ export default function CartPage() {
   // TODO: initialCheck with DB, check if product exist , if not delete, and if exist update the product on the localstorage
   return (
     <Container>
-      <Headline>Mi cesta</Headline>
       <CartContent />
     </Container>
   );

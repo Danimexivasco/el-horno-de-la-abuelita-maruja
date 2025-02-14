@@ -19,10 +19,10 @@
 
 html {
   scroll-behavior: smooth;
-  /* Maintain the space of the scrollbar
-    to avoid jumps
-  */
-  scrollbar-gutter: stable; 
+}
+
+body {
+  overflow-x: hidden;
 }
 
 a[target="_blank"]:not(.no-icon)::after {

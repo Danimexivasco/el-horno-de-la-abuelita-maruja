@@ -6,10 +6,10 @@ import { useLocalStorage } from "usehooks-ts";
 import { getTotals } from "../_utils/getTotals";
 import { formatNumber } from "../_utils/formatNumber";
 import Link from "./link";
-import { CHECKOUT_PATH, PRODUCT_DETAIL_PATH } from "@/routes";
+import { CHECKOUT_PATH, PRODUCT_DETAIL_PATH, PRODUCTS_PATH } from "@/routes";
 import Image from "next/image";
 import Button from "./button";
-import { LogoIcon, TrashIcon } from "../_icons";
+import { LogoIcon, NoResultIcon, TrashIcon } from "../_icons";
 import Alert from "./alert";
 import Counter from "./counter";
 import { MAXIMUM_PRODUCTS_PURCHASE } from "@/constants";
@@ -19,7 +19,7 @@ import Headline from "./headline";
 
 export default function CartContent() {
   const [isClient, setIsClient] = useState(false);
-  const [items, setItems] = useLocalStorage<Cart>("cart", []);
+  const [items, setItems, removeItems] = useLocalStorage<Cart>("cart", []);
 
   useEffect(() => {
     setIsClient(true);
@@ -68,10 +68,10 @@ export default function CartContent() {
 
         return updatedCart;
       });
-
-      // showMsg("Cesta actualizada", "success");
-    } catch {
-      showMsg("Algo ha ido mal", "error");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        showMsg(`Error: ${error.message}`, "error");
+      }
     }
   };
 
@@ -113,9 +113,26 @@ export default function CartContent() {
     );
   };
 
+  const renderEmptyCart = () => {
+    return (
+      <div className="flex flex-col items-center">
+        <div className="grid place-items-center rounded-full w-fit p-6 dark:bg-cake-600 bg-cake-400 mb-4">
+          <NoResultIcon className="w-16 h-auto"/>
+        </div>
+        <p className="text-2xl font-bold">Tu cesta está vacía</p>
+        <p className="text-xl text-center mb-8">Descubre nuestros deliciosos productos🤤</p>
+        <Link
+          href={PRODUCTS_PATH}
+          asButton
+        >Descubrir productos
+        </Link>
+      </div>
+    );
+  };
+
   if (!isClient) return null;
 
-  return (
+  return items && items?.length > 0 ? (
     <div className="flex flex-col lg:flex-row items-start mb-4 lg:mb-8 justify-center lg:px-8">
       <div className="w-full">
         <Headline className="mb-6 lg:mb-0">Mi cesta</Headline>
@@ -222,6 +239,32 @@ export default function CartContent() {
                 );
               })}
             </div>
+            <div className="hidden lg:flex justify-between mt-6">
+              <Alert
+                title="Vaciar cesta"
+                description="¿Seguro que deseas vaciar la cesta? Esta acción no se puede deshacer."
+                triggerElement={<Button
+                  isRed
+                  title="Vaciar cesta"
+                  withIcon
+                >
+                  <TrashIcon className="w-5 h-5"/> Vaciar cesta
+                </Button>}
+                cancelElement={<Button>Cancelar</Button>}
+                actionElement={<Button
+                  isRed
+                  onClick={removeItems}
+                >Sí, vaciar
+                </Button>}
+              />
+              <Link
+                href={PRODUCTS_PATH}
+                asButton
+                className="text-center"
+              >
+                Seguir comprando
+              </Link>
+            </div>
           </section>
           <div className="sticky bottom-2 lg:top-44 gap-1 lg:gap-4 grid w-full dark:bg-cake-700/50 bg-cake-200 rounded-lg p-6 lg:p-8 lg:max-w-sm">
             <p className="hidden lg:grid text-2xl font-bold">Resumen del pedido:</p>
@@ -244,5 +287,7 @@ export default function CartContent() {
         </div>
       </div>
     </div>
+  ) : (
+    renderEmptyCart()
   );
 }

@@ -24,7 +24,7 @@ export default function Counter({ value, setValue }: CounterProps) {
         step={1}
         max={MAXIMUM_PRODUCTS_PURCHASE}
         onChange={(e) => setValue(Number(e.target.value))}
-        className="text-center !w-fit rounded-none"
+        className="text-center !w-fit rounded-none ring-0 focus:ring-0"
       />
       <Button
         type="button"

@@ -146,9 +146,9 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                     <p>Cantidad Total</p>
                     <p className="font-bold">{totals.units}</p>
                   </div>
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center font-bold">
                     <p>Total (IVA incluido)</p>
-                    <p className="font-bold">{formatNumber(totals.price)}</p>
+                    <p>{formatNumber(totals.price)}</p>
                   </div>
                 </div>
                 {pathname === CART_PATH ? (

@@ -2,8 +2,9 @@ import { Cart } from "@/types";
 
 export const getTotals = (cartItems: Cart) => {
   if (!cartItems) return {
-    units: 0,
-    price: 0
+    units:                0,
+    price:                0,
+    priceBeforeDiscounts: 0
   };
 
   return cartItems?.reduce((acc, item) => {
@@ -13,9 +14,12 @@ export const getTotals = (cartItems: Cart) => {
     } else {
       acc.price += item.price.base * item.quantity;
     }
+    acc.priceBeforeDiscounts += item.price.base * item.quantity;
+
     return acc;
   }, {
-    units: 0,
-    price: 0
+    units:                0,
+    price:                0,
+    priceBeforeDiscounts: 0
   });
 };

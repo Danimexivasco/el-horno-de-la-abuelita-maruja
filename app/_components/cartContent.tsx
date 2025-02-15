@@ -239,7 +239,7 @@ export default function CartContent() {
                 );
               })}
             </div>
-            <div className="hidden lg:flex justify-between mt-6">
+            <div className="grid lg:flex gap-4 lg:justify-between mt-6">
               <Alert
                 title="Vaciar cesta"
                 description="¿Seguro que deseas vaciar la cesta? Esta acción no se puede deshacer."
@@ -247,6 +247,7 @@ export default function CartContent() {
                   isRed
                   title="Vaciar cesta"
                   withIcon
+                  className="w-full lg:w-fit justify-center"
                 >
                   <TrashIcon className="w-5 h-5"/> Vaciar cesta
                 </Button>}
@@ -260,7 +261,7 @@ export default function CartContent() {
               <Link
                 href={PRODUCTS_PATH}
                 asButton
-                className="text-center"
+                className="text-center w-full lg:w-fit"
               >
                 Seguir comprando
               </Link>
@@ -272,7 +273,20 @@ export default function CartContent() {
               <p>Productos totales</p>
               <p className="font-bold">{totals.units}</p>
             </div>
-            <div className="grid grid-cols-[2fr_1fr] gap-6 lg:gap-12 font-bold">
+            {totals.priceBeforeDiscounts !== totals.price? (
+              <div className="hidden lg:grid gap-4">
+                <div className="grid grid-cols-[2fr_1fr] gap-6 lg:gap-12">
+                  <p>Total antes de descuentos</p>
+                  <p className="font-bold text-red-500 line-through">{formatNumber(totals.priceBeforeDiscounts)}</p>
+                </div>
+                <div className="grid grid-cols-[2fr_1fr] gap-6 lg:gap-12">
+                  <p>Descuento</p>
+                  <p className="font-bold">{formatNumber(totals.priceBeforeDiscounts- totals.price)}</p>
+                </div>
+                <div className="border-t border-cake-500"></div>
+              </div>
+            ) : null}
+            <div className="grid grid-cols-[2fr_1fr] gap-6 lg:gap-12 font-bold lg:text-lg">
               <p>Total (IVA incluido)</p>
               <p className="font-bold">{formatNumber(totals.price)}</p>
             </div>

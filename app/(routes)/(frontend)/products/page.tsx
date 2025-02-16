@@ -6,6 +6,7 @@ import { getProducts } from "@/app/_libs/firebase/products";
 import { getFiltersFromProducts } from "@/app/_utils/getFilters";
 import { Metadata } from "next";
 import { Suspense } from "react";
+import Loading from "../../(backend)/admin/dashboard/loading";
 
 export const metadata: Metadata = {
   title:       "Productos",
@@ -25,7 +26,7 @@ export default async function ProductsPage() {
   const filters = getFiltersFromProducts(products);
 
   return (
-    <Suspense>
+    <Suspense fallback={<Loading />}>
       <Search />
       <Filters availableFilters={filters}/>
       <Container>

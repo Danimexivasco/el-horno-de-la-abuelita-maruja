@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Input from "./input";
 import { CrossIcon, LensIcon } from "../_icons";
@@ -8,7 +8,6 @@ import { CrossIcon, LensIcon } from "../_icons";
 export default function Search() {
   const [query, setQuery] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [firstURLCheck, setFirstURLCheck] = useState(false);
   const [currentParams, setCurrentParams] = useState(new URLSearchParams(searchParams.toString()));
@@ -30,7 +29,7 @@ export default function Search() {
       }
     }
 
-    router.replace(`?${currentParams.toString()}`);
+    window.history.pushState(null, "", `?${currentParams.toString()}`);
   }, [query, searchParams]);
 
   useEffect(() => {
@@ -58,7 +57,7 @@ export default function Search() {
   const clearQuery = () => {
     setQuery("");
     currentParams.delete("search");
-    router.replace(`?${currentParams.toString()}`);
+    window.history.pushState(null, "", `?${currentParams.toString()}`);
   };
 
   return (

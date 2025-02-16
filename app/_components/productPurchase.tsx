@@ -81,7 +81,7 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
       const currentParams = new URLSearchParams(searchParams.toString());
       currentParams.set("var", variant.name);
 
-      router.replace(`?${currentParams.toString()}`);
+      window.history.pushState(null, "", `?${currentParams.toString()}`);
     }
 
   }, [variant]);

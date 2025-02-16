@@ -7,8 +7,9 @@ import PriceRangeSlider from "./priceRangeSlider";
 import Container from "./container";
 import Button from "./button";
 import FormField from "./forms/formField";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { FILTER_PARAMS, FILTERS_INITIAL_STATE } from "@/constants";
+import { useSessionStorage } from "usehooks-ts";
 
 type FiltersProps = {
   availableFilters: FiltersState
@@ -23,12 +24,13 @@ export type FiltersState = {
 };
 
 export default function Filters({ availableFilters }: FiltersProps) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [filterHeight, setFilterHeight] = useState<"auto" | number>(0);
   const [filters, setFilters] = useState<FiltersState>(FILTERS_INITIAL_STATE);
   const [activeFilters, setActiveFilters] = useState(0);
   const [currentParams, setCurrentParams] = useState(new URLSearchParams(searchParams.toString()));
+  //eslint-disable-next-line
+  const [_activeFiltersStorage, setActiveFiltersStorage, removeActiveFiltersStorage] = useSessionStorage<FiltersState | null>("active-filters", null);
 
   useEffect(() => {
     if (filters) {
@@ -65,7 +67,9 @@ export default function Filters({ availableFilters }: FiltersProps) {
       currentParams.delete("priceTo");
     }
 
-    router.replace(`?${currentParams.toString()}`);
+    setActiveFiltersStorage(filters);
+
+    window.history.pushState(null, "", `?${currentParams.toString()}`);
   };
 
   useEffect(() => {
@@ -110,7 +114,8 @@ export default function Filters({ availableFilters }: FiltersProps) {
   const clearFilters = () => {
     setFilters(FILTERS_INITIAL_STATE);
     FILTER_PARAMS.filter(param => param !== "search").forEach(param => currentParams.delete(param));
-    router.replace(`?${currentParams.toString()}`);
+    removeActiveFiltersStorage();
+    window.history.pushState(null, "", `?${currentParams.toString()}`);
     setFilterHeight(0);
   };
 

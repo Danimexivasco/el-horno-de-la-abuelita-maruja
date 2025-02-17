@@ -128,6 +128,7 @@ export default function Filters({ availableFilters }: FiltersProps) {
       <AnimateHeight
         duration={ 300 }
         height={filterHeight}
+        aria-hidden={false}
       >
         <form onSubmit={handleFilter}>
           <Container className="grid gap-16 lg:px-24 py-8">

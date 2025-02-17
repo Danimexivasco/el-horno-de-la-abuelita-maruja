@@ -9,6 +9,10 @@ import { useSearchParams } from "next/navigation";
 import useFilter from "../_hooks/useFilter";
 import Headline from "./headline";
 import Spinner from "./spinner";
+import { useEffect, useState } from "react";
+import { handleSearchParams } from "../_utils/handleSearchParams";
+import { useSessionStorage } from "usehooks-ts";
+import { FiltersState } from "./filters";
 
 type ProductListProps = {
   products: Product[];
@@ -18,6 +22,19 @@ type ProductListProps = {
 // TODO: Remove old items
 export default function ProductList({ products, isAdminPage = false }: ProductListProps) {
   const searchParams = useSearchParams();
+  const [activeFiltersStorage] = useSessionStorage<FiltersState | null>("active-filters", null);
+  const [currentParams, setCurrentParams] = useState(new URLSearchParams(searchParams.toString()));
+
+  useEffect(() => {
+    if (activeFiltersStorage) {
+      handleSearchParams(activeFiltersStorage, currentParams);
+      window.history.pushState(null, "", `?${currentParams.toString()}`);
+    }
+  }, [currentParams, activeFiltersStorage]);
+
+  useEffect(() => {
+    setCurrentParams(new URLSearchParams(searchParams.toString()));
+  }, [searchParams]);
 
   const [filteredItems, loading] = useFilter(products, ["name", "description", "category"]);
 
@@ -27,6 +44,7 @@ export default function ProductList({ products, isAdminPage = false }: ProductLi
       <Spinner/>
     </div>
   );
+
   return (
     <>
       {searchParams.get("search") ? (

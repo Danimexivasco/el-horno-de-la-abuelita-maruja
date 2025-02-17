@@ -10,6 +10,7 @@ import FormField from "./forms/formField";
 import { useSearchParams } from "next/navigation";
 import { FILTER_PARAMS, FILTERS_INITIAL_STATE } from "@/constants";
 import { useSessionStorage } from "usehooks-ts";
+import { handleSearchParams } from "../_utils/handleSearchParams";
 
 type FiltersProps = {
   availableFilters: FiltersState
@@ -45,27 +46,7 @@ export default function Filters({ availableFilters }: FiltersProps) {
 
   const handleFilter = (e: React.FormEvent) => {
     e.preventDefault();
-    if (filters.category.length > 0) {
-      currentParams.set("category", filters.category.join(","));
-    } else {
-      currentParams.delete("category");
-    }
-    if (filters.allergens.length > 0) {
-      currentParams.set("allergens", filters.allergens.join(","));
-    } else {
-      currentParams.delete("allergens");
-    }
-    if (filters.priceFrom > 0) {
-      currentParams.set("priceFrom", filters.priceFrom.toString());
-    } else {
-      currentParams.delete("priceFrom");
-    }
-
-    if(filters.priceTo > 0) {
-      currentParams.set("priceTo", filters.priceTo.toString());
-    } else {
-      currentParams.delete("priceTo");
-    }
+    handleSearchParams(filters, currentParams);
 
     setActiveFiltersStorage(filters);
 

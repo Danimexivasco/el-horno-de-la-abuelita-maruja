@@ -11,7 +11,6 @@ export async function middleware(request: NextRequest) {
   const protectedRoutes = ROUTES.filter((route) => route.protected)?.map((route) => route.path);
 
   const currentPathname = request.nextUrl.pathname;
-  const previousPathname = request.cookies.get("prevPathname")?.value || "";
 
   if (!sessionCookie && (protectedRoutes.includes(currentPathname) || currentPathname === ADMIN_PRODUCT_DETAIL_PATH.replace(":id", currentPathname.split("/").pop() ?? ""))) {
     const absoluteURL = request.nextUrl.clone();
@@ -82,23 +81,8 @@ export async function middleware(request: NextRequest) {
       }
     }
   }
-  const res = NextResponse.next();
 
-  // Store prevPath to set sessionStorage search on products page
-  if (previousPathname) {
-    res.cookies.set("actualPrevPath", previousPathname, {
-      path:     "/",
-      httpOnly: true
-    });
-  }
-
-  res.cookies.set("prevPathname", currentPathname, {
-    path:     "/",
-    httpOnly: true
-  });
-
-  return res;
-
+  return NextResponse.next();
 }
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|favicon.ico|opengraph-image.jpeg|sitemap.xml).*)"]

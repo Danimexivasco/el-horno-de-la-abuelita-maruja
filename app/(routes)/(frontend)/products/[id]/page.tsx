@@ -9,7 +9,6 @@ import Link from "@/app/_components/link";
 import ProductPurchase from "@/app/_components/productPurchase";
 import { shuffleArray } from "@/app/_utils/shuffleArray";
 import { getLoggedUser } from "@/actions/authActions";
-import { cookies } from "next/headers";
 
 type ProductDetailPageprops = {
   params: Promise<{
@@ -39,15 +38,11 @@ export default async function ProductDetailPage({ params }: ProductDetailPagepro
 
   const user = await getLoggedUser();
 
-  const cookieStore = await cookies();
-  const prevPath = cookieStore.get("actualPrevPath")?.value || "None";
-
   return (
     <Container className="!py-12">
       <ProductPurchase
         product={product as Product}
         user={JSON.stringify(user)}
-        fromProductsPage={prevPath === PRODUCTS_PATH}
       />
       <section className="mt-12">
         <Headline

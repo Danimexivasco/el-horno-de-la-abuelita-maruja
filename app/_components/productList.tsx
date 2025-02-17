@@ -55,10 +55,13 @@ export default function ProductList({ products, isAdminPage = false }: ProductLi
       <ul className="grid gap-12 grid-cols-auto-fill my-12">
         {filteredItems?.length > 0 ? filteredItems?.map((product: Product) => {
 
+          const searchParam = searchParams.get("search");
+          const frontendPath = searchParam ? `${PRODUCT_DETAIL_PATH.replace(":id", product.id)}?wSearch=true` : PRODUCT_DETAIL_PATH.replace(":id", product.id);
+
           return (
             <Link
               key={product.id}
-              href={isAdminPage ? ADMIN_PRODUCT_DETAIL_PATH.replace(":id", product.id) : PRODUCT_DETAIL_PATH.replace(":id", product.id)}
+              href={isAdminPage ? ADMIN_PRODUCT_DETAIL_PATH.replace(":id", product.id) : frontendPath}
               className="group text-decoration-none no-underline dark:!text-white !text-black transition-all duration-200 ease-linear"
             >
               <Card

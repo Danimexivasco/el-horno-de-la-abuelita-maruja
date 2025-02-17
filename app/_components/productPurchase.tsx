@@ -45,7 +45,6 @@ import Counter from "./counter";
 type ProductPruchaseProps = {
     product: Product
     user: string
-    fromProductsPage: boolean
 };
 
 export const ALLERGENS_MAPPED_ICONS = {
@@ -58,17 +57,27 @@ export const ALLERGENS_MAPPED_ICONS = {
   "sésamo":       <SesameIcon className="peer w-12 h-12" />
 };
 
-export default function ProductPurchase({ product, user, fromProductsPage }: ProductPruchaseProps) {
+export default function ProductPurchase({ product, user }: ProductPruchaseProps) {
   const searchParams = useSearchParams();
   const [userRating, setUserRating] = useState<null | number>(null);
   const [quantity, setQuantity] = useState(1);
   const [variant, setVariant] = useState<ProductVariant | null>(product.variants?.[0] ?? null);
   const [reviewComment, setReviewComment] = useState("");
   const [editingReview, setEditingReview] = useState<Review | null>(null);
+  const [linkWithPrevSearch, setLinkWithPrevSearch] = useState("");
   const router = useRouter();
   // eslint-disable-next-line
   const [_items, setItems] = useLocalStorage<Cart>("cart", []);
-  const [activeSearchStorage] = useSessionStorage("active-search", "");
+  // eslint-disable-next-line
+  const [activeSearchStorage, _setActiveSearchStorage, removeActiveFiltersStorage] = useSessionStorage("active-search", "");
+
+  useEffect(() => {
+    const fromProductQuarySearch = searchParams.get("wSearch");
+    if (fromProductQuarySearch && activeSearchStorage) {
+      setLinkWithPrevSearch(`${PRODUCTS_PATH}?search=${activeSearchStorage}`);
+    }
+    removeActiveFiltersStorage();
+  }, []);
 
   useEffect(() => {
     if (searchParams.get("var")) {
@@ -341,9 +350,9 @@ export default function ProductPurchase({ product, user, fromProductsPage }: Pro
 
   return (
     <>
-      {fromProductsPage && activeSearchStorage ?
+      {linkWithPrevSearch ?
         <Link
-          href={`${PRODUCTS_PATH}?search=${activeSearchStorage}`}
+          href={linkWithPrevSearch}
           className="flex gap-2 items-center no-underline mb-12 w-fit"
         >
           <RightArrowIcon className="w-4 h-4 rotate-180"/> Volver a los productos

@@ -29,6 +29,8 @@ export default function Search() {
         setFirstURLCheck(true);
       } else {
         currentParams.delete("search");
+        removeActiveFiltersStorage();
+        window.history.pushState(null, "", `?${currentParams.toString()}`);
       }
     }
 
@@ -40,6 +42,7 @@ export default function Search() {
   useEffect(() => {
     const searchQuery = searchParams.get("search") ?? "";
     setQuery(searchQuery);
+
     if (searchQuery) {
       setActiveSearchStorage(searchQuery);
     }

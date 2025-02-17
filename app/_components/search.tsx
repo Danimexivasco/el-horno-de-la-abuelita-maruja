@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Input from "./input";
 import { CrossIcon, LensIcon } from "../_icons";
+import { useSessionStorage } from "usehooks-ts";
 
 export default function Search() {
   const [query, setQuery] = useState("");
@@ -11,6 +12,8 @@ export default function Search() {
   const searchParams = useSearchParams();
   const [firstURLCheck, setFirstURLCheck] = useState(false);
   const [currentParams, setCurrentParams] = useState(new URLSearchParams(searchParams.toString()));
+  // eslint-disable-next-line
+  const [_activeSearchStorage, setActiveSearchStorage, removeActiveFiltersStorage] = useSessionStorage("active-search", "");
 
   useEffect(() => {
     setCurrentParams(new URLSearchParams(searchParams.toString()));
@@ -35,7 +38,11 @@ export default function Search() {
   }, [query, searchParams]);
 
   useEffect(() => {
-    setQuery(searchParams.get("search") ?? "");
+    const searchQuery = searchParams.get("search") ?? "";
+    setQuery(searchQuery);
+    if (searchQuery) {
+      setActiveSearchStorage(searchQuery);
+    }
   }, [searchParams]);
 
   const keydownHandler = (e: KeyboardEvent) => {
@@ -58,6 +65,7 @@ export default function Search() {
 
   const clearQuery = () => {
     setQuery("");
+    removeActiveFiltersStorage();
     currentParams.delete("search");
     window.history.pushState(null, "", `?${currentParams.toString()}`);
   };

@@ -19,6 +19,7 @@ import {
   MilkIcon,
   NutsIcon,
   PeanutsIcon,
+  RightArrowIcon,
   SesameIcon,
   SoyIcon
 } from "../_icons";
@@ -32,11 +33,11 @@ import { updateProduct } from "../_libs/firebase/products";
 import { generateId } from "../_utils/generateId";
 import { getAverage } from "../_utils/getAverage";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SIGN_IN_PATH } from "@/routes";
+import { PRODUCTS_PATH, SIGN_IN_PATH } from "@/routes";
 import { combine } from "../_utils/combineClassnames";
 import ReactMarkdown from "react-markdown";
 import { showMsg } from "../_utils/showMsg";
-import { useLocalStorage } from "usehooks-ts";
+import { useLocalStorage, useSessionStorage } from "usehooks-ts";
 import { getPrices } from "../_utils/getPrices";
 import { updateUser } from "../_libs/firebase/users";
 import Counter from "./counter";
@@ -44,6 +45,7 @@ import Counter from "./counter";
 type ProductPruchaseProps = {
     product: Product
     user: string
+    fromProductsPage: boolean
 };
 
 export const ALLERGENS_MAPPED_ICONS = {
@@ -56,7 +58,7 @@ export const ALLERGENS_MAPPED_ICONS = {
   "sésamo":       <SesameIcon className="peer w-12 h-12" />
 };
 
-export default function ProductPurchase({ product, user }: ProductPruchaseProps) {
+export default function ProductPurchase({ product, user, fromProductsPage }: ProductPruchaseProps) {
   const searchParams = useSearchParams();
   const [userRating, setUserRating] = useState<null | number>(null);
   const [quantity, setQuantity] = useState(1);
@@ -65,7 +67,8 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const router = useRouter();
   // eslint-disable-next-line
-  const [items, setItems] = useLocalStorage<Cart>("cart", []);
+  const [_items, setItems] = useLocalStorage<Cart>("cart", []);
+  const [activeSearchStorage] = useSessionStorage("active-search", "");
 
   useEffect(() => {
     if (searchParams.get("var")) {
@@ -338,6 +341,21 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
 
   return (
     <>
+      {fromProductsPage && activeSearchStorage ?
+        <Link
+          href={`${PRODUCTS_PATH}?search=${activeSearchStorage}`}
+          className="flex gap-2 items-center no-underline mb-12 w-fit"
+        >
+          <RightArrowIcon className="w-4 h-4 rotate-180"/> Volver a los productos
+        </Link>
+        :
+        <Link
+          href={PRODUCTS_PATH}
+          className="flex gap-2 items-center no-underline mb-12 w-fit"
+        >
+          <RightArrowIcon className="w-4 h-4 rotate-180"/> Volver a los productos
+        </Link>
+      }
       <div className="grid md:grid-cols-2 gap-12 md:gap-24 mb-16 lg:mb-24">
         {image ?
           <Image

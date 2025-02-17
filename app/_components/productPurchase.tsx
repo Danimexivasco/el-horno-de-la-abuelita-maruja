@@ -72,7 +72,7 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
   const [activeSearchStorage, _setActiveSearchStorage, removeActiveFiltersStorage] = useSessionStorage("active-search", "");
 
   useEffect(() => {
-    const fromProductQuarySearch = searchParams.get("wSearch");
+    const fromProductQuarySearch = searchParams.get("ws");
     if (fromProductQuarySearch && activeSearchStorage) {
       setLinkWithPrevSearch(`${PRODUCTS_PATH}?search=${activeSearchStorage}`);
     }

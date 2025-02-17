@@ -464,7 +464,7 @@ export default function ProductPurchase({ product, user, fromProductsPage }: Pro
         </section>
         <section
           id="opiniones"
-          className="scroll-mt-4 lg:w-1/2"
+          className="scroll-mt-20 lg:scroll-mt-40 lg:w-1/2"
         >
           <Headline
             as="h3"

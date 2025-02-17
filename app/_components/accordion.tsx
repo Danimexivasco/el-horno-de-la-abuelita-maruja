@@ -14,7 +14,7 @@ export default function Accordion({ items }: AccordionProps) {
       type="single"
       defaultValue="item-1"
       collapsible
-      className={combine("text-black text-left bg-cake-400 rounded-xl", styles.Container)}
+      className={combine("text-black text-left dark:bg-cake-700 bg-cake-300 rounded-xl", styles.Container)}
     >
       {items?.map(({ id, answer, question }) => {
         return (
@@ -32,7 +32,7 @@ export default function Accordion({ items }: AccordionProps) {
                 />
               </RadixAccordion.Trigger>
             </RadixAccordion.Header>
-            <RadixAccordion.Content className={styles.Content}>
+            <RadixAccordion.Content className={combine(styles.Content, "dark:text-white")}>
               <p>{answer}</p>
             </RadixAccordion.Content>
           </RadixAccordion.Item>

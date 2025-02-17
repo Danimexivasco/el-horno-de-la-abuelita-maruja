@@ -7,7 +7,6 @@ import Container from "@/app/_components/container";
 import Headline from "@/app/_components/headline";
 import Link from "@/app/_components/link";
 import ProductPurchase from "@/app/_components/productPurchase";
-import { RightArrowIcon } from "@/app/_icons";
 import { shuffleArray } from "@/app/_utils/shuffleArray";
 import { getLoggedUser } from "@/actions/authActions";
 
@@ -41,12 +40,6 @@ export default async function ProductDetailPage({ params }: ProductDetailPagepro
 
   return (
     <Container className="!py-12">
-      <Link
-        href={PRODUCTS_PATH}
-        className="flex gap-2 items-center no-underline mb-12"
-      >
-        <RightArrowIcon className="w-4 h-4 rotate-180"/> Volver a los productos
-      </Link>
       <ProductPurchase
         product={product as Product}
         user={JSON.stringify(user)}

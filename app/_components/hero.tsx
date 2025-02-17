@@ -29,6 +29,7 @@ export default function Hero({ bottomText, image }: HeroProps) {
         alt="Hero-img"
         width={1200}
         height={1200}
+        priority={true}
         className="absolute top-0 left-0 object-cover w-full h-[100svh]"
       />
       <div className="absolute z-10 top-0 left-0 w-full h-[100svh] bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>

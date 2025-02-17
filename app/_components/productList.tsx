@@ -9,6 +9,10 @@ import { useSearchParams } from "next/navigation";
 import useFilter from "../_hooks/useFilter";
 import Headline from "./headline";
 import Spinner from "./spinner";
+import { useEffect, useState } from "react";
+import { handleSearchParams } from "../_utils/handleSearchParams";
+import { useSessionStorage } from "usehooks-ts";
+import { FiltersState } from "./filters";
 
 type ProductListProps = {
   products: Product[];
@@ -18,6 +22,19 @@ type ProductListProps = {
 // TODO: Remove old items
 export default function ProductList({ products, isAdminPage = false }: ProductListProps) {
   const searchParams = useSearchParams();
+  const [activeFiltersStorage] = useSessionStorage<FiltersState | null>("active-filters", null);
+  const [currentParams, setCurrentParams] = useState(new URLSearchParams(searchParams.toString()));
+
+  useEffect(() => {
+    if (activeFiltersStorage) {
+      handleSearchParams(activeFiltersStorage, currentParams);
+      window.history.pushState(null, "", `?${currentParams.toString()}`);
+    }
+  }, [currentParams, activeFiltersStorage]);
+
+  useEffect(() => {
+    setCurrentParams(new URLSearchParams(searchParams.toString()));
+  }, [searchParams]);
 
   const [filteredItems, loading] = useFilter(products, ["name", "description", "category"]);
 
@@ -27,6 +44,7 @@ export default function ProductList({ products, isAdminPage = false }: ProductLi
       <Spinner/>
     </div>
   );
+
   return (
     <>
       {searchParams.get("search") ? (
@@ -37,10 +55,13 @@ export default function ProductList({ products, isAdminPage = false }: ProductLi
       <ul className="grid gap-12 grid-cols-auto-fill my-12">
         {filteredItems?.length > 0 ? filteredItems?.map((product: Product) => {
 
+          const searchParam = searchParams.get("search");
+          const frontendPath = searchParam ? `${PRODUCT_DETAIL_PATH.replace(":id", product.id)}?wSearch=true` : PRODUCT_DETAIL_PATH.replace(":id", product.id);
+
           return (
             <Link
               key={product.id}
-              href={isAdminPage ? ADMIN_PRODUCT_DETAIL_PATH.replace(":id", product.id) : PRODUCT_DETAIL_PATH.replace(":id", product.id)}
+              href={isAdminPage ? ADMIN_PRODUCT_DETAIL_PATH.replace(":id", product.id) : frontendPath}
               className="group text-decoration-none no-underline dark:!text-white !text-black transition-all duration-200 ease-linear"
             >
               <Card

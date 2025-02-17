@@ -49,7 +49,7 @@ export default async function RootLayout({
       <body className="flex flex-col min-h-screen dark:bg-cake-900 bg-cake-100 dark:text-white text-black transition-colors">
         <Toaster position="top-center" />
         <Header user={JSON.stringify(user ?? "")}/>
-        <main className="flex-1 mt-16 lg:mt-36">
+        <main className="flex-1">
           {children}
         </main>
         <ThemeSwitchButton

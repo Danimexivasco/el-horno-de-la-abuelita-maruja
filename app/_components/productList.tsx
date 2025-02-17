@@ -56,7 +56,7 @@ export default function ProductList({ products, isAdminPage = false }: ProductLi
         {filteredItems?.length > 0 ? filteredItems?.map((product: Product) => {
 
           const searchParam = searchParams.get("search");
-          const frontendPath = searchParam ? `${PRODUCT_DETAIL_PATH.replace(":id", product.id)}?wSearch=true` : PRODUCT_DETAIL_PATH.replace(":id", product.id);
+          const frontendPath = searchParam ? `${PRODUCT_DETAIL_PATH.replace(":id", product.id)}?ws=t` : PRODUCT_DETAIL_PATH.replace(":id", product.id);
 
           return (
             <Link

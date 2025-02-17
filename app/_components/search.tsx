@@ -29,7 +29,9 @@ export default function Search() {
       }
     }
 
-    window.history.pushState(null, "", `?${currentParams.toString()}`);
+    if (currentParams.size > 0) {
+      window.history.pushState(null, "", `?${currentParams.toString()}`);
+    }
   }, [query, searchParams]);
 
   useEffect(() => {

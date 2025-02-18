@@ -276,12 +276,12 @@ export default function CartContent() {
             {totals.priceBeforeDiscounts !== totals.price? (
               <div className="hidden lg:grid gap-4">
                 <div className="grid grid-cols-[2fr_1fr] gap-6 lg:gap-12">
-                  <p>Total antes de descuentos</p>
+                  <p>Total sin descuento</p>
                   <p className="font-bold text-red-500 line-through">{formatNumber(totals.priceBeforeDiscounts)}</p>
                 </div>
                 <div className="grid grid-cols-[2fr_1fr] gap-6 lg:gap-12">
                   <p>Descuento</p>
-                  <p className="font-bold">{formatNumber(totals.priceBeforeDiscounts- totals.price)}</p>
+                  <p className="font-bold">-{formatNumber(totals.priceBeforeDiscounts- totals.price)}</p>
                 </div>
                 <div className="border-t border-cake-500"></div>
               </div>

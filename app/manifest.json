@@ -4,7 +4,7 @@
   "description": "Quieres probar un sabor a la vieja usanza? Prueba nuestros productos!",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#2EC6FE",
+  "background_color": "#EDD8AB",
   "theme_color": "#EDD8AB",
   "icons": [
     {

@@ -10,7 +10,8 @@ import { getLoggedUser } from "@/actions/authActions";
 
 // TODO: Change url when the website is on prod
 export const metadata: Metadata = {
-  title: {
+  metadataBase: new URL("https://elhornodelaabuelitamaruja.vercel.app/"),
+  title:        {
     template: "%s - El Horno de la Abuelita Maruja",
     default:  "Inicio"
   },
@@ -27,6 +28,19 @@ export const metadata: Metadata = {
     siteName:    "El Horno de la Abuelita Maruja",
     locale:      "es-ES",
     type:        "website"
+  },
+  robots: {
+    index:     true,
+    follow:    true,
+    nocache:   false,
+    googleBot: {
+      index:               true,
+      follow:              true,
+      noimageindex:        false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet":       -1
+    }
   }
 };
 

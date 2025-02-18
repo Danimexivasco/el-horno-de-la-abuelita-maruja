@@ -3,17 +3,17 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: {
     template: "%s - El Horno de la Abuelita Maruja",
-    default:  "Sign In"
+    default:  "Iniciar sesión"
   },
-  description: "Quieres probar un sabor a la vieja usanza? Prueba nuestros productos!",
-  keywords:    ["Pasteles", "Maruja", "Horno"],
+  description: "Regístrate o inicia sesión para disfrutar de nuestros productos!",
+  keywords:    ["galletas", "bizcochos", "tartas", "pastel", "maruja", "horno", "iniciar sesión", "registrarse"],
   authors:     [{
     name: "@danimexivasco",
     url:  "https://dcano.dev"
   }],
   openGraph: {
     title:       "El Horno de la Abuelita Maruja",
-    description: "Quieres probar un sabor a la vieja usanza? Prueba nuestros productos!",
+    description: "Regístrate o inicia sesión para disfrutar de nuestros productos!",
     url:         "https://elhornodelaabuelitamaruja.vercel.app/",
     siteName:    "El Horno de la Abuelita Maruja",
     locale:      "es-ES",

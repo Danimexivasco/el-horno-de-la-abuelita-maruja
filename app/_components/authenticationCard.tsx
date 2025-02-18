@@ -60,7 +60,7 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
         as="h1"
         className="text-center uppercase !text-4xl mb-6"
       >
-        {type === "signUp" ? "Regístrarse" : "Iniciar Sesión"}
+        {type === "signUp" ? "Crear cuenta" : "Iniciar Sesión"}
       </Headline>
       <Button
         withIcon
@@ -76,7 +76,7 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
             : "Iniciando Sesión..."
           : null}
         {!loading ?
-          "Inicia sesión con Google"
+          "Continuar con Google"
           : null}
       </Button>
       <div className="relative flex pt-5 pb-3 items-center w-full">

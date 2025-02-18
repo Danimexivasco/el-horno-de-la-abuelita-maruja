@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     default:  "Inicio"
   },
   description: "Quieres probar un sabor a la vieja usanza? Prueba nuestros productos!",
-  keywords:    ["Pasteles", "Maruja", "Horno"],
+  keywords:    ["galletas", "bizcochos", "tartas", "pastel", "maruja", "horno"],
   authors:     [{
     name: "@danimexivasco",
     url:  "https://dcano.dev"

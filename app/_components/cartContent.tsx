@@ -267,7 +267,7 @@ export default function CartContent() {
               </Link>
             </div>
           </section>
-          <div className="sticky bottom-2 lg:top-44 gap-1 lg:gap-4 grid w-full dark:bg-cake-700/50 bg-cake-200 rounded-lg p-6 lg:p-8 lg:max-w-sm">
+          <div className="sticky bottom-2 lg:top-44 gap-1 lg:gap-4 grid w-full dark:bg-cake-700/50 bg-cake-200 rounded-lg p-6 lg:p-8 lg:max-w-sm shadow-md">
             <p className="hidden lg:grid text-2xl font-bold">Resumen del pedido:</p>
             <div className="hidden lg:grid grid-cols-[2fr_1fr] gap-6 lg:gap-12">
               <p>Productos totales</p>

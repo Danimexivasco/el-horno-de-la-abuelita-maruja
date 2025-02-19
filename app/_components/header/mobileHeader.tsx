@@ -18,13 +18,16 @@ type MobileHeaderProps = {
     navRoutes: Route[]
     activePathname?: string
     user: User
+    glassyHeader: boolean
+    setGlassyHeader: (_b: boolean) => void
     className?: string
 };
 
-export default function MobileHeader({ navRoutes=[], activePathname, user, className }: MobileHeaderProps) {
+export default function MobileHeader({ navRoutes=[], activePathname, user, glassyHeader, setGlassyHeader, className }: MobileHeaderProps) {
   const router = useRouter();
   const pathanme = usePathname();
   const [showMenu, setShowMenu] = useState(false);
+  const [previousHeaderState, setPreviousHeaderState] = useState(false);
 
   useEffect(() => {
     setShowMenu(false);
@@ -33,8 +36,11 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, class
   useEffect(() => {
     if (showMenu && document) {
       document.body.style.overflowY = "hidden";
+      setPreviousHeaderState(glassyHeader);
+      setGlassyHeader(false);
     } else {
       document.body.style.overflowY = "";
+      setGlassyHeader(previousHeaderState);
     }
   }, [showMenu]);
 

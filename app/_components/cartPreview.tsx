@@ -23,8 +23,9 @@ type CartPreviewProps = {
 export default function CartPreview({ opened, user, cartItems, setItems, setCartOpened }: CartPreviewProps) {
   const pathname = usePathname();
   const [totals, setTotals] = useState({
-    units: 0,
-    price: 0
+    units:                0,
+    price:                0,
+    priceBeforeDiscounts: 0
   });
 
   useEffect(() => {
@@ -143,9 +144,22 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                 </ul>
                 <div className="grid gap-4 mb-8">
                   <div className="flex justify-between items-center">
-                    <p>Cantidad Total</p>
+                    <p>Productos totales</p>
                     <p className="font-bold">{totals.units}</p>
                   </div>
+                  {totals.priceBeforeDiscounts !== totals.price? (
+                    <div className="grid gap-4">
+                      <div className="flex justify-between items-center">
+                        <p>Total sin descuento</p>
+                        <p className="font-bold text-red-500 line-through">{formatNumber(totals.priceBeforeDiscounts)}</p>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <p>Descuento</p>
+                        <p className="font-bold">-{formatNumber(totals.priceBeforeDiscounts- totals.price)}</p>
+                      </div>
+                      <div className="border-t border-cake-500"></div>
+                    </div>
+                  ) : null}
                   <div className="flex justify-between items-center font-bold">
                     <p>Total (IVA incluido)</p>
                     <p>{formatNumber(totals.price)}</p>

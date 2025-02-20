@@ -1,11 +1,24 @@
 "use client";
 
-import { Cart, CartItem, OfferTypes } from "@/types";
+import {
+  Cart,
+  CartItem,
+  NewOrder,
+  OfferTypes,
+  Order,
+  ProductVariant
+} from "@/types";
+import { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { getTotals } from "../_utils/getTotals";
 import { formatNumber } from "../_utils/formatNumber";
 import Link from "./link";
-import { CHECKOUT_PATH, PRODUCT_DETAIL_PATH, PRODUCTS_PATH } from "@/routes";
+import {
+  CHECKOUT_PATH,
+  PRODUCT_DETAIL_PATH,
+  PRODUCTS_PATH,
+  SIGN_IN_PATH
+} from "@/routes";
 import Image from "next/image";
 import Button from "./button";
 import { LogoIcon, NoResultIcon, TrashIcon } from "../_icons";
@@ -16,9 +29,59 @@ import { getPrices } from "../_utils/getPrices";
 import { showMsg } from "../_utils/showMsg";
 import Headline from "./headline";
 import { WithIsClientCheck } from "../_hocs/withIsClientCheck";
+import { useRouter } from "next/navigation";
+import { createOrder, updateOrder } from "../_libs/firebase/orders";
+import { OrderStatus } from "../../enums";
 
-function CartContent() {
+const INITIAL_ORDER: Partial<NewOrder> = {
+  products: [],
+  state:    OrderStatus.PENDING
+};
+
+type CartContentProps = {
+  user: string;
+  pendingOrder: Order
+};
+
+function CartContent({ user, pendingOrder }: CartContentProps) {
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
   const [items, setItems, removeItems] = useLocalStorage<Cart>("cart", []);
+  const [order, setOrder] = useState(INITIAL_ORDER);
+
+  const parsedUser = JSON.parse(user);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (items?.length > 0) {
+      prepareOrder(items);
+    }
+  }, [items]);
+
+  const prepareOrder = (items: Cart) => {
+    if (!items?.length) return;
+    const orderProducts = items.map(item => {
+      const { quantity, price } = item;
+      const { base, offer, discount } = price;
+
+      const priceToPay = discount && offer ? offer * quantity : base * quantity;
+
+      return {
+        id:         item.id,
+        quantity:   quantity,
+        unitPrice:  priceToPay / quantity,
+        priceToPay: priceToPay
+      };
+    });
+
+    setOrder({
+      ...order,
+      products: orderProducts
+    });
+  };
 
   const totals = getTotals(items);
 
@@ -29,7 +92,7 @@ function CartContent() {
     showMsg("Producto eliminado", "success");
   };
 
-  const setQuantity = (id: CartItem["id"], product: CartItem["product"], variant: CartItem["variant"]) => (quantity: number) => {
+  const setQuantity = (id: CartItem["id"], product: CartItem["product"], variant: ProductVariant | null) => (quantity: number) => {
     try {
       const { base, offer, discount } = getPrices(product, quantity, variant);
 
@@ -50,7 +113,7 @@ function CartContent() {
                   ...(discount && {
                     discount: {
                       type:  discount.type as OfferTypes,
-                      label: discount.label
+                      label: discount.label as string
                     }
                   })
                 }
@@ -124,6 +187,36 @@ function CartContent() {
       </div>
     );
   };
+
+  const handleOrder = async () => {
+    try {
+      let orderId;
+      if (pendingOrder) {
+        orderId = await updateOrder(pendingOrder.id ?? "", {
+          ...pendingOrder,
+          ...order,
+          state:     "pending",
+          updatedAt: Date.now()
+        });
+      } else {
+        orderId = await createOrder({
+          ...order,
+          state:      OrderStatus.PENDING,
+          products:   order.products ?? [],
+          customerId: parsedUser.id,
+          createdAt:  Date.now()
+        });
+      }
+
+      if (orderId) {
+        router.push(`${CHECKOUT_PATH}?id=${orderId}`);
+      }
+    } catch {
+      throw new Error("Error al realizar el pedido");
+    }
+  };
+
+  if (!isClient) return null;
 
   return items && items?.length > 0 ? (
     <div className="flex flex-col lg:flex-row items-start mb-4 lg:mb-8 justify-center lg:px-8">
@@ -224,7 +317,7 @@ function CartContent() {
                         />
                         <Counter
                           value={quantity}
-                          setValue={setQuantity(item.id, product, variantProduct)}
+                          setValue={setQuantity(item.id, product, variantProduct ?? null)}
                         />
                       </div>
                     </div>
@@ -283,13 +376,20 @@ function CartContent() {
               <p>Total (IVA incluido)</p>
               <p className="font-bold">{formatNumber(totals.price)}</p>
             </div>
-            <Link
-              href={CHECKOUT_PATH}
-              asButton
-              className="w-full text-center mt-4"
-            >
-              Realizar pedido
-            </Link>
+            {parsedUser ?
+              <Button
+                className="w-full"
+                onClick={handleOrder}
+              >Realizar pedido
+              </Button>
+              :
+              <Link
+                href={SIGN_IN_PATH}
+                asButton
+                className="w-full"
+              >Inicia sesión para realizar el pedido
+              </Link>
+            }
           </div>
         </div>
       </div>

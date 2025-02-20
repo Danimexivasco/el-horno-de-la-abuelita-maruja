@@ -27,7 +27,8 @@ export const getPrices = (product: Partial<Product>, quantity: number = 1, varia
 
   if ((multiPrice !== "yes" || !multiPrice) && onOffer === "yes" && offerType === "multiplier") {
     const [before, after] = multiplierAmount?.split("x") ?? [];
-    const effectiveQuantity = Math.floor(quantity / before) * after + (quantity % before);
+
+    const effectiveQuantity = Math.floor(quantity / Number(before)) * Number(after) + (quantity % Number(before));
 
     return {
       base:     Number(product.price),

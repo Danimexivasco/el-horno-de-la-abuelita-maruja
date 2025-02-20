@@ -78,7 +78,7 @@ export type Product = {
   onOffer: "yes" | "no"
   offerType?: OfferTypes
   discountPercentage?: number
-  multiplierAmount?: strings
+  multiplierAmount?: string
   allergens?: Allergens[]
   createdAt?: Date | number
   new?: "no" | "yes"
@@ -93,7 +93,7 @@ export type MinOrder = {
 type CartItem = {
   id: Product["id"] | ProductVariant["id"]
   quantity: number
-  variant?: Productvariant["name"]
+  variant?: ProductVariant["name"]
   price: {
     base: number,
     offer?: number,

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <Container>
+    <Container className="flex flex-col justify-center">
       <Headline>Contacta con nosotros</Headline>
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">
         <ContactForm />

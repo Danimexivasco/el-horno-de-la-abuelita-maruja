@@ -58,7 +58,7 @@ const FAQS: FAQ[] = [
 export default async function FAQSPage() {
 
   return (
-    <Container className="text-center">
+    <Container className="text-center flex flex-col justify-center">
       <Headline>Preguntas Frequentes</Headline>
       <p className="mb-8 lg:mb-12">A continuación podrás resolver algunas de las preguntas más habituales, hechas por nuestros clientes</p>
       <section className="lg:w-2/3 mx-auto">

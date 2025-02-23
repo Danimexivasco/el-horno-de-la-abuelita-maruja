@@ -3,6 +3,9 @@ import { Metadata } from "next";
 import CheckoutForm from "@/app/_components/forms/checkout";
 import { stripe } from "@/app/_libs/stripe";
 import Container from "@/app/_components/container";
+import CheckoutOrderSummary from "@/app/_components/checkoutOrderSummary";
+import { getOrder } from "@/app/_libs/firebase/orders";
+import { Order } from "@/types";
 // import Headline from "@/app/_components/headline";
 
 export const metadata: Metadata = {
@@ -18,20 +21,36 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function CheckoutPage() {
+type CheckoutPageProps = {
+  searchParams: {
+    id: string
+  }
+};
 
-  const calculateOrderAmount = (items) => {
+export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
+
+  // const { id } = await params;
+  const { id } = await searchParams;
+
+  const order = await getOrder(id);
+
+  const calculateOrderAmount = (items: Order["products"]) => {
+    if (!items) return 0;
+
+    const amount = items.reduce((acc, item) => acc + item.priceToPay, 0);
+
     // Replace this constant with a calculation of the order's amount
     // Calculate the order total on the server to prevent
     // people from directly manipulating the amount on the client
-    return 1400;
+    return amount * 100;
   };
 
   // Create PaymentIntent as soon as the page loads
   const { client_secret: clientSecret } = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount([{
-      id: "xl-tshirt"
-    }]),
+    amount:                    calculateOrderAmount(order.products),
+    // amount: calculateOrderAmount([{
+    //   id: "xl-tshirt"
+    // }]),
     currency:                  "eur",
     // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
     automatic_payment_methods: {
@@ -41,15 +60,14 @@ export default async function CheckoutPage() {
 
   return (
     <Container>
-      <p className="text-5xl mb-8">Compra Segura</p>
-      {/* <Headline className="mb-8">Compra Segura</Headline> */}
-      <div className="flex flex-col lg:flex-row gap-12 justify-center">
-        <div className="flex-1">
+      <p className="text-4xl lg:text-5xl mb-8">Compra Segura</p>
+      <div className="grid lg:flex gap-12 lg:gap-40 lg:justify-center items-start">
+        <div className="lg:flex-1">
           <div id="checkout">
             <CheckoutForm clientSecret={clientSecret} />
           </div>
         </div>
-        <div className="flex-1">CART INFO</div>
+        <CheckoutOrderSummary />
       </div>
     </Container>
   );

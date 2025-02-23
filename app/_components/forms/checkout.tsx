@@ -9,7 +9,11 @@ import {
   AddressElement,
   ExpressCheckoutElement
 } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import {
+  Appearance,
+  loadStripe,
+  StripePaymentElementOptions
+} from "@stripe/stripe-js";
 import Headline from "../headline";
 import Button from "../button";
 
@@ -31,7 +35,7 @@ function PaymentForm() {
     if (!stripe || !elements) {
       // Stripe.js hasn't yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
-      return;
+      return null;
     }
 
     setIsLoading(true);
@@ -58,7 +62,7 @@ function PaymentForm() {
     setIsLoading(false);
   };
 
-  const paymentElementOptions = {
+  const paymentElementOptions: StripePaymentElementOptions = {
     layout: "accordion"
   };
 
@@ -76,7 +80,8 @@ function PaymentForm() {
         <Button
           disabled={isLoading || !stripe || !elements}
           id="submit"
-          ariaLabel="Proceder al pago"
+          type="submit"
+          ariaLabel="Realizar pago"
           className="w-full"
         >
           <span id="button-text">
@@ -84,7 +89,7 @@ function PaymentForm() {
               className="spinner"
               id="spinner"
             >
-            </div> : "Proceder al pago"}
+            </div> : "Realizar pago"}
           </span>
         </Button> : null
       }
@@ -94,9 +99,12 @@ function PaymentForm() {
   );
 }
 
-export default function CheckoutForm({ clientSecret }) {
-  const appearance = {
-    theme: "stripe"
+export default function CheckoutForm({ clientSecret }: { clientSecret: string }) {
+  const appearance: Appearance = {
+    theme:     "stripe",
+    variables: {
+      colorPrimary: "#7A5C19"
+    }
   };
 
   return (
@@ -127,9 +135,11 @@ export default function CheckoutForm({ clientSecret }) {
             </p>
             <div className="flex-1 border-1 border-t border-cake-400"></div>
           </div>
-          <ExpressCheckoutElement
-            onConfirm={({ payment_method }) => console.log(payment_method)}
-          />
+          <div className="min-h-14">
+            <ExpressCheckoutElement
+              onConfirm={({ payment_method }) => console.log(payment_method)}
+            />
+          </div>
         </div>
       </div>
     </Elements>

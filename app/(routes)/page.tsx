@@ -32,6 +32,11 @@ export default async function Home() {
       <Hero
         bottomText="Déjate llevar"
         image="https://res.cloudinary.com/danimexivasco/image/upload/v1734170845/el_horno_de_la_abuelita_maruja/delicious-cookies-close-up-table_rbcfe5.jpg"
+        scrollTo="#productos-destacados"
+      />
+      <div
+        id="productos-destacados"
+        className="scroll-mt-20 lg:scroll-mt-40"
       />
       <Carousel
         headline="Productos destacados"

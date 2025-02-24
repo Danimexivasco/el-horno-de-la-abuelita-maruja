@@ -24,7 +24,7 @@ export default function Carousel({ headline, items = [], className }: CarouselPr
   return (
     <Container
       as="section"
-      className={combine("overflow-hidden px-0 pb-12", className)}
+      className={combine("overflow-hidden px-0 pt-0 pb-12", className)}
     >
       {headline ? <Headline
         as="h2"

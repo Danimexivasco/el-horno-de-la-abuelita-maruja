@@ -47,7 +47,7 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
         </ul>
       </nav>
       <ul className="grid place-items-center gap-4">
-        <li>
+        <li className="lg:hidden">
           <ThemeSwitchButton />
         </li>
         <li

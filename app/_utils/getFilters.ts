@@ -8,7 +8,8 @@ export const getFiltersFromProducts = (products: Product[]) => {
     category:  [],
     allergens: [],
     priceFrom: 0,
-    priceTo:   0
+    priceTo:   0,
+    onOffer:   false
   };
 
   products?.forEach((product: Product) => {

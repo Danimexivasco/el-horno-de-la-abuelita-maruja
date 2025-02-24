@@ -5,6 +5,16 @@ import getCheapestVariant from "../_utils/getCheapestVariant";
 import { getDiscountPrice } from "../_utils/getDiscountPrice";
 import { Product } from "@/types";
 
+function filterOnOfferProducts(products: Product[]): Product[] {
+  return products.filter(product => {
+    const isParentOnOffer = product.onOffer === "yes";
+
+    const hasOnOfferVariant = product.variants?.some(variant => variant.offerData.onOffer === "yes");
+
+    return isParentOnOffer || hasOnOfferVariant;
+  });
+}
+
 export default function useFilter(items: any[], targetFields: string[], debounceDelay = 100): [Product[], boolean] {
   const searchParams = useSearchParams();
   const query = searchParams.get("search") ?? "";
@@ -85,6 +95,8 @@ export default function useFilter(items: any[], targetFields: string[], debounce
             item.category?.toLowerCase().includes(category.toLowerCase())
           )
         );
+      } else if (key === "onOffer") {
+        filteredItems = filterOnOfferProducts(filteredItems);
       } else {
         filteredItems = filteredItems.filter((item) =>
           item[key]?.toLowerCase().includes(value.toLowerCase())

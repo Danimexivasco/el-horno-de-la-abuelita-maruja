@@ -2,25 +2,18 @@
 
 import Image from "next/image";
 import Headline from "./headline";
-import Button from "./button";
 import { RightArrowIcon } from "../_icons";
 import { combine } from "../_utils/combineClassnames";
 import { playwrite } from "../_fonts";
+import Link from "./link";
 
 type HeroProps = {
     bottomText?: string
     image: string;
+    scrollTo?: string
 };
 
-export default function Hero({ bottomText, image }: HeroProps) {
-
-  const scrollDown = () => {
-    const windowHeight = window?.innerHeight;
-    window?.scroll({
-      top:      windowHeight,
-      behavior: "smooth"
-    });
-  };
+export default function Hero({ bottomText, image, scrollTo }: HeroProps) {
 
   return (
     <section className="min-h-[calc(100svh-72px)] lg:min-h-[calc(100dvh-144px)]">
@@ -42,12 +35,15 @@ export default function Hero({ bottomText, image }: HeroProps) {
             {bottomText}
           </Headline>
         }
-        <Button
-          onClick={scrollDown}
-          className="animate-bounce rounded-full p-3"
-        >
-          <RightArrowIcon className="w-6 h-6 rotate-90"/>
-        </Button>
+        {scrollTo ?
+          <Link
+            href={scrollTo}
+            asButton
+            className="block animate-bounce rounded-full p-3"
+          >
+            <RightArrowIcon className="w-6 h-6 rotate-90"/>
+          </Link>
+          : null}
       </div>
     </section>
   );

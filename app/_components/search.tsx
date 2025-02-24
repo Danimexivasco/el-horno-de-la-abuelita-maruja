@@ -49,7 +49,7 @@ export default function Search() {
   }, [searchParams]);
 
   const keydownHandler = (e: KeyboardEvent) => {
-    if(e.key === "f" && e.ctrlKey) {
+    if(e.key === "g" && e.ctrlKey) {
       e.preventDefault();
       searchRef.current?.focus();
     }
@@ -96,7 +96,11 @@ export default function Search() {
             onClick={clearQuery}
           />
           :
-          <span className="hidden lg:block text-gray-400/90 border-2 border-gray-400/20 px-2 py-1 rounded-lg peer-focus:hidden shadow-sm">Ctrl + F</span>
+          <span
+            title="Press Ctrl + G activate the search"
+            className="hidden lg:block text-gray-400/90 border-2 border-gray-400/20 px-2 py-1 rounded-lg peer-focus:hidden shadow-sm"
+          >Ctrl + G
+          </span>
         }
       </div>
     </section>

@@ -21,6 +21,7 @@ export type FiltersState = {
     allergens: string[],
     priceFrom: number
     priceTo: number
+    onOffer: boolean
     [key: string]: any
 };
 
@@ -35,8 +36,9 @@ export default function Filters({ availableFilters }: FiltersProps) {
 
   useEffect(() => {
     if (filters) {
+      console.log("filters", filters);
       const priceFilterActive = (filters.priceFrom !== 0 && filters.priceFrom !== availableFilters.priceFrom) || (filters.priceTo !== 0 && filters.priceTo !== availableFilters.priceTo);
-      setActiveFilters(filters.category.length + filters.allergens.length + (priceFilterActive ? 1 : 0));
+      setActiveFilters(filters.category.length + filters.allergens.length + (priceFilterActive ? 1 : 0) + (filters.onOffer ? 1 : 0));
     }
   }, [filters]);
 
@@ -92,6 +94,13 @@ export default function Filters({ availableFilters }: FiltersProps) {
     });
   };
 
+  const handleonOfferChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilters({
+      ...filters,
+      onOffer: e.target.checked
+    });
+  };
+
   const clearFilters = () => {
     setFilters(FILTERS_INITIAL_STATE);
     FILTER_PARAMS.filter(param => param !== "search").forEach(param => currentParams.delete(param));
@@ -132,7 +141,7 @@ export default function Filters({ availableFilters }: FiltersProps) {
       >
         <form onSubmit={handleFilter}>
           <Container className="grid gap-16 lg:px-24 py-8">
-            <div className="grid grid-cols-1 lg:grid-cols-auto-fit items-start justify-items-start xl:justify-items-center gap-12 lg:gap-16 max-w-1/2">
+            <div className="grid grid-cols-1 lg:grid-cols-auto-fit items-start justify-items-start gap-12 lg:gap-16 max-w-1/2">
               <PriceRangeSlider
                 label="Precio"
                 priceFrom={availableFilters.priceFrom}
@@ -145,9 +154,10 @@ export default function Filters({ availableFilters }: FiltersProps) {
                   type:    "checkbox",
                   label:   "Categoria",
                   options: availableFilters.category?.map(category => ({
-                    value:   category,
-                    label:   category,
-                    checked: filters.category.includes(category) ?? false
+                    value:       category,
+                    label:       category,
+                    checked:     filters.category.includes(category) ?? false,
+                    capitalized: true
                   })),
                   onChange: handleChange
                 }}
@@ -158,12 +168,29 @@ export default function Filters({ availableFilters }: FiltersProps) {
                   type:    "checkbox",
                   label:   "Evitar alérgenos",
                   options: availableFilters.allergens?.map(allergen => ({
-                    value:   allergen,
-                    label:   allergen,
-                    checked: filters.allergens.includes(allergen) ?? false
+                    value:       allergen,
+                    label:       allergen,
+                    checked:     filters.allergens.includes(allergen) ?? false,
+                    capitalized: true
                   })),
                   onChange: handleChange
                 }}
+              />
+              <FormField
+                input={{
+                  name:    "onOffer",
+                  type:    "checkbox",
+                  label:   "Ofertas",
+                  options: [
+                    {
+                      value:   "yes",
+                      label:   "Mostrar solo productos en oferta",
+                      checked: filters.onOffer
+                    }
+                  ],
+                  onChange: handleonOfferChange
+                }}
+                className="lowercase"
               />
             </div>
             <div className="flex flex-col gap-4 lg:flex-row-reverse lg:justify-start items-center">

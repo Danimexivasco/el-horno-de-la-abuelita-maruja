@@ -23,5 +23,11 @@ export function handleSearchParams(filters: FiltersState, currentParams: URLSear
     currentParams.delete("priceTo");
   }
 
+  if(filters.onOffer) {
+    currentParams.set("onOffer", "t");
+  } else {
+    currentParams.delete("onOffer");
+  }
+
   return currentParams;
 }

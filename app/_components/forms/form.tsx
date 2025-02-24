@@ -13,7 +13,7 @@ type FormProps = {
   inputs: (InputType | SelectType)[],
   initialState: Record<string, string | File | undefined>
   onSubmit: any
-  redirectTo?: string
+  redirectTo?: string | null
   submitBtnText: string
   outterClassName?: string
   fieldsContainerClassName?: string
@@ -46,6 +46,7 @@ export default function Form({ inputs, initialState, onSubmit, redirectTo, submi
     setIsPending(true);
     try {
       await onSubmit(formData);
+
       if (redirectTo) {
         router.push(redirectTo);
       } else {

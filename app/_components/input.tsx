@@ -8,7 +8,7 @@ export type InputProps = {
   placeholder?: string
   required?: boolean
   pattern?: string
-  options?: {value: string, label: string, checked?: boolean}[]
+  options?: {value: string, label: string, checked?: boolean, capitalized?: boolean}[]
   onChange: (_e: React.ChangeEvent<HTMLInputElement>) => void
   className?: string
   [prop: string]: any
@@ -108,7 +108,7 @@ export default function Input({ name, type, label, value, placeholder="", requir
               />
               <label
                 htmlFor={`${name}-${option.value}`}
-                className="cursor-pointer text-sm font-medium dark:peer-checked:text-cake-400 peer-checked:text-cake-700 capitalize"
+                className={combine("cursor-pointer text-sm font-medium dark:peer-checked:text-cake-400 peer-checked:text-cake-700", option.capitalized && "capitalize")}
               >{option.label}
               </label>
             </div>

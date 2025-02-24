@@ -183,7 +183,8 @@ export const FILTERS_INITIAL_STATE: FiltersState = {
   category:  [],
   allergens: [],
   priceFrom: 0,
-  priceTo:   0
+  priceTo:   0,
+  onOffer:   false
 };
 
-export const FILTER_PARAMS = ["search", "category", "allergens", "priceFrom", "priceTo"];
+export const FILTER_PARAMS = ["search", "category", "allergens", "priceFrom", "priceTo", "onOffer"];

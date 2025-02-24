@@ -75,7 +75,7 @@ export type Product = {
   multiPrice: "no" | "yes",
   price: number,
   variants?: ProductVariant[]
-  onOffer: string
+  onOffer: "yes" | "no"
   offerType?: OfferTypes
   discountPercentage?: number
   multiplierAmount?: strings

@@ -46,9 +46,9 @@ export const getActualUser = async (id: string) => {
 export const createUser = async (uid: string, data: User) => {
   try {
     await setDoc(doc(db, "users", uid), data);
-    showMsg("User created", "success");
+    showMsg("Usuario creado", "success");
   } catch {
-    showMsg("Something went wrong", "error");
+    showMsg("Algo ha fallado creando el usuario", "error");
   }
 };
 
@@ -57,11 +57,11 @@ export const updateUser = async (id: string, data: User | DocumentData, withMsg:
   try {
     await setDoc(userDoc, data);
     if (withMsg) {
-      showMsg("User updated", "success");
+      showMsg("Usuario actualizado", "success");
     }
   } catch {
     if (withMsg) {
-      showMsg("Something went wrong", "error");
+      showMsg("Algo ha fallado actualizando el usuario", "error");
     }
   }
 };
@@ -71,8 +71,8 @@ export const deleteUser = async (id: string) => {
 
   try {
     await deleteDoc(userDoc);
-    showMsg("User deleted", "success");
+    showMsg("Usuario eliminado", "success");
   } catch {
-    showMsg("Something went wrong", "error");
+    showMsg("Algo ha fallado eliminando el usuario", "error");
   }
 };

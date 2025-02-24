@@ -1,5 +1,11 @@
 import { SESSION_COOKIE_NAME, USER_CHECKED_COOKIE_NAME } from "@/constants";
-import { ADMIN_PRODUCT_DETAIL_PATH, HOME_PATH, ROUTES } from "@/routes";
+import {
+  ADMIN_PRODUCT_DETAIL_PATH,
+  HOME_PATH,
+  RESET_PASSWORD_PATH,
+  ROUTES,
+  VERIFY_EMAIL_PATH
+} from "@/routes";
 import { type NextRequest, NextResponse } from "next/server";
 import { setAdminUserCheck } from "./actions/authActions";
 
@@ -13,6 +19,12 @@ export async function middleware(request: NextRequest) {
   const currentPathname = request.nextUrl.pathname;
 
   if (!sessionCookie && (protectedRoutes.includes(currentPathname) || currentPathname === ADMIN_PRODUCT_DETAIL_PATH.replace(":id", currentPathname.split("/").pop() ?? ""))) {
+    const absoluteURL = request.nextUrl.clone();
+    absoluteURL.pathname = HOME_PATH;
+    return NextResponse.redirect(absoluteURL);
+  }
+
+  if (!sessionCookie && ([VERIFY_EMAIL_PATH, RESET_PASSWORD_PATH].includes(currentPathname))) {
     const absoluteURL = request.nextUrl.clone();
     absoluteURL.pathname = HOME_PATH;
     return NextResponse.redirect(absoluteURL);

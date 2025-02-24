@@ -4,7 +4,9 @@ import {
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
   signInWithEmailAndPassword as _signInWithEmailAndPassword,
-  createUserWithEmailAndPassword as _createUserWithEmailAndPassword
+  createUserWithEmailAndPassword as _createUserWithEmailAndPassword,
+  sendPasswordResetEmail as _sendPasswordResetEmail,
+  sendEmailVerification
 } from "firebase/auth";
 import { useAuthState as _useAuthState } from "react-firebase-hooks/auth";
 
@@ -46,7 +48,7 @@ export async function signInWithGoogle() {
     }
 
     if (!userCredential || !userCredential.user) {
-      throw new Error("Google sign in failed");
+      throw new Error("El inicio con Google ha fallado");
     }
 
     return {
@@ -55,7 +57,7 @@ export async function signInWithGoogle() {
     };
   } catch (error: any) {
     if (error.code !== "auth/popup-closed-by-user") {
-      console.error("Error signing in with Google", error);
+      throw new Error("El inicio con Google ha fallado");
     }
   }
 }
@@ -78,15 +80,18 @@ export const signUpWithEmailAndPassword = async (formData: { username: string, e
         emailVerified,
         role:      "customer"
       });
+      if (firebaseAuth.currentUser) {
+        await sendEmailVerification(firebaseAuth.currentUser);
+      }
     }
     if (!userCredential || !userCredential.user) {
-      throw new Error("Something failed during sign up");
+      throw new Error("El registro ha fallado");
     }
     await createSession(userCredential.user.uid);
 
     return userCredential.user.uid;
   } catch (error) {
-    const message = (error instanceof Error) ? error.message : "An unexpected error occurred";
+    const message = (error instanceof Error) ? error.message : "Ha ocurrido un error inesperado";
     showMsg(message, "error");
     throw new Error(message);
   }
@@ -94,28 +99,42 @@ export const signUpWithEmailAndPassword = async (formData: { username: string, e
 
 export const signInWithEmailAndPassword = async (formData: { email: string; password: string }) => {
   const { email, password } = formData;
-  if (!email || !password) throw new Error("Email and password are required");
+  if (!email || !password) throw new Error("El email y la contraseña son requeridos");
   try {
     const userCredential = await _signInWithEmailAndPassword(firebaseAuth, email, password);
     if (!userCredential || !userCredential.user) {
-      throw new Error("Something failed during sing in");
+      throw new Error("Ha habido un problema al iniciar sesión");
     }
     await createSession(userCredential.user.uid);
     return userCredential.user.uid;
   } catch (error) {
-    const message = (error instanceof Error) ? error.message : "An unexpected error occurred";
+    const message = (error instanceof Error) ? error.message : "Ha ocurrido un error inesperado";
     showMsg(message, "error");
     throw new Error(message);
   }
 };
+
 export async function signOut() {
   try {
     await removeSession();
     await removeAdminUserCheck();
     await firebaseAuth.signOut();
   } catch (error) {
-    const message = (error instanceof Error) ? error.message : "An unexpected error occurred";
+    const message = (error instanceof Error) ? error.message : "Ha ocurrido un error inesperado";
     showMsg(message, "error");
     throw new Error(message);
   }
 }
+
+export const sendPasswordResetEmail = async (email: string) => {
+  try {
+    await _sendPasswordResetEmail(firebaseAuth, email);
+
+    return {
+      success: true,
+      message: "Petición enviada correctamente"
+    };
+  } catch {
+    throw new Error("Error al enviar el correo para cambiar la contraseña");
+  }
+};

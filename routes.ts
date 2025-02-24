@@ -9,6 +9,8 @@ export type Route = {
 export const HOME_PATH = "/";
 export const SIGN_IN_PATH = "/signIn";
 export const SIGN_UP_PATH = "/signUp";
+export const RESET_PASSWORD_PATH = "/reset-password";
+export const VERIFY_EMAIL_PATH = "/verify-email";
 export const ADMIN_DASHBOARD_PATH = "/admin/dashboard";
 export const ADMIN_PRODUCTS_PATH = "/admin/dashboard/products";
 export const ADMIN_NEW_PRODUCT_PATH = "/admin/dashboard/products/new";
@@ -41,6 +43,14 @@ export const ROUTES: Route[] = [
     path:      SIGN_UP_PATH,
     label:     "Registro",
     authRoute: true
+  },
+  {
+    path:  RESET_PASSWORD_PATH,
+    label: "Cambiar contraseña"
+  },
+  {
+    path:  VERIFY_EMAIL_PATH,
+    label: "Verificar email"
   },
   {
     path:       ADMIN_DASHBOARD_PATH,

@@ -16,7 +16,13 @@ import {
   signInWithGoogle,
   signUpWithEmailAndPassword
 } from "@/libs/firebase/auth";
-import { ADMIN_DASHBOARD_PATH, SIGN_IN_PATH, SIGN_UP_PATH } from "@/routes";
+import {
+  ADMIN_DASHBOARD_PATH,
+  RESET_PASSWORD_PATH,
+  SIGN_IN_PATH,
+  SIGN_UP_PATH,
+  VERIFY_EMAIL_PATH
+} from "@/routes";
 import { AuthenticationPages } from "@/types";
 import { showMsg } from "@/utils/showMsg";
 import { useRouter } from "next/navigation";
@@ -91,6 +97,7 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
         initialState={type === "signUp" ? SIGN_UP_FORM_INITIAL_STATE : SIGN_IN_FORM_INITIAL_STATE}
         onSubmit={type === "signUp" ? signUpWithEmailAndPassword : signInWithEmailAndPassword}
         submitBtnText={type === "signUp" ? "Regístrarse" : "Iniciar Sesión"}
+        redirectTo={type === "signUp" ? VERIFY_EMAIL_PATH : null}
         fullWidthBtn
       />
       <p className="flex flex-col sm:flex-row items-center sm:gap-2 mt-6">
@@ -101,6 +108,15 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
           {type === "signUp" ? "Inicia Sesión" : "Regístrate"}
         </Link>
       </p>
+      {type === "signIn" ?
+        <Link
+          href={RESET_PASSWORD_PATH}
+          className="mt-4"
+        >
+          Has olvidado tu contraseña?
+        </Link>
+        : null
+      }
     </div>
   );
 }

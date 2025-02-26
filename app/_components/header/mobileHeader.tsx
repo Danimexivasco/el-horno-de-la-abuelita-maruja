@@ -52,12 +52,13 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, glass
   return (
     <>
       <Container className={combine("flex items-center justify-between !px-4 py-3 relative", className)}>
-        <div className="dark:text-cake-400 text-cake-600 transition-colors">
+        <div className="dark:text-cake-400 text-cake-600">
           <Hamburger
             rounded
             size={28}
             toggled={showMenu}
             distance="lg"
+            color="currentColor"
             onToggle={() => setShowMenu(!showMenu)}
           />
         </div>

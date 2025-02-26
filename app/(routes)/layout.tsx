@@ -68,7 +68,7 @@ export default async function RootLayout({
       lang="es"
       className={combine(nunito.className, theme?.value === "dark" && "dark")}
     >
-      <body className="flex flex-col min-h-screen dark:bg-cake-900 bg-cake-100 dark:text-white text-black transition-colors">
+      <body className="flex flex-col min-h-screen dark:bg-cake-900 bg-cake-100 dark:text-white text-black lg:transition-colors motion-reduce:transition-none">
         <Toaster position="top-center" />
         <Header user={JSON.stringify(user ?? "")}/>
         <main className="flex-1">

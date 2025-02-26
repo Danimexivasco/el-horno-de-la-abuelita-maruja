@@ -26,7 +26,7 @@ export default function ThemeSwitchButton({ className="" }: ThemeSwitchButtonPro
       aria-checked={theme === "dark"}
       title={`Cambiar al modo ${theme === "light" ? "oscuro" : "claro"}`}
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className={combine("relative flex h-10 w-16 items-center rounded-full bg-gray-200 dark:bg-gray-700 transition-colors p-1", className)}
+      className={combine("relative flex h-10 w-16 items-center rounded-full bg-gray-200 dark:bg-gray-700 p-1", className)}
     >
       <span
         className={`absolute left-1 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md transition-all ${

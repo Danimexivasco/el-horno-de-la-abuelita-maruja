@@ -75,9 +75,6 @@ export default async function RootLayout({
         <main className="flex-1">
           {children}
         </main>
-        <ThemeSwitchButton
-          className="hidden lg:block fixed bottom-4 right-4 lg:bottom-8 lg:right-8"
-        />
         <Footer />
       </body>
     </html>

@@ -9,7 +9,7 @@ export const SunIcon = ({ className }: IconProps) => (
     xmlns="http://www.w3.org/2000/svg"
     className={className}
   >
-    <g clipPath="url(#clip0_2_38)">
+    <g>
       <path
         d="M16.9583 1.54167C16.9583 0.690227 17.6485 0 18.5 0C19.3515 0 20.0417 0.690227 20.0417 1.54167V4.625C20.0417 5.47643 19.3515 6.16667 18.5 6.16667C17.6485 6.16667 16.9583 5.47643 16.9583 4.625V1.54167Z"
         fill="currentColor"
@@ -49,14 +49,5 @@ export const SunIcon = ({ className }: IconProps) => (
         fill="currentColor"
       />
     </g>
-    <defs>
-      <clipPath id="clip0_2_38">
-        <rect
-          width="37"
-          height="37"
-          fill="white"
-        />
-      </clipPath>
-    </defs>
   </svg>
 );

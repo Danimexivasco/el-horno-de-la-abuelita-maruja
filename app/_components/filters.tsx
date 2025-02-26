@@ -36,7 +36,6 @@ export default function Filters({ availableFilters }: FiltersProps) {
 
   useEffect(() => {
     if (filters) {
-      console.log("filters", filters);
       const priceFilterActive = (filters.priceFrom !== 0 && filters.priceFrom !== availableFilters.priceFrom) || (filters.priceTo !== 0 && filters.priceTo !== availableFilters.priceTo);
       setActiveFilters(filters.category.length + filters.allergens.length + (priceFilterActive ? 1 : 0) + (filters.onOffer ? 1 : 0));
     }

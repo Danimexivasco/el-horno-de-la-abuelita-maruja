@@ -7,19 +7,23 @@ export type Route = {
 };
 
 export const HOME_PATH = "/";
-export const SIGN_IN_PATH = "/signIn";
-export const SIGN_UP_PATH = "/signUp";
-export const RESET_PASSWORD_PATH = "/reset-password";
-export const VERIFY_EMAIL_PATH = "/verify-email";
-export const ADMIN_DASHBOARD_PATH = "/admin/dashboard";
-export const ADMIN_PRODUCTS_PATH = "/admin/dashboard/products";
-export const ADMIN_NEW_PRODUCT_PATH = "/admin/dashboard/products/new";
-export const ADMIN_PRODUCT_DETAIL_PATH = "/admin/dashboard/products/:id";
 export const PRODUCTS_PATH = "/products";
 export const PRODUCT_DETAIL_PATH = "/products/:id";
 export const ABOUT_US_PATH = "/about";
 export const CONTACT_PATH = "/contact";
 export const CART_PATH = "/cart";
+export const USER_PROFILE_PATH = "/user-profile";
+
+export const SIGN_IN_PATH = "/signIn";
+export const SIGN_UP_PATH = "/signUp";
+export const RESET_PASSWORD_PATH = "/reset-password";
+export const VERIFY_EMAIL_PATH = "/verify-email";
+
+export const ADMIN_DASHBOARD_PATH = "/admin/dashboard";
+export const ADMIN_PRODUCTS_PATH = "/admin/dashboard/products";
+export const ADMIN_NEW_PRODUCT_PATH = "/admin/dashboard/products/new";
+export const ADMIN_PRODUCT_DETAIL_PATH = "/admin/dashboard/products/:id";
+
 export const FAQS_PATH = "/faqs";
 export const CHECKOUT_PATH = "/checkout";
 export const LEGAL_PATH = "/legal";
@@ -92,6 +96,10 @@ export const ROUTES: Route[] = [
   {
     path:  CART_PATH,
     label: "Cart"
+  },
+  {
+    path:  USER_PROFILE_PATH,
+    label: "Perfil de usuario"
   },
   {
     path:       FAQS_PATH,

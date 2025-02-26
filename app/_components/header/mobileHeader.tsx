@@ -1,7 +1,7 @@
 "use client";
 
 import { Squash as Hamburger } from "hamburger-react";
-import { HOME_PATH, Route, SIGN_IN_PATH } from "@/routes";
+import { HOME_PATH, Route, SIGN_IN_PATH, USER_PROFILE_PATH } from "@/routes";
 import Container from "../container";
 import { User } from "@/types";
 import { combine } from "@/app/_utils/combineClassnames";
@@ -95,8 +95,19 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, glass
                 <div>
                   {user ? (
                     <>
-                      <p className="text-lg">Estas logueado como:</p>
-                      <i>{user?.username || user?.email}</i>
+                      <Link
+                        href={USER_PROFILE_PATH}
+                        className="mb-2 font-bold"
+                      >Ir a mi perfil / Ajustes
+                      </Link>
+                      {user.username ?
+                        <p>{user.username}</p>
+                        : null
+                      }
+                      {user.email ?
+                        <p className="text-sm italic">{user.email}</p>
+                        : null
+                      }
                       <Button
                         withIcon
                         isRed
@@ -107,14 +118,11 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, glass
                       </Button>
                     </>
                   ) : (
-                    <>
-                      <p className="dark:text-white text-black mb-2">Todavía no estás logueado</p>
-                      <Button
-                        onClick={handleLogin}
-                      >
-                        Inicia Sesión
-                      </Button>
-                    </>
+                    <Button
+                      onClick={handleLogin}
+                    >
+                      Iniciar Sesión
+                    </Button>
                   )}
                 </div>
                 <ThemeSwitchButton />

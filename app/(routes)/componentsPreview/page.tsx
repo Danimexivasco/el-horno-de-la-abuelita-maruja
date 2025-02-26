@@ -8,7 +8,7 @@ import { useTheme } from "@/hooks/useTheme";
 import Input from "@/components/input";
 
 export default function ComponentsPreview() {
-  const { handleTheme } = useTheme();
+  const { setTheme } = useTheme();
 
   return (
     <Container>
@@ -85,13 +85,13 @@ export default function ComponentsPreview() {
               </Button>
               <Button
                 className="flex items-center gap-3"
-                onClick={() => handleTheme("dark")}
+                onClick={() => setTheme("dark")}
               >
                 <MoonIcon /> Beautiful Moon
               </Button>
               <Button
                 className="flex items-center gap-3"
-                onClick={() => handleTheme("light")}
+                onClick={() => setTheme("light")}
               >
                 <SunIcon /> Beautiful Sun
               </Button>

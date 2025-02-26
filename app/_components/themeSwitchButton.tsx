@@ -2,7 +2,6 @@
 
 import { useTheme } from "@/hooks/useTheme";
 import { combine } from "@/utils/combineClassnames";
-import Button from "./button";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 

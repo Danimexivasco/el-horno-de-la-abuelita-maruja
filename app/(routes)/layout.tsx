@@ -4,7 +4,6 @@ import "@/app/globals.css";
 import { Toaster } from "react-hot-toast";
 import Footer from "../_components/footer";
 import Header from "../_components/header";
-import ThemeSwitchButton from "../_components/themeSwitchButton";
 import { nunito } from "../_fonts";
 import { getLoggedUser } from "@/actions/authActions";
 import { cookies } from "next/headers";

@@ -4,9 +4,10 @@ import "@/app/globals.css";
 import { Toaster } from "react-hot-toast";
 import Footer from "../_components/footer";
 import Header from "../_components/header";
-import ThemeSwitchButton from "../_components/themeSwitchButton";
 import { nunito } from "../_fonts";
 import { getLoggedUser } from "@/actions/authActions";
+import { cookies } from "next/headers";
+import { combine } from "../_utils/combineClassnames";
 
 // TODO: Change url when the website is on prod
 export const metadata: Metadata = {
@@ -59,11 +60,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const user = await getLoggedUser();
+  const cookieStore = await cookies();
+  const theme = cookieStore.get("theme");
 
   return (
     <html
       lang="es"
-      className={nunito.className}
+      className={combine(nunito.className, theme?.value === "dark" && "dark")}
     >
       <body className="flex flex-col min-h-screen dark:bg-cake-900 bg-cake-100 dark:text-white text-black transition-colors">
         <Toaster position="top-center" />
@@ -71,9 +74,6 @@ export default async function RootLayout({
         <main className="flex-1">
           {children}
         </main>
-        <ThemeSwitchButton
-          className="hidden lg:block fixed bottom-4 right-4 lg:bottom-8 lg:right-8"
-        />
         <Footer />
       </body>
     </html>

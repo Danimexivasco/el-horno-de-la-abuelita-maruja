@@ -1,26 +1,46 @@
 "use client";
 
 import { useTheme } from "@/hooks/useTheme";
-import { MoonIcon, SunIcon } from "@/icons/index";
 import { combine } from "@/utils/combineClassnames";
-import Button from "./button";
+import { Moon, Sun } from "lucide-react";
+import { useEffect, useState } from "react";
 
 type ThemeSwitchButtonProps = {
   className?: string
 };
 
 export default function ThemeSwitchButton({ className="" }: ThemeSwitchButtonProps) {
-  const { theme, handleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   if (!theme) return null;
 
-  return (
-    <Button
-      onClick={() => handleTheme(theme === "light" ? "dark" : "light")}
-      className={combine("rounded-full p-2 transition-colors dark:bg-cake-400 dark:hover:bg-cake-500 dark:active:bg-cake-600 !text-black bg-cake-500 hover:bg-cake-600 active:bg-cake-700 z-40 shadow-xl", className)}
-      ariaLabel="Toggle dark mode"
+  return isLoaded && (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={theme === "dark"}
+      title={`Cambiar al modo ${theme === "light" ? "oscuro" : "claro"}`}
+      onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      className={combine("relative flex h-10 w-16 items-center rounded-full bg-gray-200 dark:bg-gray-700 transition-colors p-1", className)}
     >
-      {theme === "light" ? <MoonIcon /> : <SunIcon />}
-    </Button>
+      <span
+        className={`absolute left-1 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-md transition-all ${
+          theme === "dark" ? "translate-x-6" : "translate-x-0"
+        }`}
+      >
+        {theme === "dark" ? <Moon
+          size={18}
+          className="text-cake-900"
+        /> : <Sun
+          size={18}
+          className="text-cake-500"
+        />}
+      </span>
+    </button>
   );
 }

@@ -11,6 +11,7 @@ import Avatar from "../avatar";
 import { showMsg } from "@/app/_utils/showMsg";
 import Link from "../link";
 import { User as LucideUserIcon, ShoppingBag } from "lucide-react";
+import ThemeSwitchButton from "../themeSwitchButton";
 
 type UserActionsProps = {
     user: User
@@ -61,6 +62,10 @@ export default function UserActions({ user }: UserActionsProps) {
                     : null
                   }
                 </div>
+                <div className="flex justify-between items-center gap-4 self-start w-full">
+                  <p>Apariencia</p>
+                  <ThemeSwitchButton />
+                </div>
                 <div className="border-t border-cake-500 my-2 w-full"></div>
                 <Link
                   href={USER_PROFILE_PATH}
@@ -88,6 +93,11 @@ export default function UserActions({ user }: UserActionsProps) {
 
             ) : (
               <>
+                <div className="flex justify-between items-center gap-4 self-start w-full">
+                  <p>Apariencia</p>
+                  <ThemeSwitchButton />
+                </div>
+                <div className="border-t border-cake-500 my-2 w-full"></div>
                 <p className="whitespace-nowrap dark:text-white text-black">Todavía no has iniciado sesión</p>
                 <Button
                   onClick={() => router.push(SIGN_IN_PATH)}

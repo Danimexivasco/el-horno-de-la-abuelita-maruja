@@ -1,29 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { DEFAULT_THEME } from "@/constants";
 import { Theme } from "@/types";
+import { useLocalStorage } from "usehooks-ts";
+import Cookies from "js-cookie";
 
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme | null>(null);
+  const [theme, setTheme] = useLocalStorage<Theme>("theme", DEFAULT_THEME);
 
   useEffect(() => {
-    const initialTheme: Theme = localStorage.getItem("theme") as Theme ?? DEFAULT_THEME;
-    handleTheme(initialTheme);
-  }, []);
-
-  const handleTheme = (theme: Theme) => {
     if (theme === "dark") {
-      localStorage.setItem("theme", "dark");
-      setTheme("dark");
-      return document.documentElement.classList.add("dark");
+      Cookies.set("theme", "dark");
+      document.documentElement.classList.add("dark");
     } else {
-      localStorage.setItem("theme", "light");
-      setTheme("light");
-      return document.documentElement.classList.remove("dark");
+      Cookies.set("theme", "light");
+      document.documentElement.classList.remove("dark");
     }
-  };
+  }, [theme]);
 
   return {
     theme,
-    handleTheme
+    setTheme
   };
 }

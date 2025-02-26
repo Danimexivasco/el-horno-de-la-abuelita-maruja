@@ -4,40 +4,48 @@ import Button from "@/app/_components/button";
 import Container from "@/app/_components/container";
 import Headline from "@/app/_components/headline";
 import Link from "@/app/_components/link";
-import { useAuthState } from "@/app/_libs/firebase/auth";
+import {
+  checkVerification,
+  resendEmailVerification,
+  useAuthState
+} from "@/app/_libs/firebase/auth";
 import { showMsg } from "@/app/_utils/showMsg";
 import { HOME_PATH, PRODUCTS_PATH } from "@/routes";
-import { sendEmailVerification } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
 export default function VerifyEmailPage() {
   const [user, loading] = useAuthState();
   const router = useRouter();
 
-  const checkVerification = async () => {
+  const handleCheckVerification = async () => {
     if (user) {
-      await user.reload();
+      try {
+        const response = await checkVerification(user);
 
-      if (user?.emailVerified) {
-        showMsg("Gracias por verificar tu email 🚀", "success");
-
-        router.push(HOME_PATH);
-      } else {
-        showMsg("Hubo un error al verificar tu email", "error");
+        if (response?.successs) {
+          router.push(HOME_PATH);
+          showMsg(response.message, "success");
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          showMsg(error.message, "error");
+        }
       }
+
     }
   };
 
-  const resendEmailVerification = async () => {
+  const handleResendEmailVerification = async () => {
     if (user) {
       try {
-        await sendEmailVerification(user);
-
-        showMsg("Se ha reenviado el email de verificacion", "success");
-      } catch {
-        showMsg("Ocurrio un error al reenviar el email de verificacion", "error");
-
-        throw new Error("Ocurrio un error al reenviar el email de verificacion");
+        const response = await resendEmailVerification(user);
+        if (response?.successs) {
+          showMsg(response.message, "success");
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          showMsg(error.message, "error");
+        }
       }
     }
   };
@@ -51,8 +59,8 @@ export default function VerifyEmailPage() {
           <Headline>Verifique su email</Headline>
           <p>Por favor, necesitamos que verifiques tu email con el enlace que te hemos mandado a <strong>{user?.email}</strong></p>
           <div className="grid lg:flex gap-4 items-center">
-            <Button onClick={checkVerification}>Ya lo he verificado</Button>
-            <Button onClick={resendEmailVerification}>Reenviarme el enlace</Button>
+            <Button onClick={handleCheckVerification}>Ya lo he verificado</Button>
+            <Button onClick={handleResendEmailVerification}>Reenviarme el enlace</Button>
           </div>
         </>
       ) : (

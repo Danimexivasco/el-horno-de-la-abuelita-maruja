@@ -8,7 +8,10 @@ import {
   sendPasswordResetEmail as _sendPasswordResetEmail,
   sendEmailVerification
 } from "firebase/auth";
-import { useAuthState as _useAuthState } from "react-firebase-hooks/auth";
+import {
+  useAuthState as _useAuthState,
+  useDeleteUser as _useDeleteUser
+} from "react-firebase-hooks/auth";
 
 import { db, firebaseAuth } from "./config";
 import { showMsg } from "@/utils/showMsg";
@@ -18,10 +21,13 @@ import {
   removeSession
 } from "@/actions/authActions";
 import { doc, getDoc } from "firebase/firestore";
-import { createUser } from "./users";
+import { createUser, updateUser } from "./users";
 
 // returns [user, loading, error]
 export const useAuthState = () => _useAuthState(firebaseAuth);
+
+// returns [deleteUser, loading, error];
+export const useDeleteUser = () => _useDeleteUser(firebaseAuth);
 
 export function onAuthStateChanged(callback: (_authUser: User | null) => void) {
   return _onAuthStateChanged(firebaseAuth, callback);
@@ -136,5 +142,44 @@ export const sendPasswordResetEmail = async (email: string) => {
     };
   } catch {
     throw new Error("Error al enviar el correo para cambiar la contraseña");
+  }
+};
+
+export const checkVerification = async (user: User) => {
+  if (!user) throw new Error("Es necesario haber iniciado sesión");
+  if (user) {
+    await user.reload();
+
+    if (user?.emailVerified) {
+      await updateUser(user?.uid, {
+        emailVerified: true
+      }, false);
+
+      return {
+        successs: true,
+        message:  "Gracias por verificar tu email 🚀"
+      };
+    } else {
+      return {
+        successs: false,
+        message:  "Hubo un error al verificar tu email"
+      };
+    }
+  }
+};
+
+export const resendEmailVerification = async (user: User) => {
+  if (user) {
+    try {
+      await sendEmailVerification(user);
+
+      return {
+        successs: true,
+        message:  "Se ha reenviado el email de verificacion"
+      };
+    } catch {
+      throw new Error("Ocurrio un error al reenviar el email de verificacion");
+
+    }
   }
 };

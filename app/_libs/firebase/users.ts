@@ -6,7 +6,8 @@ import {
   setDoc,
   QuerySnapshot,
   DocumentData,
-  getDoc
+  getDoc,
+  updateDoc
 } from "firebase/firestore";
 import { db } from "./config";
 import {
@@ -15,6 +16,7 @@ import {
 } from "react-firebase-hooks/firestore";
 import { User } from "@/types";
 import { showMsg } from "@/utils/showMsg";
+import { removeSession } from "@/actions/authActions";
 
 const _collection = collection(db, "users");
 
@@ -55,7 +57,7 @@ export const createUser = async (uid: string, data: User) => {
 export const updateUser = async (id: string, data: User | DocumentData, withMsg: boolean = true) => {
   const userDoc = doc(db, "users", id);
   try {
-    await setDoc(userDoc, data);
+    await updateDoc(userDoc, data);
     if (withMsg) {
       showMsg("Usuario actualizado", "success");
     }
@@ -71,6 +73,8 @@ export const deleteUser = async (id: string) => {
 
   try {
     await deleteDoc(userDoc);
+    await removeSession();
+
     showMsg("Usuario eliminado", "success");
   } catch {
     showMsg("Algo ha fallado eliminando el usuario", "error");

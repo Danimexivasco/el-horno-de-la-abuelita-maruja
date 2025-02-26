@@ -4,6 +4,7 @@ import {
   HOME_PATH,
   RESET_PASSWORD_PATH,
   ROUTES,
+  USER_PROFILE_PATH,
   VERIFY_EMAIL_PATH
 } from "@/routes";
 import { type NextRequest, NextResponse } from "next/server";
@@ -24,7 +25,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(absoluteURL);
   }
 
-  if (!sessionCookie && ([VERIFY_EMAIL_PATH, RESET_PASSWORD_PATH].includes(currentPathname))) {
+  if (!sessionCookie && ([VERIFY_EMAIL_PATH, RESET_PASSWORD_PATH, USER_PROFILE_PATH].includes(currentPathname))) {
     const absoluteURL = request.nextUrl.clone();
     absoluteURL.pathname = HOME_PATH;
     return NextResponse.redirect(absoluteURL);

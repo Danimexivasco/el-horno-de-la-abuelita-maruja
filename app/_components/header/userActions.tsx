@@ -95,7 +95,7 @@ export default function UserActions({ user }: UserActionsProps) {
               <>
                 <div className="flex justify-between items-center gap-4 self-start w-full">
                   <p>Apariencia</p>
-                  <ThemeSwitchButton />
+                  <ThemeSwitchButton className="scale-75"/>
                 </div>
                 <div className="border-t border-cake-500 my-2 w-full"></div>
                 <p className="whitespace-nowrap dark:text-white text-black">Todavía no has iniciado sesión</p>

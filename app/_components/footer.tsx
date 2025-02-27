@@ -69,7 +69,7 @@ export default function Footer() {
           </div>
         </nav>
       </Container>
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center lg:mt-4">
         <Headline as="h6">Hecho con 💙 por{" "}
           <Link
             href="https://dcano.dev"

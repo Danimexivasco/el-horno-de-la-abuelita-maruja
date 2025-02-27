@@ -13,6 +13,7 @@ export const ABOUT_US_PATH = "/about";
 export const CONTACT_PATH = "/contact";
 export const CART_PATH = "/cart";
 export const USER_PROFILE_PATH = "/user-profile";
+export const ORDERS_PATH = "/orders";
 
 export const SIGN_IN_PATH = "/signIn";
 export const SIGN_UP_PATH = "/signUp";

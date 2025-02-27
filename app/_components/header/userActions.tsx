@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { User } from "@/types";
 import { signOut } from "@/app/_libs/firebase/auth";
-import { SIGN_IN_PATH, USER_PROFILE_PATH } from "@/routes";
+import { ORDERS_PATH, SIGN_IN_PATH, USER_PROFILE_PATH } from "@/routes";
 import { SignOutIcon, UserIcon } from "@/app/_icons";
 import Button from "../button";
 import Cart from "../cart";
@@ -73,9 +73,9 @@ export default function UserActions({ user }: UserActionsProps) {
                 ><LucideUserIcon size={20} /><span>Mi perfil</span>
                 </Link>
                 <Link
-                  href={"/"}
+                  href={ORDERS_PATH}
                   className="flex gap-2 self-start items-center no-underline dark:text-white dark:hover:text-cake-200 dark:active:text-cake-300 text-cake-800 hover:text-cake-900 active:text-cake-950"
-                ><ShoppingBag size={20} />Pedidos anteriores
+                ><ShoppingBag size={20} />Mis pedidos
                 </Link>
                 <div className="border-t border-cake-500 my-2 w-full"></div>
                 <div>

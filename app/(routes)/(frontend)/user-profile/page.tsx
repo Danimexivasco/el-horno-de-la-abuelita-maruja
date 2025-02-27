@@ -183,10 +183,6 @@ export default function UserProfilePage() {
                 htmlFor="profile-upload"
                 className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-cake-800 text-cake-100 p-2 rounded-full cursor-pointer"
               >
-                {/* <label
-                htmlFor="profile-upload"
-                className="absolute bottom-0 w-full flex justify-center bg-cake-800 text-cake-100 p-1.5 cursor-pointer"
-              > */}
                 <Camera size={22} />
               </label>
             </div>
@@ -215,7 +211,7 @@ export default function UserProfilePage() {
         <div className="flex flex-col gap-4">
           <p className="text-2xl lg:text-3xl">Verificación de email</p>
           {user?.emailVerified ?
-            <p>Email verificado: ✅</p>
+            <p>Email verificado ✅</p>
             :
             <p>Tu email no está verificado, por favor verifica tu email, esta acción es necesaria para poder realizar compras</p>
           }

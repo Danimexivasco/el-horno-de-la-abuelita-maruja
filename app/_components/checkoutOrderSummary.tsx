@@ -17,6 +17,11 @@ export default function CheckoutOrderSummary() {
     price:                0,
     priceBeforeDiscounts: 0
   });
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   useEffect(() => {
     if (cartItems?.length > 0) {
@@ -25,11 +30,11 @@ export default function CheckoutOrderSummary() {
     }
   }, [cartItems]);
 
-  return (
+  return isLoaded ? (
     <div className="lg:flex-1 dark:bg-cake-700/50 bg-cake-200 rounded-lg p-6 lg:p-8 lg:sticky lg:top-44 lg:max-w-md">
       <p className="text-3xl mb-8">Resumen del pedido</p>
       <div>
-        {cartItems.length > 0 ? (
+        {cartItems?.length > 0 ? (
           <>
             <ul className="grid gap-6 mb-8">
               {cartItems.map(item => {
@@ -139,5 +144,5 @@ export default function CheckoutOrderSummary() {
         )}
       </div>
     </div>
-  );
+  ) : null;
 }

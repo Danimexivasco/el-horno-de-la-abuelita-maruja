@@ -14,7 +14,6 @@ import {
   loadStripe,
   StripePaymentElementOptions
 } from "@stripe/stripe-js";
-import Headline from "../headline";
 import Button from "../button";
 
 // Make sure to call loadStripe outside of a component’s render to avoid

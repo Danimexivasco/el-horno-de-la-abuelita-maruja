@@ -58,7 +58,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
     }
   });
 
-  return (
+  return clientSecret ? (
     <Container>
       <p className="text-4xl lg:text-5xl mb-8">Compra Segura</p>
       <div className="grid lg:flex gap-12 lg:gap-40 lg:justify-center items-start">
@@ -70,5 +70,5 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
         <CheckoutOrderSummary />
       </div>
     </Container>
-  );
+  ) : null;
 }

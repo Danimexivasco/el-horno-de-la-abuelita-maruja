@@ -1,29 +1,19 @@
-import { HOME_PATH } from "@/routes";
 import { combine } from "../_utils/combineClassnames";
 import Link from "./link";
 
 type DashboardCardProps = {
     href: string;
     children: React.ReactNode;
-    centered?: boolean
     className?: string
 };
 
-export default function DashboardCard({ href, children, centered, className }: DashboardCardProps) {
+export default function DashboardCard({ href, children, className }: DashboardCardProps) {
   return (
-    <li>
-      <Link
-        href={href}
-        external={href === HOME_PATH}
-        noExternalIcon
-        className={combine(
-          "relative flex flex-col justify-center gap-4 p-6 h-full w-full bg-cake-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-10 shadow-xl overflow-hidden no-underline dark:!text-white !text-black transition-colors group-hover:shadow-lg dark:hover:shadow-cake-500/40 hover:shadow-black/30",
-          centered && "items-center",
-          className
-        )}
-      >
-        {children}
-      </Link>
-    </li>
+    <Link
+      href={href}
+      className={combine("flex flex-col justify-between gap-4 items-center p-6 bg-cake-200 dark:bg-cake-800 rounded-md shadow-lg dark:shadow-cake-500/40 transition-all hover:-translate-y-2  hover:shadow-xl hover:dark:shadow-cake-500/40 !text-black dark:!text-white no-underline", className)}
+    >
+      {children}
+    </Link>
   );
 }

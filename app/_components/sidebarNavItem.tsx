@@ -29,7 +29,7 @@ export default function SidebarNavItem({ path, label="", classNames="", onClick 
   const sidebarItemClasses = isActive ?
     "w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg dark:bg-cake-500 bg-cake-500 !text-black rounded-xl cursor-pointer"
     :
-    "w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg dark:bg-cake-900 dark:hover:bg-cake-500 bg-cake-100 hover:bg-cake-500 hover:text-black hover:rounded-xl transition-all duration-200 ease-linear cursor-pointer";
+    "w-12 h-12 flex justify-center items-center text-center rounded-3xl shadow-lg dark:bg-cake-900 dark:hover:bg-cake-500 bg-cake-100 hover:bg-cake-500 hover:!text-black hover:rounded-xl transition-all duration-200 ease-linear cursor-pointer";
 
   return (
     <li

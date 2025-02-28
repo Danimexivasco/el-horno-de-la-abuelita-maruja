@@ -1,7 +1,6 @@
 "use client";
 
 import { Cart, CartItem, OfferTypes } from "@/types";
-import { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { getTotals } from "../_utils/getTotals";
 import { formatNumber } from "../_utils/formatNumber";
@@ -16,14 +15,10 @@ import { MAXIMUM_PRODUCTS_PURCHASE } from "@/constants";
 import { getPrices } from "../_utils/getPrices";
 import { showMsg } from "../_utils/showMsg";
 import Headline from "./headline";
+import { WithIsClientCheck } from "../_hocs/WithIsClientCheck";
 
-export default function CartContent() {
-  const [isClient, setIsClient] = useState(false);
+function CartContent() {
   const [items, setItems, removeItems] = useLocalStorage<Cart>("cart", []);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const totals = getTotals(items);
 
@@ -129,8 +124,6 @@ export default function CartContent() {
       </div>
     );
   };
-
-  if (!isClient) return null;
 
   return items && items?.length > 0 ? (
     <div className="flex flex-col lg:flex-row items-start mb-4 lg:mb-8 justify-center lg:px-8">
@@ -305,3 +298,5 @@ export default function CartContent() {
     renderEmptyCart()
   );
 }
+
+export default WithIsClientCheck(CartContent);

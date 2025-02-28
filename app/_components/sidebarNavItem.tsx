@@ -3,7 +3,13 @@ import { combine } from "../_utils/combineClassnames";
 import { CakeIcon, DashboardIcon } from "../_icons";
 import { usePathname } from "next/navigation";
 import Tooltip from "./tooltip";
-import { ADMIN_DASHBOARD_PATH, ADMIN_PRODUCTS_PATH } from "@/routes";
+import {
+  ADMIN_DASHBOARD_PATH,
+  ADMIN_ORDERS_PATH,
+  ADMIN_PRODUCTS_PATH,
+  ADMIN_USERS_PATH
+} from "@/routes";
+import { ShoppingBag, User } from "lucide-react";
 
 type SidebarNavItemProps = {
   path: string
@@ -15,6 +21,8 @@ type SidebarNavItemProps = {
 const getIcon = (path: string): React.ReactNode => {
   if (path === ADMIN_PRODUCTS_PATH) return <CakeIcon className="w-6 h-6 " />;
   if (path === ADMIN_DASHBOARD_PATH) return <DashboardIcon className="w-6 h-6 " />;
+  if (path === ADMIN_ORDERS_PATH) return <ShoppingBag />;
+  if (path === ADMIN_USERS_PATH) return <User />;
 };
 
 export default function SidebarNavItem({ path, label="", classNames="", onClick }: SidebarNavItemProps) {

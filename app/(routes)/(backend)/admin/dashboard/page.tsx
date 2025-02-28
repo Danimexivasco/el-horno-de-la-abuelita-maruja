@@ -2,7 +2,12 @@ import DashboardCard from "@/app/_components/dashboardCard";
 import { getProducts } from "@/app/_libs/firebase/products";
 import Headline from "@/components/headline";
 import { CATEGORY_OPTIONS } from "@/constants";
-import { ADMIN_PRODUCTS_PATH, PRODUCTS_PATH } from "@/routes";
+import {
+  ADMIN_ORDERS_PATH,
+  ADMIN_PRODUCTS_PATH,
+  ADMIN_USERS_PATH,
+  PRODUCTS_PATH
+} from "@/routes";
 import { Metadata } from "next";
 import { getLoggedUser } from "@/actions/authActions";
 import { User } from "@/types";
@@ -35,8 +40,8 @@ export default async function Dashboard() {
 
   return (
     <>
-      <Headline className="font-bold mb-8">Panel de Control</Headline>
-      <p className="text-3xl mb-8">Bienvenido, {user?.username} 👋🏼</p>
+      <Headline className="!text-4xl lg:text-5xl font-bold mb-8">Panel de Control</Headline>
+      <p className="text-2xl lg:text-3xl mb-8">Bienvenido, {user?.username} 👋🏼</p>
       <div className="grid grid-cols-auto-fill gap-12">
         <DashboardCard
           href={ADMIN_PRODUCTS_PATH}
@@ -60,7 +65,7 @@ export default async function Dashboard() {
           </div>
         </DashboardCard>
         <DashboardCard
-          href={ADMIN_PRODUCTS_PATH} // TODO: Change to admin orders path
+          href={ADMIN_ORDERS_PATH}
         >
           <Headline
             as="h2"
@@ -92,7 +97,7 @@ export default async function Dashboard() {
           </div>
         </DashboardCard>
         <DashboardCard
-          href={ADMIN_PRODUCTS_PATH} // TODO: Change to admin users path
+          href={ADMIN_USERS_PATH}
           className="flex flex-col !justify-start items-center"
         >
           <Headline
@@ -117,8 +122,13 @@ export default async function Dashboard() {
       </div>
       <Link
         href={PRODUCTS_PATH}
-        className="flex gap-2 items-center mt-12 w-fit"
-      > <Store size={20}/> Ir a la Tienda
+        target="_blank"
+        className="flex items-center mt-12 w-fit"
+      >
+        <Store
+          size={20}
+          className="mr-2"
+        /> Ir a la Tienda
       </Link>
     </>
   );

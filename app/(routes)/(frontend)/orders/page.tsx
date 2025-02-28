@@ -7,8 +7,6 @@ import { WithOrders } from "./WithOrders";
 type OrdersPageProps = { orders: any[] };
 
 function OrdersPage({ orders }: OrdersPageProps) {
-  console.log("orders", orders);
-
   return (
     <Container>
       <Headline>Mis pedidos</Headline>

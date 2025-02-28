@@ -84,6 +84,8 @@ const STATUS_CONTENT_MAP = {
 };
 
 export default async function SuccessPage({ searchParams }) {
+  // TODO: If success, send email to admin to notice that
+  // the order has been successful and she has to cook!
   const { payment_intent: paymentIntentId } = await searchParams;
 
   if (!paymentIntentId) redirect("/");

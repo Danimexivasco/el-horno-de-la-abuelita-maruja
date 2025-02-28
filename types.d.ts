@@ -134,6 +134,7 @@ type Order = {
   state: OrderStatus
   deliveryStatus: DeliveryStatus //TODO: Add when create the order
   paidAt?: number
+  customerEmail: string
   createdAt: number
   updatedAt?: number
   trackingNumber?: string

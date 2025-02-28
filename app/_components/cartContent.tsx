@@ -201,10 +201,11 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
       } else {
         orderId = await createOrder({
           ...order,
-          state:      OrderStatus.PENDING,
-          products:   order.products ?? [],
-          customerId: parsedUser.id,
-          createdAt:  Date.now()
+          state:         OrderStatus.PENDING,
+          products:      order.products ?? [],
+          customerId:    parsedUser.id,
+          createdAt:     Date.now(),
+          customerEmail: parsedUser.email
         });
       }
 

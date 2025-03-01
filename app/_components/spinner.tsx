@@ -6,7 +6,7 @@ type SpinnerProps = {
   className?: string
 };
 
-export default function Spinner({ outterColor, innerColor="dark:text-cake-400 text-cake-600", className="" }: SpinnerProps) {
+export default function Spinner({ outterColor, innerColor = "dark:text-cake-400 text-cake-600", className = "" }: SpinnerProps) {
   return (
     <svg
       className={combine("dark:text-cake-100 text-cake-300 animate-spin", className)}

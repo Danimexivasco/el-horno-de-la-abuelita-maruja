@@ -17,7 +17,7 @@ type CardProps = Omit<Product, "id" | "createdAt"> & {
   className?: string,
 };
 
-export default function Card({ name, description, category, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, reviews, showBuyBtn=false, className="" }: CardProps) {
+export default function Card({ name, description, category, price, multiPrice, variants = [], image, onOffer, offerType, discountPercentage, multiplierAmount, reviews, showBuyBtn = false, className = "" }: CardProps) {
   const {
     price: variantPrice,
     onOffer: variantOnOffer,

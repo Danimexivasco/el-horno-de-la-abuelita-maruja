@@ -31,7 +31,7 @@ type MobileHeaderProps = {
     className?: string
 };
 
-function MobileHeader({ navRoutes=[], activePathname, user, glassyHeader, setGlassyHeader, className }: MobileHeaderProps) {
+function MobileHeader({ navRoutes = [], activePathname, user, glassyHeader, setGlassyHeader, className }: MobileHeaderProps) {
   const router = useRouter();
   const pathanme = usePathname();
   const [showMenu, setShowMenu] = useState(false);

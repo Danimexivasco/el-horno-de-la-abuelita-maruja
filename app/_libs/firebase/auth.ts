@@ -70,7 +70,7 @@ export async function signInWithGoogle() {
 
 export const signUpWithEmailAndPassword = async (formData: { username: string, email: string; password: string }) => {
   const { username, email, password } = formData;
-  if (!username ||!email || !password) throw new Error("Todos los campos son requeridos");
+  if (!username || !email || !password) throw new Error("Todos los campos son requeridos");
   try {
     const userCredential = await _createUserWithEmailAndPassword(firebaseAuth, email, password);
     const { user: { uid, email: _email, photoURL, emailVerified } } = userCredential;

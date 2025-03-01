@@ -9,7 +9,7 @@ export type FormFieldProps = {
   [key: string]: any
 };
 
-export default function FormField({ input, type="input", value, ...props }: FormFieldProps) {
+export default function FormField({ input, type = "input", value, ...props }: FormFieldProps) {
   if (type === "select") {
     const { label, name, options, required, onChange } = input as SelectProps;
     return <Select
@@ -21,7 +21,7 @@ export default function FormField({ input, type="input", value, ...props }: Form
       onChange={onChange}
     />;
   } else {
-    const { name, type, label, placeholder="", required, pattern, options=[], onChange, className="" } = input as (InputProps & TextareaProps);
+    const { name, type, label, placeholder = "", required, pattern, options = [], onChange, className = "" } = input as (InputProps & TextareaProps);
     if (type === "textarea") {
       return <TextArea
         name={name}

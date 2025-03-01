@@ -10,7 +10,7 @@ export type TextareaProps = {
   className?: string
 };
 
-export default function TextArea({ name, label, value, placeholder="", required, onChange, className="" }: TextareaProps) {
+export default function TextArea({ name, label, value, placeholder = "", required, onChange, className = "" }: TextareaProps) {
   return (
     label ? (
       <label className="text-base grid gap-2">

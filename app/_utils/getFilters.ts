@@ -33,8 +33,8 @@ export const getFiltersFromProducts = (products: Product[]) => {
       filters.priceFrom = filters.priceFrom !== 0 ? Math.min(filters.priceFrom, minPrice) : minPrice;
       filters.priceTo = filters.priceTo !== 0 ? Math.max(filters.priceTo, maxPrice) : maxPrice;
     } else {
-      filters.priceFrom = filters.priceFrom !== 0 ? Math.min(filters.priceFrom, product.price): product.price;
-      filters.priceTo = filters.priceTo !== 0 ? Math.max(filters.priceTo, product.price): product.price;
+      filters.priceFrom = filters.priceFrom !== 0 ? Math.min(filters.priceFrom, product.price) : product.price;
+      filters.priceTo = filters.priceTo !== 0 ? Math.max(filters.priceTo, product.price) : product.price;
     }
   });
   filters.allergens = [...new Set(filters.allergens)];

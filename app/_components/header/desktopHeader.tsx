@@ -13,7 +13,7 @@ type DesktopHeaderProps = {
     className?: string
 };
 
-export default function DesktopHeader({ navRoutes=[], activePathname, user, className }: DesktopHeaderProps) {
+export default function DesktopHeader({ navRoutes = [], activePathname, user, className }: DesktopHeaderProps) {
 
   return (
     <Container
@@ -24,7 +24,7 @@ export default function DesktopHeader({ navRoutes=[], activePathname, user, clas
       )}
     >
       <ul className="flex gap-8 justify-self-end">
-        {navRoutes.slice(0, Math.round(navRoutes.length/2))?.map((route: Route) => (
+        {navRoutes.slice(0, Math.round(navRoutes.length / 2))?.map((route: Route) => (
           <Link
             href={route.path}
             key={route.path}
@@ -43,7 +43,7 @@ export default function DesktopHeader({ navRoutes=[], activePathname, user, clas
       </Link>
       <div className="justify-self-start flex items-center justify-between gap-12">
         <ul className="flex items-center gap-8">
-          {navRoutes.slice(Math.round(navRoutes.length/2), navRoutes.length)?.map((route) => (
+          {navRoutes.slice(Math.round(navRoutes.length / 2), navRoutes.length)?.map((route) => (
             <Link
               href={route.path}
               key={route.path}

@@ -188,3 +188,5 @@ export const FILTERS_INITIAL_STATE: FiltersState = {
 };
 
 export const FILTER_PARAMS = ["search", "category", "allergens", "priceFrom", "priceTo", "onOffer"];
+
+export const MONTHS = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];

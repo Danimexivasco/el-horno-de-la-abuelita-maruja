@@ -16,6 +16,11 @@ import { sriracha } from "@/app/_fonts";
 import Link from "@/app/_components/link";
 import { Store } from "lucide-react";
 import { getUsers } from "@/app/_libs/firebase/users";
+import { getOrders } from "@/app/_libs/firebase/orders";
+import { groupBy } from "@/app/_utils/groupBy";
+import { DeliveryStatus } from "@/enums";
+import OrdersChart from "@/app/_components/charts/orders";
+import SalesChart from "@/app/_components/charts/sales";
 
 export const metadata: Metadata = {
   title:       "Panel de Control",
@@ -35,14 +40,65 @@ export default async function Dashboard() {
   const user = await getLoggedUser() as User;
   const users = await getUsers();
   const showingUsers = users.filter(dbUser => dbUser.id !== user.id);
-  // TODO: Add orders
-  // const orders = await getOrders();
+  const orders = await getOrders();
+  const ordersByState = groupBy(orders, "state");
 
   return (
     <>
       <Headline className="!text-4xl lg:text-5xl font-bold mb-8">Panel de Control</Headline>
       <p className="text-2xl lg:text-3xl mb-8">Bienvenido, {user?.username} 👋🏼</p>
-      <div className="grid grid-cols-auto-fill gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2  gap-12">
+        <DashboardCard
+          href={ADMIN_ORDERS_PATH}
+        >
+          <Headline
+            as="h2"
+            className="!mb-0"
+          >Pedidos
+          </Headline>
+          <OrdersChart
+            orders={orders}
+            isPreview
+          />
+          <div className="flex gap-4 justify-between w-full">
+            <div className="flex gap-4 justify-between w-full">
+              <div
+                className="flex flex-col justify-between text-center"
+              >
+                <p>Pendientes</p>
+                <p className="font-bold">{ordersByState[DeliveryStatus.FOR_DELIVERY]?.length ?? 0}</p>
+              </div>
+              <div
+                className="flex flex-col justify-between text-center"
+              >
+                <p>En tránsito</p>
+                <p className="font-bold">{ordersByState[DeliveryStatus.IN_TRANSIT]?.length ?? 0}</p>
+              </div>
+              <div
+                className="flex flex-col justify-between text-center"
+              >
+                <p>Entregados</p>
+                <p className="font-bold">{ordersByState[DeliveryStatus.DELIVERED]?.length ?? 0}</p>
+              </div>
+            </div>
+          </div>
+        </DashboardCard>
+
+        <DashboardCard
+          href={ADMIN_PRODUCTS_PATH} // TODO: Change to admin sales path
+          className="flex flex-col !justify-start items-center"
+        >
+          <Headline
+            as="h2"
+            className="!mb-0"
+          >Ventas
+          </Headline>
+          <SalesChart
+            orders={orders}
+            isPreview
+          />
+        </DashboardCard>
+
         <DashboardCard
           href={ADMIN_PRODUCTS_PATH}
         >
@@ -51,7 +107,7 @@ export default async function Dashboard() {
             className="!mb-0"
           >Productos
           </Headline>
-          <p className={combine(sriracha.className, "text-5xl")}>{products?.length ?? 0}</p>
+          <p className={combine(sriracha.className, "text-5xl lg:text-8xl")}>{products?.length ?? 0}</p>
           <div className="flex gap-4 justify-between w-full">
             {CATEGORY_OPTIONS.filter(category => category.value !== "").map(({ value, label }) => (
               <div
@@ -64,38 +120,7 @@ export default async function Dashboard() {
             ))}
           </div>
         </DashboardCard>
-        <DashboardCard
-          href={ADMIN_ORDERS_PATH}
-        >
-          <Headline
-            as="h2"
-            className="!mb-0"
-          >Pedidos
-          </Headline>
-          <p className={combine(sriracha.className, "text-5xl")}>XX Gráfico?</p>
-          <div className="flex gap-4 justify-between w-full">
-            <div className="flex gap-4 justify-between w-full">
-              <div
-                className="text-center"
-              >
-                <p>Pendientes</p>
-                <p className="font-bold">XX</p>
-              </div>
-              <div
-                className="text-center"
-              >
-                <p>En tránsito</p>
-                <p className="font-bold">XX</p>
-              </div>
-              <div
-                className="text-center"
-              >
-                <p>Entregados</p>
-                <p className="font-bold">XX</p>
-              </div>
-            </div>
-          </div>
-        </DashboardCard>
+
         <DashboardCard
           href={ADMIN_USERS_PATH}
           className="flex flex-col !justify-start items-center"
@@ -107,18 +132,7 @@ export default async function Dashboard() {
           </Headline>
           <p className={combine(sriracha.className, "text-5xl")}>{showingUsers?.length}</p>
         </DashboardCard>
-        <DashboardCard
-          href={ADMIN_PRODUCTS_PATH} // TODO: Change to admin sales path
-          className="flex flex-col !justify-start items-center"
-        >
-          <Headline
-            as="h2"
-            className="!mb-0"
-          >Ventas
-          </Headline>
-          <p className={combine(sriracha.className, "text-5xl")}>Total €</p>
-          Grafico con las ventas
-        </DashboardCard>
+
       </div>
       <Link
         href={PRODUCTS_PATH}

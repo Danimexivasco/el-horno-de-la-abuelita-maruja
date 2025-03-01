@@ -107,3 +107,24 @@ type CartItem = {
 };
 
 type Cart = CartItem[];
+
+type OrderProduct = {
+  id: Product["id"],
+  quantity: number
+  unitPrice: number
+  priceToPay: number
+};
+
+type Order = {
+  id: string,
+  customerId: User["id"]
+  products: OrderProduct[]
+  state: OrderStatus
+  deliveryStatus: DeliveryStatus
+  paidAt?: number
+  createdAt: number
+  updatedAt?: number
+  [p: string]: any
+};
+
+type NewOrder = Omit<Order, "id">;

@@ -54,6 +54,7 @@ export default [
 
       "@stylistic/type-annotation-spacing": [2],
       "@stylistic/semi": ["error", "always"],
+      "@stylistic/space-infix-ops": ["error"],
 
       "@stylistic/jsx-max-props-per-line": [
         "error",

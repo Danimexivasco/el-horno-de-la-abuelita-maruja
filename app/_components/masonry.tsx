@@ -1,29 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
 import {
   default as ReactMasonry,
   ResponsiveMasonry
 } from "react-responsive-masonry";
 import Container from "./container";
+import { WithIsClientCheck } from "../_hocs/withIsClientCheck";
 
 type MasonryProps = {
     items: any[]
     cta?: React.ReactNode
 };
 
-export default function Masonry({ items = [], cta }: MasonryProps) {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    return null;
-  }
-
+function Masonry({ items = [], cta }: MasonryProps) {
   return (
     <Container className="px-0 lg:px-8 grid gap-12">
       <ResponsiveMasonry
@@ -54,3 +44,5 @@ export default function Masonry({ items = [], cta }: MasonryProps) {
     </Container>
   );
 }
+
+export default WithIsClientCheck(Masonry);

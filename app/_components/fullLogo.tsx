@@ -4,7 +4,7 @@ import { combine } from "@/utils/combineClassnames";
 type FullLogoProps = {
   className?: string
 };
-export default function FullLogo({ className="" }: FullLogoProps) {
+export default function FullLogo({ className = "" }: FullLogoProps) {
 
   return (
     <>

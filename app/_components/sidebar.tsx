@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Button from "@/components/button";
-import { Route } from "@/routes";
+import { PRODUCTS_PATH, Route } from "@/routes";
 import { useWindowSize } from "../_hooks/useWindowSize";
 import { SignOutIcon, RightArrowIcon } from "../_icons";
 import { signOut } from "../_libs/firebase/auth";
@@ -11,13 +11,15 @@ import SidebarNavItem from "./sidebarNavItem";
 import ThemeSwitchButton from "./themeSwitchButton";
 import Tooltip from "./tooltip";
 import { useRouter } from "next/navigation";
+import Link from "./link";
+import { Store } from "lucide-react";
 
 type SidebarProps = {
   routes: Route[]
   className?: string
 };
 
-export default function Sidebar({ routes=[], className="" }: SidebarProps) {
+export default function Sidebar({ routes = [], className = "" }: SidebarProps) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { isMobile } = useWindowSize();
   const router = useRouter();
@@ -47,8 +49,21 @@ export default function Sidebar({ routes=[], className="" }: SidebarProps) {
         </ul>
       </nav>
       <ul className="grid place-items-center gap-4">
-        <li>
-          <ThemeSwitchButton />
+        <li className="flex justify-center w-full relative">
+          <Link
+            href={PRODUCTS_PATH}
+            target="_blank"
+            noExternalIcon
+            className="peer flex items-center "
+          >
+            <Store size={32}/>
+          </Link>
+          <Tooltip
+            text={"Ir a la Tienda"}
+          />
+        </li>
+        <li className="relative">
+          <ThemeSwitchButton className="scale-75 peer"/>
         </li>
         <li
           className="flex justify-center relative w-full"

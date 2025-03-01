@@ -65,6 +65,7 @@ export default function VerifyEmailPage() {
         </>
       ) : (
         <>
+          <Headline>Usuario verificado</Headline>
           <p>Tu usuario está verificado, puedes continuar con tu compra 😁</p>
           <Link
             asButton

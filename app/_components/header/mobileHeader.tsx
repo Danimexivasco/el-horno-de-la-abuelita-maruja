@@ -1,7 +1,13 @@
 "use client";
 
 import { Squash as Hamburger } from "hamburger-react";
-import { HOME_PATH, Route, SIGN_IN_PATH, USER_PROFILE_PATH } from "@/routes";
+import {
+  ADMIN_DASHBOARD_PATH,
+  HOME_PATH,
+  Route,
+  SIGN_IN_PATH,
+  USER_PROFILE_PATH
+} from "@/routes";
 import Container from "../container";
 import { User } from "@/types";
 import { combine } from "@/app/_utils/combineClassnames";
@@ -13,6 +19,8 @@ import Button from "../button";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "@/app/_libs/firebase/auth";
 import ThemeSwitchButton from "../themeSwitchButton";
+import { LayoutDashboard, User as LucideUserIcon } from "lucide-react";
+import { WithIsClientCheck } from "../../_hocs/withIsClientCheck";
 
 type MobileHeaderProps = {
     navRoutes: Route[]
@@ -23,7 +31,7 @@ type MobileHeaderProps = {
     className?: string
 };
 
-export default function MobileHeader({ navRoutes=[], activePathname, user, glassyHeader, setGlassyHeader, className }: MobileHeaderProps) {
+function MobileHeader({ navRoutes = [], activePathname, user, glassyHeader, setGlassyHeader, className }: MobileHeaderProps) {
   const router = useRouter();
   const pathanme = usePathname();
   const [showMenu, setShowMenu] = useState(false);
@@ -98,9 +106,16 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, glass
                     <>
                       <Link
                         href={USER_PROFILE_PATH}
-                        className="mb-2 font-bold"
-                      >Ir a mi perfil / Ajustes
+                        className="flex gap-2 mb-2 font-bold"
+                      ><LucideUserIcon size={20}/>Ir a mi perfil / Ajustes
                       </Link>
+                      {user.role === "admin" ? (
+                        <Link
+                          href={ADMIN_DASHBOARD_PATH}
+                          className="flex gap-2 mb-2 font-bold"
+                        ><LayoutDashboard size={20}/>Ir al dashboard
+                        </Link>
+                      ) : null}
                       {user.username ?
                         <p>{user.username}</p>
                         : null
@@ -135,3 +150,5 @@ export default function MobileHeader({ navRoutes=[], activePathname, user, glass
     </>
   );
 }
+
+export default WithIsClientCheck(MobileHeader);

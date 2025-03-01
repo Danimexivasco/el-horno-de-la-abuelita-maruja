@@ -23,6 +23,7 @@ import { removeZeroValue } from "../input";
 import Spinner from "../spinner";
 import ProductVariantField from "./productVariantFields";
 import Link from "../link";
+import Alert from "../alert";
 
 type ProductFormProps = {
   headline: string
@@ -39,7 +40,7 @@ interface ProductFormData extends Omit<Product, "createdAt"> {
   [key: string]: any;
 }
 
-export default function ProductForm({ headline, inputs, initialState, redirectTo, submitBtnText="Crear", outterClassName="", fieldsContainerClassName="", fullWidthBtn = false }: ProductFormProps) {
+export default function ProductForm({ headline, inputs, initialState, redirectTo, submitBtnText = "Crear", outterClassName = "", fieldsContainerClassName = "", fullWidthBtn = false }: ProductFormProps) {
   const router = useRouter();
   const [formData, setFormData] = useState<ProductFormData>({
     ...initialState,
@@ -270,12 +271,22 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
       <div className="flex items-center justify-between mb-8">
         <Headline className="font-bold">{headline}</Headline>
         {formData.id &&
-          <Button
-            onClick={deleteProduct}
-            withIcon
-            isRed
-          ><TrashIcon className="w-5 h-5"/> Eliminar
-          </Button>
+          <Alert
+            title="Eliminar producto"
+            description="¿Seguro que deseas eliminar el producto? Esta acción no se puede deshacer."
+            triggerElement={<Button
+              withIcon
+              isRed
+            ><TrashIcon className="w-5 h-5"/> Eliminar
+            </Button>}
+            cancelElement={<Button>Cancelar</Button>}
+            actionElement={<Button
+              onClick={deleteProduct}
+              withIcon
+              isRed
+            ><TrashIcon className="w-5 h-5"/> Sí, eliminar
+            </Button>}
+          />
         }
       </div>
       <form
@@ -410,12 +421,12 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
                 {
                   value:   "percentage",
                   label:   "Porcentage",
-                  checked: formData.offerType ==="percentage" || true
+                  checked: formData.offerType === "percentage" || true
                 },
                 {
                   value:   "multiplier",
                   label:   "2x1",
-                  checked: formData.offerType ==="multiplier" || false
+                  checked: formData.offerType === "multiplier" || false
                 }
               ]
               ,

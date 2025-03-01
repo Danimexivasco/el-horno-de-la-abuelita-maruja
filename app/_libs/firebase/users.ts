@@ -7,7 +7,8 @@ import {
   QuerySnapshot,
   DocumentData,
   getDoc,
-  updateDoc
+  updateDoc,
+  getDocs
 } from "firebase/firestore";
 import { db } from "./config";
 import {
@@ -37,6 +38,19 @@ export const useSingleUserData = (id: string) => {
   const [snapshot, loading, error] = useDocumentData(document);
 
   return [snapshot, loading, error];
+};
+
+export const getUsers = async (): Promise<User[]> => {
+  try {
+    const querySnapshot = await getDocs(_collection);
+    const users = querySnapshot.docs.map(doc => {
+      return (doc.data() as User);
+    });
+
+    return users;
+  } catch {
+    throw new Error("Ha ocurrido un error al obtener los usuarios");
+  }
 };
 
 export const getActualUser = async (id: string) => {

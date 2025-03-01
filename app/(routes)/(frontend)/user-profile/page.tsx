@@ -5,7 +5,6 @@ import Button from "@/app/_components/button";
 import Container from "@/app/_components/container";
 import FormField from "@/app/_components/forms/formField";
 import Headline from "@/app/_components/headline";
-import Link from "@/app/_components/link";
 import { LogoIcon, TrashIcon } from "@/app/_icons";
 import {
   checkVerification,
@@ -183,10 +182,6 @@ export default function UserProfilePage() {
                 htmlFor="profile-upload"
                 className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-cake-800 text-cake-100 p-2 rounded-full cursor-pointer"
               >
-                {/* <label
-                htmlFor="profile-upload"
-                className="absolute bottom-0 w-full flex justify-center bg-cake-800 text-cake-100 p-1.5 cursor-pointer"
-              > */}
                 <Camera size={22} />
               </label>
             </div>
@@ -215,7 +210,7 @@ export default function UserProfilePage() {
         <div className="flex flex-col gap-4">
           <p className="text-2xl lg:text-3xl">Verificación de email</p>
           {user?.emailVerified ?
-            <p>Email verificado: ✅</p>
+            <p>Email verificado ✅</p>
             :
             <p>Tu email no está verificado, por favor verifica tu email, esta acción es necesaria para poder realizar compras</p>
           }
@@ -226,11 +221,6 @@ export default function UserProfilePage() {
             </div>
 
           ) : null}
-
-          <p className="text-2xl lg:text-3xl mt-4">Pedidos anteriores</p>
-          <Link href={"/"}>
-            TODO: VER PEDIDOS ANTERIORES
-          </Link>
 
           <div className="bg-red-400/30 p-4 rounded-md flex flex-col gap-4 mt-6 lg:mt-auto">
             <p className="text-2xl lg:text-3xl">Eliminar usuario </p>

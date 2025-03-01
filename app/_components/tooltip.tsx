@@ -7,7 +7,7 @@ type TooltipProps = {
 };
 
 // To use the tooltip component add the "peer" class to the sibling element
-export default function Tooltip({ text, position="right", className="" }: TooltipProps) {
+export default function Tooltip({ text, position = "right", className = "" }: TooltipProps) {
   const rightPositionedContainerClasses = "top-1/2 -translate-y-1/2 left-[110%]";
   const rightPositionedArrow = "top-1/2 -translate-y-1/2 -left-[3px]";
   const topPositionedContainerClasses = "-top-[100%] left-1/2 -translate-x-1/2";

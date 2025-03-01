@@ -36,7 +36,7 @@ export default function Header({ user }: HeaderProps) {
     <>
       <header
         className={combine(
-          "fixed w-full top-0 left-0 z-50 lg:py-4 lg:px-8 flex items-center min-h-16 lg:h-36 bg-opacity-98 dark:bg-cake-950 bg-cake-200 lg:transition-all lg:ease-linear lg:duration-200",
+          "fixed w-full top-0 left-0 z-50 lg:py-4 lg:px-8 flex items-center min-h-16 lg:h-36 bg-opacity-98 dark:bg-cake-950 bg-cake-200 lg:!transition-none",
           (glassyHeader) && "glass !bg-opacity-80 shadow-md shadow-black/10",
           hideHeader && "hidden"
         )}

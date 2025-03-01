@@ -18,7 +18,7 @@ type TextMediaProps = {
     className?: string
 };
 
-export default function TextMedia({ headline, subHeadline, headlineAs="h2", subHeadlineAs="h5", text, cta, media, mediaPosition="right", mediaAspect="video", className }: TextMediaProps) {
+export default function TextMedia({ headline, subHeadline, headlineAs = "h2", subHeadlineAs = "h5", text, cta, media, mediaPosition = "right", mediaAspect = "video", className }: TextMediaProps) {
   if (mediaPosition === "left") return (
     <Container
       as="section"

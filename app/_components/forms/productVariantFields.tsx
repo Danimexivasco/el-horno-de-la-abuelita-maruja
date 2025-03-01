@@ -84,12 +84,12 @@ export default function ProductVariantField({ id, name, value, offerData, handle
                 {
                   value:   "percentage",
                   label:   "Porcentage",
-                  checked: offerData?.offerType ==="percentage" || true
+                  checked: offerData?.offerType === "percentage" || true
                 },
                 {
                   value:   "multiplier",
                   label:   "2x1",
-                  checked: offerData?.offerType ==="multiplier" || false
+                  checked: offerData?.offerType === "multiplier" || false
                 }
               ]
               ,

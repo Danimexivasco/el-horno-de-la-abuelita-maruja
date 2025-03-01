@@ -12,7 +12,7 @@ type LinkProps = {
   [prop: string]: any
 };
 
-export default function Link({ href, children, external, asButton=false, noExternalIcon, className="", ...props }: LinkProps) {
+export default function Link({ href, children, external, asButton = false, noExternalIcon, className = "", ...props }: LinkProps) {
   const buttonClasses = asButton ? "button" : "underline";
 
   if (external) return (
@@ -29,7 +29,7 @@ export default function Link({ href, children, external, asButton=false, noExter
   return (
     <NextLink
       href={href}
-      className={combine("inline-block dark:text-cake-400 dark:hover:text-cake-500 dark:active:text-cake-600 text-cake-600 hover:text-cake-700 active:text-cake-800", className, buttonClasses, asButton && sriracha.className)}
+      className={combine("inline-block dark:text-cake-400 dark:hover:text-cake-500 dark:active:text-cake-600 text-cake-600 hover:text-cake-700 active:text-cake-800", className, buttonClasses, asButton && sriracha.className, noExternalIcon && "no-icon", className)}
       {...props}
     >
       {children}

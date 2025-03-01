@@ -20,7 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "@/app/_libs/firebase/auth";
 import ThemeSwitchButton from "../themeSwitchButton";
 import { LayoutDashboard, User as LucideUserIcon } from "lucide-react";
-import { WithIsClientCheck } from "../../_hocs/WithIsClientCheck";
+import { WithIsClientCheck } from "../../_hocs/withIsClientCheck";
 
 type MobileHeaderProps = {
     navRoutes: Route[]

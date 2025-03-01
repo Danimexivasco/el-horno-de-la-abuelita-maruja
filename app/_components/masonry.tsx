@@ -6,7 +6,7 @@ import {
   ResponsiveMasonry
 } from "react-responsive-masonry";
 import Container from "./container";
-import { WithIsClientCheck } from "../_hocs/WithIsClientCheck";
+import { WithIsClientCheck } from "../_hocs/withIsClientCheck";
 
 type MasonryProps = {
     items: any[]

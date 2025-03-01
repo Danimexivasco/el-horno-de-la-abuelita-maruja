@@ -15,7 +15,7 @@ import { MAXIMUM_PRODUCTS_PURCHASE } from "@/constants";
 import { getPrices } from "../_utils/getPrices";
 import { showMsg } from "../_utils/showMsg";
 import Headline from "./headline";
-import { WithIsClientCheck } from "../_hocs/WithIsClientCheck";
+import { WithIsClientCheck } from "../_hocs/withIsClientCheck";
 
 function CartContent() {
   const [items, setItems, removeItems] = useLocalStorage<Cart>("cart", []);

@@ -7,9 +7,10 @@ import {
   ADMIN_DASHBOARD_PATH,
   ADMIN_ORDERS_PATH,
   ADMIN_PRODUCTS_PATH,
+  ADMIN_SALES_PATH,
   ADMIN_USERS_PATH
 } from "@/routes";
-import { ShoppingBag, User } from "lucide-react";
+import { Euro, ShoppingBag, User } from "lucide-react";
 
 type SidebarNavItemProps = {
   path: string
@@ -23,6 +24,7 @@ const getIcon = (path: string): React.ReactNode => {
   if (path === ADMIN_DASHBOARD_PATH) return <DashboardIcon className="w-6 h-6" />;
   if (path === ADMIN_ORDERS_PATH) return <ShoppingBag />;
   if (path === ADMIN_USERS_PATH) return <User />;
+  if (path === ADMIN_SALES_PATH) return <Euro />;
 };
 
 export default function SidebarNavItem({ path, label = "", classNames = "", onClick }: SidebarNavItemProps) {

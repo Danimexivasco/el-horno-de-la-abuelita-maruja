@@ -5,6 +5,7 @@ import { CATEGORY_OPTIONS } from "@/constants";
 import {
   ADMIN_ORDERS_PATH,
   ADMIN_PRODUCTS_PATH,
+  ADMIN_SALES_PATH,
   ADMIN_USERS_PATH
 } from "@/routes";
 import { Metadata } from "next";
@@ -81,7 +82,7 @@ export default async function Dashboard() {
         </DashboardCard>
 
         <DashboardCard
-          href={ADMIN_PRODUCTS_PATH} // TODO: Change to admin sales path
+          href={ADMIN_SALES_PATH}
           className="flex flex-col !justify-start items-center"
         >
           <Headline

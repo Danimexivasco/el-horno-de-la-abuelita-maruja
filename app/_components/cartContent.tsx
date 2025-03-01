@@ -15,7 +15,7 @@ import { MAXIMUM_PRODUCTS_PURCHASE } from "@/constants";
 import { getPrices } from "../_utils/getPrices";
 import { showMsg } from "../_utils/showMsg";
 import Headline from "./headline";
-import { WithIsClientCheck } from "../_hocs/WithIsClientCheck";
+import { WithIsClientCheck } from "../_hocs/withIsClientCheck";
 
 function CartContent() {
   const [items, setItems, removeItems] = useLocalStorage<Cart>("cart", []);
@@ -137,7 +137,7 @@ function CartContent() {
                 const { quantity, variant, product } = item;
                 const { id, name, image } = product;
 
-                const variantProduct = variant ? product.variants?.find(el => el.name === variant): null;
+                const variantProduct = variant ? product.variants?.find(el => el.name === variant) : null;
 
                 return (
                   <div
@@ -266,7 +266,7 @@ function CartContent() {
               <p>Productos totales</p>
               <p className="font-bold">{totals.units}</p>
             </div>
-            {totals.priceBeforeDiscounts !== totals.price? (
+            {totals.priceBeforeDiscounts !== totals.price ? (
               <div className="hidden lg:grid gap-4">
                 <div className="grid grid-cols-[2fr_1fr] gap-6 lg:gap-12">
                   <p>Total sin descuento</p>
@@ -274,7 +274,7 @@ function CartContent() {
                 </div>
                 <div className="grid grid-cols-[2fr_1fr] gap-6 lg:gap-12">
                   <p>Descuento</p>
-                  <p className="font-bold">-{formatNumber(totals.priceBeforeDiscounts- totals.price)}</p>
+                  <p className="font-bold">-{formatNumber(totals.priceBeforeDiscounts - totals.price)}</p>
                 </div>
                 <div className="border-t border-cake-500"></div>
               </div>

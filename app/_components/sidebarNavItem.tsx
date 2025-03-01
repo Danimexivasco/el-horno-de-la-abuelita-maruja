@@ -25,7 +25,7 @@ const getIcon = (path: string): React.ReactNode => {
   if (path === ADMIN_USERS_PATH) return <User />;
 };
 
-export default function SidebarNavItem({ path, label="", classNames="", onClick }: SidebarNavItemProps) {
+export default function SidebarNavItem({ path, label = "", classNames = "", onClick }: SidebarNavItemProps) {
   const pathname = usePathname();
   const isActive = path === pathname;
 

@@ -482,7 +482,7 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
           </Headline>
           {(parsedUser && !reviews?.find(review => review.reviewer?.id === parsedUser?.id) || editingReview) ? (
             <div className="grid gap-3">
-              {reviews && reviews?.length > 0? (
+              {reviews && reviews?.length > 0 ? (
                 <p>Comparte tu opinión con otros clientes</p>
               ) : (
                 <p>Todavía no hay opiniones, sé el primero en opinar</p>

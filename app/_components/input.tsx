@@ -20,7 +20,7 @@ export const removeZeroValue = (e: React.ChangeEvent<HTMLInputElement>) => {
   }
 };
 
-export default function Input({ name, type, label, value, placeholder="", required, pattern, options, onChange, className="", ...props }: InputProps) {
+export default function Input({ name, type, label, value, placeholder = "", required, pattern, options, onChange, className = "", ...props }: InputProps) {
   if (type === "file") return (
     <div className="grid gap-2">
       <p>{label}</p>

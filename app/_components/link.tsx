@@ -12,7 +12,7 @@ type LinkProps = {
   [prop: string]: any
 };
 
-export default function Link({ href, children, external, asButton=false, noExternalIcon, className="", ...props }: LinkProps) {
+export default function Link({ href, children, external, asButton = false, noExternalIcon, className = "", ...props }: LinkProps) {
   const buttonClasses = asButton ? "button" : "underline";
 
   if (external) return (

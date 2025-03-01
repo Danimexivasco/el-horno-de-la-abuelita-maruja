@@ -9,7 +9,7 @@ type ThemeSwitchButtonProps = {
   className?: string
 };
 
-export default function ThemeSwitchButton({ className="" }: ThemeSwitchButtonProps) {
+export default function ThemeSwitchButton({ className = "" }: ThemeSwitchButtonProps) {
   const { theme, setTheme } = useTheme();
   const [isLoaded, setIsLoaded] = useState(false);
 

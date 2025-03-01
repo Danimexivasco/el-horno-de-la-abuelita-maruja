@@ -20,7 +20,7 @@ type FormProps = {
   fullWidthBtn?: boolean
 };
 
-export default function Form({ inputs, initialState, onSubmit, redirectTo, submitBtnText="Submit", outterClassName="", fieldsContainerClassName="", fullWidthBtn = false }: FormProps) {
+export default function Form({ inputs, initialState, onSubmit, redirectTo, submitBtnText = "Submit", outterClassName = "", fieldsContainerClassName = "", fullWidthBtn = false }: FormProps) {
   const router = useRouter();
   const [formData, setFormData] = useState(initialState ?? {});
   const [isPending, setIsPending] = useState(false);

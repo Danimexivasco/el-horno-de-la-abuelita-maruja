@@ -15,7 +15,7 @@ type HighLightProps = {
     className?: string
 };
 
-export default function Highlight({ boxPosition="right", headline, text, image, boxTopHeadline, boxBottomHeadline, className }: HighLightProps) {
+export default function Highlight({ boxPosition = "right", headline, text, image, boxTopHeadline, boxBottomHeadline, className }: HighLightProps) {
 
   const boxOnLeft = boxPosition === "left";
 

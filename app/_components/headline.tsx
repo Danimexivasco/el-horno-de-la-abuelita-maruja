@@ -8,7 +8,7 @@ export type HeadlineProps = {
   className?: string
 };
 
-export default function Headline({ children, as = "h1", empathized, className="" }: HeadlineProps) {
+export default function Headline({ children, as = "h1", empathized, className = "" }: HeadlineProps) {
 
   const generateClasses = (as: HeadlineProps["as"]): string => {
     if (as === "h2") return "text-4xl mb-4";

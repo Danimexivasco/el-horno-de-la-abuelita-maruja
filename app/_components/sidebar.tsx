@@ -17,7 +17,7 @@ type SidebarProps = {
   className?: string
 };
 
-export default function Sidebar({ routes=[], className="" }: SidebarProps) {
+export default function Sidebar({ routes = [], className = "" }: SidebarProps) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const { isMobile } = useWindowSize();
   const router = useRouter();

@@ -15,7 +15,7 @@ type MinimalistCardProps = Partial<Product> & {
   className?: string,
 };
 
-export default function MinimalistCard({ id, name, price, multiPrice, variants=[], image, onOffer, offerType, discountPercentage, multiplierAmount, reviews, className="" }: MinimalistCardProps) {
+export default function MinimalistCard({ id, name, price, multiPrice, variants = [], image, onOffer, offerType, discountPercentage, multiplierAmount, reviews, className = "" }: MinimalistCardProps) {
   const {
     price: variantPrice,
     onOffer: variantOnOffer,

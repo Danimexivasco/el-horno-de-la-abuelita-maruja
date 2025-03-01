@@ -40,7 +40,7 @@ interface ProductFormData extends Omit<Product, "createdAt"> {
   [key: string]: any;
 }
 
-export default function ProductForm({ headline, inputs, initialState, redirectTo, submitBtnText="Crear", outterClassName="", fieldsContainerClassName="", fullWidthBtn = false }: ProductFormProps) {
+export default function ProductForm({ headline, inputs, initialState, redirectTo, submitBtnText = "Crear", outterClassName = "", fieldsContainerClassName = "", fullWidthBtn = false }: ProductFormProps) {
   const router = useRouter();
   const [formData, setFormData] = useState<ProductFormData>({
     ...initialState,
@@ -421,12 +421,12 @@ export default function ProductForm({ headline, inputs, initialState, redirectTo
                 {
                   value:   "percentage",
                   label:   "Porcentage",
-                  checked: formData.offerType ==="percentage" || true
+                  checked: formData.offerType === "percentage" || true
                 },
                 {
                   value:   "multiplier",
                   label:   "2x1",
-                  checked: formData.offerType ==="multiplier" || false
+                  checked: formData.offerType === "multiplier" || false
                 }
               ]
               ,

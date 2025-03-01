@@ -5,22 +5,18 @@ import { CATEGORY_OPTIONS } from "@/constants";
 import {
   ADMIN_ORDERS_PATH,
   ADMIN_PRODUCTS_PATH,
-  ADMIN_USERS_PATH,
-  PRODUCTS_PATH
+  ADMIN_USERS_PATH
 } from "@/routes";
 import { Metadata } from "next";
 import { getLoggedUser } from "@/actions/authActions";
 import { User } from "@/types";
-import { combine } from "@/app/_utils/combineClassnames";
-import { sriracha } from "@/app/_fonts";
-import Link from "@/app/_components/link";
-import { Store } from "lucide-react";
 import { getUsers } from "@/app/_libs/firebase/users";
 import { getOrders } from "@/app/_libs/firebase/orders";
 import { groupBy } from "@/app/_utils/groupBy";
 import { DeliveryStatus } from "@/enums";
 import OrdersChart from "@/app/_components/charts/orders";
 import SalesChart from "@/app/_components/charts/sales";
+import CountUp from "@/app/_components/countUp";
 
 export const metadata: Metadata = {
   title:       "Panel de Control",
@@ -101,13 +97,19 @@ export default async function Dashboard() {
 
         <DashboardCard
           href={ADMIN_PRODUCTS_PATH}
+          className="flex flex-col !justify-start items-center"
         >
           <Headline
             as="h2"
             className="!mb-0"
           >Productos
           </Headline>
-          <p className={combine(sriracha.className, "text-5xl lg:text-8xl")}>{products?.length ?? 0}</p>
+          <CountUp
+            start={0}
+            end={products?.length ?? 0}
+            duration={1}
+            className="text-5xl lg:text-8xl"
+          />
           <div className="flex gap-4 justify-between w-full">
             {CATEGORY_OPTIONS.filter(category => category.value !== "").map(({ value, label }) => (
               <div
@@ -130,20 +132,15 @@ export default async function Dashboard() {
             className="!mb-0"
           >Usuarios
           </Headline>
-          <p className={combine(sriracha.className, "text-5xl")}>{showingUsers?.length}</p>
+          <CountUp
+            start={0}
+            end={showingUsers?.length ?? 0}
+            duration={1}
+            className="text-5xl lg:text-8xl"
+          />
         </DashboardCard>
 
       </div>
-      <Link
-        href={PRODUCTS_PATH}
-        target="_blank"
-        className="flex items-center mt-12 w-fit"
-      >
-        <Store
-          size={20}
-          className="mr-2"
-        /> Ir a la Tienda
-      </Link>
     </>
   );
 }

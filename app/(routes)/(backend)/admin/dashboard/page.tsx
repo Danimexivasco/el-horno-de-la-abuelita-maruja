@@ -63,19 +63,34 @@ export default async function Dashboard() {
                 className="flex flex-col justify-between text-center"
               >
                 <p>Pendientes</p>
-                <p className="font-bold">{ordersByState[DeliveryStatus.FOR_DELIVERY]?.length ?? 0}</p>
+                <CountUp
+                  start={0}
+                  end={ordersByState[DeliveryStatus.FOR_DELIVERY]?.length ?? 0}
+                  duration={1}
+                  className="font-bold"
+                />
               </div>
               <div
                 className="flex flex-col justify-between text-center"
               >
                 <p>En tránsito</p>
-                <p className="font-bold">{ordersByState[DeliveryStatus.IN_TRANSIT]?.length ?? 0}</p>
+                <CountUp
+                  start={0}
+                  end={ordersByState[DeliveryStatus.IN_TRANSIT]?.length ?? 0}
+                  duration={1}
+                  className="font-bold"
+                />
               </div>
               <div
                 className="flex flex-col justify-between text-center"
               >
                 <p>Entregados</p>
-                <p className="font-bold">{ordersByState[DeliveryStatus.DELIVERED]?.length ?? 0}</p>
+                <CountUp
+                  start={0}
+                  end={ordersByState[DeliveryStatus.DELIVERED]?.length ?? 0}
+                  duration={1}
+                  className="font-bold"
+                />
               </div>
             </div>
           </div>
@@ -118,7 +133,12 @@ export default async function Dashboard() {
                 className="text-center"
               >
                 <p>{label}</p>
-                <p className="font-bold">{products?.filter(product => product?.category === value).length}</p>
+                <CountUp
+                  start={0}
+                  end={products?.filter(product => product?.category === value).length ?? 0}
+                  duration={1}
+                  className="font-bold"
+                />
               </div>
             ))}
           </div>

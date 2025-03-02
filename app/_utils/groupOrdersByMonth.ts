@@ -1,10 +1,10 @@
 import { Order } from "@/types";
-import { getLastSixMonths } from "./getLastSixMonths";
+import { getLastMonths } from "./getLastMonths";
 import { MONTHS } from "@/constants";
 import { OrderStatus } from "@/enums";
 
-export function groupOrdersByMonth(orders: Order[]) {
-  const lastSixMonths = getLastSixMonths();
+export function groupOrdersByMonth(orders: Order[], months: number = 12) {
+  const lastSixMonths = getLastMonths(months);
 
   const monthlySales: { [key: string]: number } = {};
 

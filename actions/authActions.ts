@@ -62,7 +62,7 @@ export async function removeAdminUserCheck() {
   };
 }
 
-export async function getLoggedUser (client=false) {
+export async function getLoggedUser (client = false) {
   const cookieStore = await cookies();
   const sessionId = cookieStore.get("user_session")?.value as string;
 

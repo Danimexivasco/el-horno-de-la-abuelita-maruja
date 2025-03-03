@@ -89,14 +89,14 @@ export const ROUTES: Route[] = [
     isNavRoute: true
   },
   {
-    path:       ADMIN_USERS_PATH,
-    label:      "Usuarios",
+    path:       ADMIN_SALES_PATH,
+    label:      "Ventas",
     protected:  true,
     isNavRoute: true
   },
   {
-    path:       ADMIN_SALES_PATH,
-    label:      "Ventas",
+    path:       ADMIN_USERS_PATH,
+    label:      "Usuarios",
     protected:  true,
     isNavRoute: true
   },

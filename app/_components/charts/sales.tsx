@@ -25,7 +25,7 @@ import {
 } from "@/app/_components/shadcn/chart";
 import { Order } from "@/types";
 import { getLastMonths } from "@/app/_utils/getLastMonths";
-import { groupOrdersByMonth } from "@/app/_utils/groupOrdersByMonth";
+import { groupSalesByMonth } from "@/app/_utils/groupSalesByMonth";
 
 const chartConfig = {
   totalSales: {
@@ -40,8 +40,8 @@ type OrdersChartProps = {
 };
 
 export default function SalesChart({ orders, isPreview = false }: OrdersChartProps) {
-  const lastSixMonths = getLastMonths(6);
-  const chartData = groupOrdersByMonth(orders, 6);
+  const lastSixMonths = getLastMonths(isPreview ? 6 : 12);
+  const chartData = groupSalesByMonth(orders, isPreview ? 6 : 12);
 
   return (
     <Card className="w-full">

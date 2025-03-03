@@ -1,9 +1,11 @@
+import { Metadata } from "next";
 import { getLoggedUser } from "@/actions/authActions";
-import Avatar from "@/app/_components/avatar";
+import DataTable from "@/app/_components/dataTable/users";
+import { columns } from "@/app/_components/dataTable/users/columns";
 import Headline from "@/app/_components/headline";
 import { getUsers } from "@/app/_libs/firebase/users";
 import { User } from "@/types";
-import { Metadata } from "next";
+import { standardizeUsersDates } from "@/app/_utils/standardizeUserDates";
 
 export const metadata: Metadata = {
   title:       "Usuarios",
@@ -25,37 +27,20 @@ function isUser(user: any): user is User {
 export default async function UsersDashboardPage() {
   const loggedUser = await getLoggedUser();
   const users = await getUsers();
-  // TODO: Add select to change the role
+
+  // Hide your own user
+  const restOfUsers = users.filter((user) => isUser(loggedUser) && user.id !== loggedUser?.id);
+
+  const standardDateUsers = standardizeUsersDates(restOfUsers);
+
   return (
     <>
-      <Headline className="!mb-16">Usuarios</Headline>
-      <div className="grid gap-8">
-        {users?.map((user) => {
-          return isUser(loggedUser) && user.id !== loggedUser?.id ? (
-            <div
-              key={user.id}
-              className={"grid gap-6 dark:bg-cake-800 bg-cake-200 rounded-lg p-6"}
-            >
-              <div className="flex gap-4 items-center">
-                {user.photoURL ? (
-                  <Avatar
-                    user={user}
-                    className="mb-4"
-                  />
-                ) : null
-                }
-                <div>
-                  <p className="font-bold">{user.username}</p>
-                  <small>{user.email}</small>
-                </div>
-              </div>
-              <div className="flex gap-4 flex-wrap">
-                <p className="font-bold">Email verificado: <span className="font-normal">{user.emailVerified ? "Si" : "No"}</span></p>
-                <p className="font-bold">Rol:  <span className="font-normal">{user.role}</span></p>
-              </div>
-            </div>
-          ) : null;
-        })}
+      <Headline className="!mb-0">Usuarios</Headline>
+      <div className="py-10">
+        <DataTable
+          columns={columns}
+          data={standardDateUsers}
+        />
       </div>
     </>
   );

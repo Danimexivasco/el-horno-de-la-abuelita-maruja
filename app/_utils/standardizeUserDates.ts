@@ -6,7 +6,6 @@ export const standardizeUsersDates = (users: User[]) => {
 
     if (user.createdAt) {
       if (user.createdAt.seconds || user.createdAt.nanoseconds) {
-        console.log("user", user, user.createdAt.seconds);
         standardizedDate = new Date(user.createdAt.seconds * 1000);
       } else if (typeof user.createdAt === "string") {
         standardizedDate = new Date(user.createdAt);

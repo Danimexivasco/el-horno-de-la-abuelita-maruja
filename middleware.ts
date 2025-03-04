@@ -9,6 +9,7 @@ import {
 } from "@/routes";
 import { type NextRequest, NextResponse } from "next/server";
 import { setAdminUserCheck } from "./actions/authActions";
+import { getApiBaseUrl } from "./app/_utils/getApiBaseUrl";
 
 const authRoutes = ROUTES.filter((route) => route.authRoute)?.map((route) => route.path);
 
@@ -39,12 +40,7 @@ export async function middleware(request: NextRequest) {
 
   if (sessionCookie && (protectedRoutes.includes(currentPathname) || currentPathname === ADMIN_PRODUCT_DETAIL_PATH.replace(":id", currentPathname.split("/").pop() ?? ""))) {
     if (userCheckedCookie !== "true") {
-      const baseUrl = process.env.NODE_ENV === "production" ?
-        process.env.API_BASE_URL_PROD
-        :
-        process.env.API_BASE_URL_DEV;
-
-      const url = `${baseUrl}/api/user?userId=${sessionCookie}`;
+      const url = `${getApiBaseUrl()}/api/user?userId=${sessionCookie}`;
 
       try {
         const apiResponse = await fetch(url, {

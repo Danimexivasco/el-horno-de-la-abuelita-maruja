@@ -27,6 +27,7 @@ export const ADMIN_PRODUCT_DETAIL_PATH = "/admin/dashboard/products/:id";
 export const ADMIN_ORDERS_PATH = "/admin/dashboard/orders";
 export const ADMIN_USERS_PATH = "/admin/dashboard/users";
 export const ADMIN_SALES_PATH = "/admin/dashboard/sales";
+export const ADMIN_ORDER_DETAIL_PATH = "/admin/dashboard/orders/:id";
 
 export const FAQS_PATH = "/faqs";
 export const CHECKOUT_PATH = "/checkout";
@@ -80,6 +81,11 @@ export const ROUTES: Route[] = [
   {
     path:      ADMIN_PRODUCT_DETAIL_PATH,
     label:     "Detalle de Producto",
+    protected: true
+  },
+  {
+    path:      ADMIN_ORDER_DETAIL_PATH,
+    label:     "Detalle de Orden",
     protected: true
   },
   {

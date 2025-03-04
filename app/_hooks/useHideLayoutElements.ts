@@ -2,6 +2,7 @@ import { usePathname } from "next/navigation";
 import {
   ADMIN_DASHBOARD_PATH,
   ADMIN_NEW_PRODUCT_PATH,
+  ADMIN_ORDER_DETAIL_PATH,
   ADMIN_ORDERS_PATH,
   ADMIN_PRODUCT_DETAIL_PATH,
   ADMIN_PRODUCTS_PATH,
@@ -23,7 +24,8 @@ export default function useHideLayoutElements() {
     ADMIN_PRODUCT_DETAIL_PATH.replace(":id", pathname.split("/").pop() ?? ""),
     ADMIN_ORDERS_PATH,
     ADMIN_USERS_PATH,
-    ADMIN_SALES_PATH
+    ADMIN_SALES_PATH,
+    ADMIN_ORDER_DETAIL_PATH.replace(":id", pathname.split("/").pop() ?? "")
   ];
 
   const hideElements = pathsWithoutElements.includes(pathname);

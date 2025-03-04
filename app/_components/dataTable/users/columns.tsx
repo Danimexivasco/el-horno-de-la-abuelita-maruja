@@ -18,29 +18,45 @@ import { showMsg } from "@/app/_utils/showMsg";
 import Select from "../../select";
 import { updateUser } from "@/app/_libs/firebase/users";
 import Alert from "../../alert";
+import { getAuth } from "firebase/auth";
 
 const updateDbUser = async (id: string, data: {role: string}) => {
   try {
     await updateUser(id, data, true);
-    window.location.reload();
+    setTimeout(() => window.location.reload(), 1500);
   } catch {
     throw new Error("Hubo un error actualizando al usuario");
   }
 };
 
-// TODO: implement functionality with backend API
-// const removeUser = async (userId: User["id"]) => {
-// const result = await deleteUser({
-//   userId
-// });
+const deleteUser = (uid: string) => async () => {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-// if (!result.data.success) {
-//   showMsg(result.data.message, "error");
-//   return;
-// }
+    if (!user) throw new Error("No hay usuario autenticado");
 
-// window.location.reload();
-// };
+    const token = await user.getIdToken();
+    const response = await fetch("/api/user", {
+      method:  "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        uid,
+        token
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Error al eliminar al usuario");
+
+    showMsg(data.message, "success");
+    setTimeout(() => window.location.reload(), 1500);
+  } catch (error: any) {
+    showMsg(error.message, "error");
+  }
+};
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -163,12 +179,13 @@ export const columns: ColumnDef<User>[] = [
                     <Trash size={16}/> Eliminar usuario
                   </p>}
                 cancelElement={<Button>Cancelar</Button>}
-                actionElement={<Button
-                  isRed
-                  // TODO: Implement removeUser
-                  onClick={() => {}}
-                >Sí, eliminar
-                </Button>}
+                actionElement={
+                  <Button
+                    isRed
+                    onClick={deleteUser(user.id)}
+                  >Sí, eliminar
+                  </Button>
+                }
               />
 
             </DropdownMenuItem>

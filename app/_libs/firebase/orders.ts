@@ -2,17 +2,15 @@ import {
   collection,
   doc,
   addDoc,
-  DocumentData,
   getDoc,
   query,
   where,
-  getDocs,
-  updateDoc,
-  deleteDoc
+  getDocs
 } from "firebase/firestore";
 import { db } from "@/libs/firebase/config";
 import { NewOrder, Order } from "@/types";
 import { showMsg } from "@/utils/showMsg";
+import { getAuth } from "firebase/auth";
 
 const _collection = collection(db, "orders");
 
@@ -62,26 +60,69 @@ export const createOrder = async (data: NewOrder) => {
   }
 };
 
-export const updateOrder = async (id: string, data: Order | DocumentData) => {
-  const orderDoc = doc(db, "orders", id);
-
+export const updateOrder = async (id: string, data: Partial<Order>) => {
   try {
-    await updateDoc(orderDoc, data);
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-    return id;
+    if (!user) throw new Error("No hay pedido autenticado");
+
+    const token = await user.getIdToken();
+
+    const response = await fetch(`/api/order/${id}`, {
+      method:  "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        data,
+        token
+      })
+    });
+
+    const resData = await response.json();
+
+    if (!resData.success) {
+      showMsg(resData.message, "error");
+      return;
+    }
+
+    showMsg(resData.message, "success");
   } catch {
-    showMsg("Algo ha ido mal", "error");
+    showMsg("Hubo un error actualizando la orden", "error");
+    throw new Error("Hubo un error actualizando la orden");
   }
 };
 
 export const deleteOrder = async (id: string) => {
-  const orderDoc = doc(db, "orders", id);
-
   try {
-    await deleteDoc(orderDoc);
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-    return true;
+    if (!user) throw new Error("No hay pedido autenticado");
+
+    const token = await user.getIdToken();
+
+    const response = await fetch(`/api/order/${id}`, {
+      method:  "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        token
+      })
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      showMsg(data.message, "error");
+      return;
+    }
+    console.log("🚀");
+    showMsg(data.message, "success");
   } catch {
-    showMsg("Algo ha ido mal", "error");
+    showMsg("Hubo un error eliminando la orden", "error");
+    throw new Error("Hubo un error eliminando la orden");
   }
 };

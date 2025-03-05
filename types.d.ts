@@ -132,11 +132,12 @@ type Order = {
   customerId: User["id"]
   products: OrderProduct[]
   state: OrderStatus
-  deliveryStatus: DeliveryStatus
+  deliveryStatus: DeliveryStatus //TODO: Add when create the order
   paidAt?: number
   createdAt: number
   updatedAt?: number
   trackingNumber?: string
+  customerEmail: User["email"] //TODO: Add when create the order
   [key: string]: any
 };
 

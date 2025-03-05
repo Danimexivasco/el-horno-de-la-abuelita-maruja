@@ -28,15 +28,15 @@ import { groupOrdersByMonth } from "@/app/_utils/groupOrdersByMonth";
 import { combine } from "@/app/_utils/combineClassnames";
 
 const chartConfig = {
-  "for_delivery": {
+  "orders.for_delivery": {
     label: "Para entregar",
     color: "hsl(var(--chart-1))"
   },
-  "in_transit": {
+  "orders.in_transit": {
     label: "En tránsito",
     color: "hsl(var(--chart-2))"
   },
-  "delivered": {
+  "orders.delivered": {
     label: "Entregados",
     color: "hsl(var(--cake))"
   }
@@ -91,7 +91,7 @@ export default function OrdersChart({ orders, isPreview = false, className }: Or
             />
             <Bar
               dataKey="orders.for_delivery"
-              fill="var(--color-for_delivery)"
+              fill={chartConfig["orders.for_delivery"]?.color}
               radius={8}
             >
               <LabelList
@@ -103,7 +103,7 @@ export default function OrdersChart({ orders, isPreview = false, className }: Or
             </Bar>
             <Bar
               dataKey="orders.in_transit"
-              fill="var(--color-in_transit)"
+              fill={chartConfig["orders.in_transit"]?.color}
               radius={8}
             >
               <LabelList
@@ -115,7 +115,7 @@ export default function OrdersChart({ orders, isPreview = false, className }: Or
             </Bar>
             <Bar
               dataKey="orders.delivered"
-              fill="var(--color-delivered)"
+              fill={chartConfig["orders.delivered"]?.color}
               radius={8}
             >
               <LabelList

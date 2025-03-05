@@ -27,81 +27,6 @@ import { getLastMonths } from "@/app/_utils/getLastMonths";
 import { groupOrdersByMonth } from "@/app/_utils/groupOrdersByMonth";
 import { combine } from "@/app/_utils/combineClassnames";
 
-const mockChartData = [
-  {
-    "month":        "Abril",
-    "for_delivery": 5,
-    "in_transit":   3,
-    "delivered":    10
-  },
-  {
-    "month":        "Mayo",
-    "for_delivery": 2,
-    "in_transit":   7,
-    "delivered":    5
-  },
-  {
-    "month":        "Junio",
-    "for_delivery": 8,
-    "in_transit":   1,
-    "delivered":    12
-  },
-  {
-    "month":        "Julio",
-    "for_delivery": 4,
-    "in_transit":   9,
-    "delivered":    6
-  },
-  {
-    "month":        "Agosto",
-    "for_delivery": 1,
-    "in_transit":   6,
-    "delivered":    11
-  },
-  {
-    "month":        "Septiembre",
-    "for_delivery": 9,
-    "in_transit":   2,
-    "delivered":    8
-  },
-  {
-    "month":        "Octubre",
-    "for_delivery": 6,
-    "in_transit":   10,
-    "delivered":    4
-  },
-  {
-    "month":        "Noviembre",
-    "for_delivery": 3,
-    "in_transit":   5,
-    "delivered":    9
-  },
-  {
-    "month":        "Diciembre",
-    "for_delivery": 11,
-    "in_transit":   8,
-    "delivered":    2
-  },
-  {
-    "month":        "Enero",
-    "for_delivery": 7,
-    "in_transit":   4,
-    "delivered":    1
-  },
-  {
-    "month":        "Febrero",
-    "for_delivery": 10,
-    "in_transit":   12,
-    "delivered":    3
-  },
-  {
-    "month":        "Marzo",
-    "for_delivery": 12,
-    "in_transit":   11,
-    "delivered":    7
-  }
-];
-
 const chartConfig = {
   "for_delivery": {
     label: "Para entregar",
@@ -124,17 +49,14 @@ type OrdersChartProps = {
 };
 
 export default function OrdersChart({ orders, isPreview = false, className }: OrdersChartProps) {
-  // TODO: Set correct chartData
   const lastMonths = getLastMonths(isPreview ? 6 : 12);
   const chartData = groupOrdersByMonth(orders, isPreview ? 6 : 12);
-  // TODO: remove logs, just to avoid TS error
-  console.log("chartData", chartData);
 
   return (
     <Card className={combine("w-full shadow-lg", className)}>
       <CardHeader>
         <CardTitle>
-          Pedidos (mockData)
+          Pedidos
         </CardTitle>
         <CardDescription>{lastMonths[0]} - {lastMonths[lastMonths.length - 1]} {new Date().getFullYear()}</CardDescription>
       </CardHeader>
@@ -142,7 +64,7 @@ export default function OrdersChart({ orders, isPreview = false, className }: Or
         <ChartContainer config={chartConfig}>
           <BarChart
             accessibilityLayer
-            data={mockChartData}
+            data={chartData}
             margin={{
               top: 20
             }}
@@ -168,7 +90,7 @@ export default function OrdersChart({ orders, isPreview = false, className }: Or
               content={<ChartTooltipContent />}
             />
             <Bar
-              dataKey="for_delivery"
+              dataKey="orders.for_delivery"
               fill="var(--color-for_delivery)"
               radius={8}
             >
@@ -180,7 +102,7 @@ export default function OrdersChart({ orders, isPreview = false, className }: Or
               />
             </Bar>
             <Bar
-              dataKey="in_transit"
+              dataKey="orders.in_transit"
               fill="var(--color-in_transit)"
               radius={8}
             >
@@ -192,7 +114,7 @@ export default function OrdersChart({ orders, isPreview = false, className }: Or
               />
             </Bar>
             <Bar
-              dataKey="delivered"
+              dataKey="orders.delivered"
               fill="var(--color-delivered)"
               radius={8}
             >
@@ -206,11 +128,6 @@ export default function OrdersChart({ orders, isPreview = false, className }: Or
           </BarChart>
         </ChartContainer>
       </CardContent>
-      {/* <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="leading-none text-muted-foreground">
-          {isPreview ? "Datos de los últimos 6 meses" : "Datos del ultimo año"}
-        </div>
-      </CardFooter> */}
     </Card>
   );
 }

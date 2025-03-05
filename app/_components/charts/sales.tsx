@@ -44,7 +44,7 @@ export default function SalesChart({ orders, isPreview = false }: OrdersChartPro
   const chartData = groupSalesByMonth(orders, isPreview ? 6 : 12);
 
   return (
-    <Card className="w-full">
+    <Card className="w-full shadow-lg">
       <CardHeader>
         <CardTitle>
           Ventas
@@ -95,14 +95,14 @@ export default function SalesChart({ orders, isPreview = false }: OrdersChartPro
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        {/* <div className="flex gap-2 font-medium leading-none">
+      {/* <CardFooter className="flex-col items-start gap-2 text-sm">
+        <div className="flex gap-2 font-medium leading-none">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div> */}
+        </div>
         <div className="leading-none text-muted-foreground">
           Datos de los últimos 6 meses
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

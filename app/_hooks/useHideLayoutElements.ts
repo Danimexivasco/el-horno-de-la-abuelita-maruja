@@ -6,7 +6,6 @@ import {
   ADMIN_ORDERS_PATH,
   ADMIN_PRODUCT_DETAIL_PATH,
   ADMIN_PRODUCTS_PATH,
-  ADMIN_SALES_PATH,
   ADMIN_USERS_PATH,
   SIGN_IN_PATH,
   SIGN_UP_PATH
@@ -24,7 +23,6 @@ export default function useHideLayoutElements() {
     ADMIN_PRODUCT_DETAIL_PATH.replace(":id", pathname.split("/").pop() ?? ""),
     ADMIN_ORDERS_PATH,
     ADMIN_USERS_PATH,
-    ADMIN_SALES_PATH,
     ADMIN_ORDER_DETAIL_PATH.replace(":id", pathname.split("/").pop() ?? "")
   ];
 

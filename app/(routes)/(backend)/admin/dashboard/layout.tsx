@@ -25,7 +25,7 @@ export default async function Layout({
       />
       <Container className="lg:!p-12 z-10 hover:z-20 relative">
         {children}
-        <Logo className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 -z-10 opacity-30 w-48 h-auto"/>
+        <Logo className="fixed top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 -z-10 opacity-5 w-48 h-auto"/>
       </Container>
     </section>
   );

@@ -1,12 +1,10 @@
 "use server";
 
+import { getApiBaseUrl } from "@/app/_utils/getApiBaseUrl";
+
 export const revalidateCache = async () => {
-  const baseUrl = process.env.NODE_ENV === "production" ?
-    process.env.API_BASE_URL_PROD
-    :
-    process.env.API_BASE_URL_DEV;
   try {
-    await fetch(`${baseUrl}/api/revalidate`, {
+    await fetch(`${getApiBaseUrl()}/api/revalidate`, {
       method:  "POST",
       headers: {
         "Content-Type": "application/json"

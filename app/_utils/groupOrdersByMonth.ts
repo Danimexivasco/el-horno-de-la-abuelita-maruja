@@ -1,31 +1,47 @@
 import { Order } from "@/types";
-import { getLastSixMonths } from "./getLastSixMonths";
+import { getLastMonths } from "./getLastMonths";
 import { MONTHS } from "@/constants";
-import { OrderStatus } from "@/enums";
+import { DeliveryStatus } from "@/enums";
 
-export function groupOrdersByMonth(orders: Order[]) {
-  const lastSixMonths = getLastSixMonths();
+/*TODO: adapt to return structured data as below
+{
+    "month":        "Marzo",
+    "for_delivery": 12,
+    "in_transit":   11,
+    "delivered":    7
+  }
+*/
+export function groupOrdersByMonth(orders: Order[], months: number = 12) {
+  const lastMonths = getLastMonths(months);
 
-  const monthlySales: { [key: string]: number } = {};
+  const monthlyOrders: { [key: string]: { [key: string]: number } } = {};
+
+  MONTHS.forEach(month => {
+    monthlyOrders[month] = {
+      [DeliveryStatus.FOR_DELIVERY]: 0,
+      [DeliveryStatus.IN_TRANSIT]:   0,
+      [DeliveryStatus.DELIVERED]:    0
+    };
+  });
 
   orders?.forEach(order => {
     const date = new Date(order.createdAt);
     const monthName = MONTHS[date.getMonth()];
 
-    if (!lastSixMonths.includes(monthName)) return;
+    if (!lastMonths.includes(monthName)) return;
 
-    const totalOrderValue = order.state === OrderStatus.COMPLETED ? order.products.reduce((sum, product) => sum + product.priceToPay, 0) : 0;
-
-    if (!monthlySales[monthName]) {
-      monthlySales[monthName] = 0;
+    if (monthlyOrders[monthName]) {
+      monthlyOrders[monthName] = {
+        ...monthlyOrders[monthName],
+        ...(order.deliveryStatus && {
+          [order.deliveryStatus]: monthlyOrders[monthName][order.deliveryStatus] + 1
+        })
+      };
     }
-
-    monthlySales[monthName] += totalOrderValue;
   });
 
-  // TODO: adapt the return depending on the needs
-  return lastSixMonths.map(month => ({
+  return lastMonths.map(month => ({
     month,
-    totalSales: monthlySales[month] ?? 0
+    orders: monthlyOrders[month]
   }));
 }

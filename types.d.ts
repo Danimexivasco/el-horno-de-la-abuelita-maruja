@@ -110,9 +110,21 @@ type Cart = CartItem[];
 
 type OrderProduct = {
   id: Product["id"],
+  name: Product["name"],
+  image?: Product["image"],
+  variant?: Productvariant["name"]
   quantity: number
   unitPrice: number
   priceToPay: number
+  // TODO: Replace priceToPay and unitPrice with price
+  // price: {
+  //   base: number,
+  //   offer?: number,
+  //   discount?: {
+  //     type: OfferTypes
+  //     label: string
+  //   }
+  // }
 };
 
 type Order = {
@@ -120,11 +132,13 @@ type Order = {
   customerId: User["id"]
   products: OrderProduct[]
   state: OrderStatus
-  deliveryStatus: DeliveryStatus
+  deliveryStatus: DeliveryStatus //TODO: Add when create the order
   paidAt?: number
   createdAt: number
   updatedAt?: number
-  [p: string]: any
+  trackingNumber?: string
+  customerEmail: User["email"] //TODO: Add when create the order
+  [key: string]: any
 };
 
 type NewOrder = Omit<Order, "id">;

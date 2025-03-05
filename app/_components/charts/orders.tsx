@@ -13,7 +13,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle
 } from "@/app/_components/shadcn/card";
@@ -24,65 +23,126 @@ import {
   ChartTooltipContent
 } from "@/app/_components/shadcn/chart";
 import { Order } from "@/types";
-const chartData = [
+import { getLastMonths } from "@/app/_utils/getLastMonths";
+import { groupOrdersByMonth } from "@/app/_utils/groupOrdersByMonth";
+import { combine } from "@/app/_utils/combineClassnames";
+
+const mockChartData = [
   {
-    month:   "January",
-    desktop: 186
+    "month":        "Abril",
+    "for_delivery": 5,
+    "in_transit":   3,
+    "delivered":    10
   },
   {
-    month:   "February",
-    desktop: 305,
-    mobile:  100
+    "month":        "Mayo",
+    "for_delivery": 2,
+    "in_transit":   7,
+    "delivered":    5
   },
   {
-    month:   "March",
-    desktop: 237
+    "month":        "Junio",
+    "for_delivery": 8,
+    "in_transit":   1,
+    "delivered":    12
   },
   {
-    month:   "April",
-    desktop: 73
+    "month":        "Julio",
+    "for_delivery": 4,
+    "in_transit":   9,
+    "delivered":    6
   },
   {
-    month:   "May",
-    desktop: 209
+    "month":        "Agosto",
+    "for_delivery": 1,
+    "in_transit":   6,
+    "delivered":    11
   },
   {
-    month:   "June",
-    desktop: 214
+    "month":        "Septiembre",
+    "for_delivery": 9,
+    "in_transit":   2,
+    "delivered":    8
+  },
+  {
+    "month":        "Octubre",
+    "for_delivery": 6,
+    "in_transit":   10,
+    "delivered":    4
+  },
+  {
+    "month":        "Noviembre",
+    "for_delivery": 3,
+    "in_transit":   5,
+    "delivered":    9
+  },
+  {
+    "month":        "Diciembre",
+    "for_delivery": 11,
+    "in_transit":   8,
+    "delivered":    2
+  },
+  {
+    "month":        "Enero",
+    "for_delivery": 7,
+    "in_transit":   4,
+    "delivered":    1
+  },
+  {
+    "month":        "Febrero",
+    "for_delivery": 10,
+    "in_transit":   12,
+    "delivered":    3
+  },
+  {
+    "month":        "Marzo",
+    "for_delivery": 12,
+    "in_transit":   11,
+    "delivered":    7
   }
 ];
 
 const chartConfig = {
-  desktop: {
-    label: "Pedidos",
+  "for_delivery": {
+    label: "Para entregar",
+    color: "hsl(var(--chart-1))"
+  },
+  "in_transit": {
+    label: "En tránsito",
+    color: "hsl(var(--chart-2))"
+  },
+  "delivered": {
+    label: "Entregados",
     color: "hsl(var(--cake))"
-
   }
 } satisfies ChartConfig;
 
 type OrdersChartProps = {
   orders: Order[]
   isPreview?: boolean
+  className?: string
 };
 
-export default function OrdersChart({ orders, isPreview = false }: OrdersChartProps) {
+export default function OrdersChart({ orders, isPreview = false, className }: OrdersChartProps) {
   // TODO: Set correct chartData
-  // TODO: remove log, just to avoid TS error
-  console.log("orders", orders);
+  const lastMonths = getLastMonths(isPreview ? 6 : 12);
+  const chartData = groupOrdersByMonth(orders, isPreview ? 6 : 12);
+  // TODO: remove logs, just to avoid TS error
+  console.log("chartData", chartData);
 
   return (
-    <Card className="w-full">
+    <Card className={combine("w-full shadow-lg", className)}>
       <CardHeader>
         <CardTitle>
-          Pedidos
+          Pedidos (mockData)
         </CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>{lastMonths[0]} - {lastMonths[lastMonths.length - 1]} {new Date().getFullYear()}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart
             accessibilityLayer
-            data={chartData}
+            data={mockChartData}
             margin={{
               top: 20
             }}
@@ -108,8 +168,32 @@ export default function OrdersChart({ orders, isPreview = false }: OrdersChartPr
               content={<ChartTooltipContent />}
             />
             <Bar
-              dataKey="desktop"
-              fill="var(--color-desktop)"
+              dataKey="for_delivery"
+              fill="var(--color-for_delivery)"
+              radius={8}
+            >
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Bar>
+            <Bar
+              dataKey="in_transit"
+              fill="var(--color-in_transit)"
+              radius={8}
+            >
+              <LabelList
+                position="top"
+                offset={12}
+                className="fill-foreground"
+                fontSize={12}
+              />
+            </Bar>
+            <Bar
+              dataKey="delivered"
+              fill="var(--color-delivered)"
               radius={8}
             >
               <LabelList
@@ -122,14 +206,11 @@ export default function OrdersChart({ orders, isPreview = false }: OrdersChartPr
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        {/* <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div> */}
+      {/* <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="leading-none text-muted-foreground">
-          Datos de los últimos 6 meses
+          {isPreview ? "Datos de los últimos 6 meses" : "Datos del ultimo año"}
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

@@ -4,6 +4,8 @@ import ContactForm from "@/app/_components/forms/contactForm";
 import Headline from "@/app/_components/headline";
 import Map from "@/app/_components/map";
 import { MarkerIcon } from "@/app/_icons";
+import { FAQS_PATH } from "@/routes";
+import Link from "@/app/_components/link";
 
 export const metadata: Metadata = {
   title:       "Contacto",
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <Container>
+    <Container className="prose-base">
       <Headline>Contacta con nosotros</Headline>
       <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">
         <ContactForm />
@@ -34,6 +36,7 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+      <p className="mt-16 text-center">O si lo prefieres, puedes echar un vistazo a nuestas <Link href={FAQS_PATH}>preguntas frecuentes</Link></p>
     </Container>
   );
 }

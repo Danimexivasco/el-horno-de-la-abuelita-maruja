@@ -23,6 +23,7 @@ import { DeliveryStatus, OrderStatus } from "@/enums";
 import { useState } from "react";
 import Alert from "../../alert";
 import { deleteOrder, updateOrder } from "@/app/_libs/firebase/orders";
+import { useRouter } from "next/navigation";
 
 export const ordersColumns: ColumnDef<Order>[] = [
   {
@@ -41,6 +42,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
     cell:        ({ row }) => {
       const order = row.original;
       const [status, setStatus] = useState(order.state);
+      const router = useRouter();
 
       return <Select
         options={
@@ -61,6 +63,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
             state: newState
           });
           setStatus(newState);
+          router.refresh();
         }
         }
       />;
@@ -72,6 +75,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
     cell:        ({ row }) => {
       const order = row.original;
       const [deliveryStatus, setDeliveryStatus] = useState(order.deliveryStatus ?? "Desconocido");
+      const router = useRouter();
 
       return <Select
         options={
@@ -96,6 +100,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
             deliveryStatus: newState
           });
           setDeliveryStatus(newState);
+          router.refresh();
         }
         }
       />;
@@ -149,7 +154,6 @@ export const ordersColumns: ColumnDef<Order>[] = [
     cell:         ({ row }) => {
       const order = row.original;
 
-      // TODO: Add delete order action
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

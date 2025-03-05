@@ -20,7 +20,9 @@ import { updateUser } from "@/app/_libs/firebase/users";
 import Alert from "../../alert";
 import { getAuth } from "firebase/auth";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
+// TODO: refactor this as service in app\_libs\firebase\users.ts
 const updateDbUser = async (id: string, data: {role: string}) => {
   try {
     await updateUser(id, data, true);
@@ -29,7 +31,8 @@ const updateDbUser = async (id: string, data: {role: string}) => {
   }
 };
 
-const deleteUser = (uid: string) => async () => {
+// TODO: refactor this as service in app\_libs\firebase\users.ts
+const deleteUser = async (uid: string) => {
   try {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -52,7 +55,6 @@ const deleteUser = (uid: string) => async () => {
     if (!response.ok) throw new Error(data.error || "Error al eliminar al usuario");
 
     showMsg(data.message, "success");
-    setTimeout(() => window.location.reload(), 1500);
   } catch (error: any) {
     showMsg(error.message, "error");
   }
@@ -138,6 +140,7 @@ export const columns: ColumnDef<User>[] = [
     id:   "actions",
     cell: ({ row }) => {
       const user = row.original;
+      const router = useRouter();
 
       return (
         <DropdownMenu>
@@ -188,7 +191,10 @@ export const columns: ColumnDef<User>[] = [
                 actionElement={
                   <Button
                     isRed
-                    onClick={deleteUser(user.id)}
+                    onClick={async () => {
+                      await deleteUser(user.id);
+                      router.refresh();
+                    }}
                   >Sí, eliminar
                   </Button>
                 }

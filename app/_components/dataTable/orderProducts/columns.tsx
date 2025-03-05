@@ -48,7 +48,6 @@ export const orderProductsColumn: ColumnDef<OrderProduct>[] = [
     cell:         ({ row }) => {
       const product = row.original;
       // TODO: FIX Ver producto link, the coming id is not correct
-      // TODO: ADD remove order functionality
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

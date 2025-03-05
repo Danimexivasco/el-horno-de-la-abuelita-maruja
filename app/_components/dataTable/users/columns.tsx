@@ -19,11 +19,11 @@ import Select from "../../select";
 import { updateUser } from "@/app/_libs/firebase/users";
 import Alert from "../../alert";
 import { getAuth } from "firebase/auth";
+import { useState } from "react";
 
 const updateDbUser = async (id: string, data: {role: string}) => {
   try {
     await updateUser(id, data, true);
-    setTimeout(() => window.location.reload(), 1500);
   } catch {
     throw new Error("Hubo un error actualizando al usuario");
   }
@@ -88,6 +88,7 @@ export const columns: ColumnDef<User>[] = [
     header:      "Rol",
     cell:        ({ row }) => {
       const user = row.original;
+      const [role, setRole] = useState(user.role);
       return <Select
         options={
           [
@@ -100,10 +101,15 @@ export const columns: ColumnDef<User>[] = [
               label: "Customer"
             }
           ]}
-        value={row.original.role}
-        onChange={async (e) => await updateDbUser(user.id, {
-          role: e.currentTarget.value
-        })}
+        value={role}
+        onChange={async (e) => {
+          const newState = e.currentTarget.value;
+          await updateDbUser(user.id, {
+            role: e.currentTarget.value
+          });
+          setRole(newState as "customer" | "admin");
+        }
+        }
       />;
     }
   },
@@ -187,7 +193,6 @@ export const columns: ColumnDef<User>[] = [
                   </Button>
                 }
               />
-
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

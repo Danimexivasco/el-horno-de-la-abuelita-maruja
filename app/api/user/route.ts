@@ -33,7 +33,7 @@ export async function DELETE(req: Request) {
     const userDoc = await adminDb.collection("users").doc(requesterUid).get();
     if (!userDoc.exists) {
       return NextResponse.json({
-        sucess:  false,
+        success: false,
         message: "El usuario no existe en la base de datos"
       }, {
         status: 404
@@ -44,7 +44,7 @@ export async function DELETE(req: Request) {
 
     if (userData?.role !== "admin") {
       return NextResponse.json({
-        sucess:  false,
+        success: false,
         message: "Acción prohibida: Solo los admins pueden eliminar usuarios"
       }, {
         status: 403
@@ -62,7 +62,7 @@ export async function DELETE(req: Request) {
     });
   } catch (error: any) {
     return NextResponse.json({
-      sucess:  false,
+      success: false,
       message: error.message
     }, {
       status: 500

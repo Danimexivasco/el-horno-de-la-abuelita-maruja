@@ -32,6 +32,7 @@ export default function UserActions({ user }: UserActionsProps) {
   const handleSignOut = async () => {
     try {
       await signOut();
+      router.refresh();
       showMsg("Sesión cerrada", "success");
     } catch {
       throw new Error("Ha ocurrido un error al cerrar la sesión");

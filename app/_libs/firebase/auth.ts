@@ -4,9 +4,9 @@ import {
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
   signInWithEmailAndPassword as _signInWithEmailAndPassword,
-  createUserWithEmailAndPassword as _createUserWithEmailAndPassword,
   sendPasswordResetEmail as _sendPasswordResetEmail,
-  sendEmailVerification
+  sendEmailVerification,
+  getAuth
 } from "firebase/auth";
 import {
   useAuthState as _useAuthState,
@@ -15,13 +15,12 @@ import {
 
 import { db, firebaseAuth } from "./config";
 import { showMsg } from "@/utils/showMsg";
-import {
-  createSession,
-  removeAdminUserCheck,
-  removeSession
-} from "@/actions/authActions";
+import { createSessionCookie, removeSession } from "@/actions/authActions";
 import { doc, getDoc } from "firebase/firestore";
 import { createUser, updateUser } from "./users";
+import { validateSignUpForm } from "@/app/_schemas/signUp";
+import { validateSignInForm } from "@/app/_schemas/signIn";
+import { API_ROUTES } from "@/apiRoutes";
 
 // returns [user, loading, error]
 export const useAuthState = () => _useAuthState(firebaseAuth);
@@ -57,6 +56,15 @@ export async function signInWithGoogle() {
       throw new Error("El inicio con Google ha fallado");
     }
 
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) throw new Error("No hay usuario autenticado");
+
+    const token = await user.getIdToken();
+
+    await createSessionCookie(token);
+
     return {
       id:      userCredential.user.uid,
       isAdmin: existingUser?.role === "admin"
@@ -69,61 +77,64 @@ export async function signInWithGoogle() {
 }
 
 export const signUpWithEmailAndPassword = async (formData: { username: string, email: string; password: string }) => {
-  const { username, email, password } = formData;
-  if (!username || !email || !password) throw new Error("Todos los campos son requeridos");
-  try {
-    const userCredential = await _createUserWithEmailAndPassword(firebaseAuth, email, password);
-    const { user: { uid, email: _email, photoURL, emailVerified } } = userCredential;
-    const existingUser = await (await getDoc(doc(db, "users", uid))).data();
+  const validation = validateSignUpForm(formData);
 
-    if (!existingUser) {
-      await createUser(uid, {
-        id:        uid,
-        email:     _email ?? "",
-        username:  username ?? "Usuario anónimo",
-        createdAt: Date.now(),
-        photoURL:  photoURL ?? "",
-        emailVerified,
-        role:      "customer"
+  if (!validation.error) {
+    try {
+      const res = await fetch(API_ROUTES.AUTH.SIGN_UP, {
+        method:  "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
       });
-      if (firebaseAuth.currentUser) {
-        await sendEmailVerification(firebaseAuth.currentUser);
-      }
-    }
-    if (!userCredential || !userCredential.user) {
-      throw new Error("El registro ha fallado");
-    }
-    await createSession(userCredential.user.uid);
 
-    return userCredential.user.uid;
-  } catch (error) {
-    const message = (error instanceof Error) ? error.message : "Ha ocurrido un error inesperado";
-    showMsg(message, "error");
-    throw new Error(message);
+      if (!res.ok) throw new Error("El inicio de sesión ha fallado");
+
+      return await res.json();
+
+    } catch (error) {
+      const message = (error instanceof Error) ? error.message : "Ha ocurrido un error inesperado";
+      showMsg(message, "error");
+      throw new Error(message);
+    }
   }
 };
 
 export const signInWithEmailAndPassword = async (formData: { email: string; password: string }) => {
-  const { email, password } = formData;
-  if (!email || !password) throw new Error("El email y la contraseña son requeridos");
-  try {
-    const userCredential = await _signInWithEmailAndPassword(firebaseAuth, email, password);
-    if (!userCredential || !userCredential.user) {
-      throw new Error("Ha habido un problema al iniciar sesión");
+  const validation = validateSignInForm(formData);
+  if (!validation.error) {
+    try {
+      const { email, password } = formData;
+
+      const userCredential = await _signInWithEmailAndPassword(firebaseAuth, email, password);
+      if (!userCredential || !userCredential.user) {
+        throw new Error("Ha habido un problema al iniciar sesión");
+      }
+
+      const auth = getAuth();
+      const user = auth.currentUser;
+
+      if (!user) throw new Error("No hay usuario autenticado");
+
+      const token = await user.getIdToken();
+
+      await createSessionCookie(token);
+
+      return userCredential.user.uid;
+    } catch (error) {
+      const message = (error instanceof Error) ? error.message : "Ha ocurrido un error inesperado";
+      showMsg(message, "error");
+      throw new Error(message);
     }
-    await createSession(userCredential.user.uid);
-    return userCredential.user.uid;
-  } catch (error) {
-    const message = (error instanceof Error) ? error.message : "Ha ocurrido un error inesperado";
-    showMsg(message, "error");
-    throw new Error(message);
   }
+  throw new Error("Todos los campos son requeridos");
 };
 
 export async function signOut() {
   try {
     await removeSession();
-    await removeAdminUserCheck();
+
     await firebaseAuth.signOut();
   } catch (error) {
     const message = (error instanceof Error) ? error.message : "Ha ocurrido un error inesperado";
@@ -183,3 +194,24 @@ export const resendEmailVerification = async (user: User) => {
     }
   }
 };
+
+export async function getUserRole(token: string) {
+  try {
+    const res = await fetch(API_ROUTES.AUTH.USER_ROLE, {
+      method:  "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        token
+      })
+    });
+
+    if (!res.ok) throw new Error("Error fetching user role");
+
+    return await res.json();
+  } catch {
+    showMsg("Error al obtener el rol del usuario", "error");
+    throw new Error("Ha ocurrido un error");
+  }
+}

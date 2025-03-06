@@ -56,6 +56,11 @@ function MobileHeader({ navRoutes = [], activePathname, user, glassyHeader, setG
     setShowMenu(false);
     router.push(SIGN_IN_PATH);
   };
+  const handleLogout = async () => {
+    setShowMenu(false);
+    await signOut();
+    router.refresh();
+  };
 
   return (
     <>
@@ -127,7 +132,7 @@ function MobileHeader({ navRoutes = [], activePathname, user, glassyHeader, setG
                       <Button
                         withIcon
                         isRed
-                        onClick={async () => signOut()}
+                        onClick={handleLogout}
                         className="whitespace-nowrap mt-4"
                       >
                         Cerrar Sesión <SignOutIcon className="w-4 h-4"/>

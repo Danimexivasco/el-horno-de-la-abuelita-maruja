@@ -11,6 +11,7 @@ import { db } from "@/libs/firebase/config";
 import { NewOrder, Order } from "@/types";
 import { showMsg } from "@/utils/showMsg";
 import { getAuth } from "firebase/auth";
+import { API_ROUTES } from "@/apiRoutes";
 
 const _collection = collection(db, "orders");
 
@@ -39,7 +40,7 @@ export const getPendingOrderByCustomerId = async (customerId: string): Promise<O
   const q = query(
     ordersRef,
     where("customerId", "==", customerId),
-    where("state", "==", "pending") // Filtering only pending orders
+    where("state", "==", "pending")
   );
 
   const querySnapshot = await getDocs(q);
@@ -69,7 +70,7 @@ export const updateOrder = async (id: string, data: Partial<Order>) => {
 
     const token = await user.getIdToken();
 
-    const response = await fetch(`/api/order/${id}`, {
+    const response = await fetch(API_ROUTES.ORDER.replace(":id", id), {
       method:  "PATCH",
       headers: {
         "Content-Type": "application/json"
@@ -99,11 +100,11 @@ export const deleteOrder = async (id: string) => {
     const auth = getAuth();
     const user = auth.currentUser;
 
-    if (!user) throw new Error("No hay pedido autenticado");
+    if (!user) throw new Error("No hay usuario autenticado");
 
     const token = await user.getIdToken();
 
-    const response = await fetch(`/api/order/${id}`, {
+    const response = await fetch(API_ROUTES.ORDER.replace(":id", id), {
       method:  "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -119,7 +120,6 @@ export const deleteOrder = async (id: string) => {
       showMsg(data.message, "error");
       return;
     }
-    console.log("🚀");
     showMsg(data.message, "success");
   } catch {
     showMsg("Hubo un error eliminando la orden", "error");

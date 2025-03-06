@@ -21,6 +21,7 @@ import Alert from "../../alert";
 import { getAuth } from "firebase/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_ROUTES } from "@/apiRoutes";
 
 // TODO: refactor this as service in app\_libs\firebase\users.ts
 const updateDbUser = async (id: string, data: {role: string}) => {
@@ -40,7 +41,7 @@ const deleteUser = async (uid: string) => {
     if (!user) throw new Error("No hay usuario autenticado");
 
     const token = await user.getIdToken();
-    const response = await fetch("/api/user", {
+    const response = await fetch(API_ROUTES.USER, {
       method:  "DELETE",
       headers: {
         "Content-Type": "application/json"

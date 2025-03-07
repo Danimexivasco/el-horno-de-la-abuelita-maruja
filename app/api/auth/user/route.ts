@@ -25,7 +25,6 @@ export async function POST(req: NextRequest) {
         status: 404
       });
     }
-    console.log("userDoc", userDoc);
     const userData = userDoc.data();
 
     return NextResponse.json({

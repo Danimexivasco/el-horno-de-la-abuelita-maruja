@@ -21,6 +21,7 @@ import { signOut } from "@/app/_libs/firebase/auth";
 import ThemeSwitchButton from "../themeSwitchButton";
 import { LayoutDashboard, User as LucideUserIcon } from "lucide-react";
 import { WithIsClientCheck } from "../../_hocs/withIsClientCheck";
+import { removeSession } from "@/actions/authActions";
 
 type MobileHeaderProps = {
     navRoutes: Route[]
@@ -52,10 +53,12 @@ function MobileHeader({ navRoutes = [], activePathname, user, glassyHeader, setG
     }
   }, [showMenu]);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setShowMenu(false);
+    await removeSession(); // Trick to remove first session cookie if any
     router.push(SIGN_IN_PATH);
   };
+
   const handleLogout = async () => {
     setShowMenu(false);
     await signOut();

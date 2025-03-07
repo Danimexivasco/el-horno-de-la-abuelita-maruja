@@ -211,33 +211,3 @@ export const resendEmailVerification = async (user: User) => {
     }
   }
 };
-
-export async function getUserRole(token: string) {
-  try {
-    const res = await fetch(API_ROUTES.AUTH.USER_ROLE, {
-      method:  "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        token
-      })
-    });
-
-    if (!res.ok) throw new Error("Error fetching user role");
-
-    return await res.json();
-  } catch {
-    showMsg("Error al obtener el rol del usuario", "error");
-    throw new Error("Ha ocurrido un error");
-  }
-}
-
-// export async function getFreshIdToken() {
-//   const auth = getAuth();
-//   const user = auth.currentUser;
-
-//   if (!user) return null;
-
-//   return await user.getIdToken(true);
-// }

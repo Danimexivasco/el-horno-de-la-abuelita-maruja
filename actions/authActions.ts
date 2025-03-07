@@ -36,25 +36,27 @@ export async function getLoggedUser (client = false) {
   const cookieStore = await cookies();
   const token = cookieStore.get(SESSION_COOKIE_NAME);
 
-  const res = await fetch(`${getApiBaseUrl()}${API_ROUTES.AUTH.USER}`, {
-    method:  "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    credentials: "include",
-    body:        JSON.stringify({
-      token: token?.value
-    })
-  });
+  if (token) {
+    const res = await fetch(`${getApiBaseUrl()}${API_ROUTES.AUTH.USER}`, {
+      method:  "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body:        JSON.stringify({
+        token: token?.value
+      })
+    });
 
-  if (!res.ok) {
-    return null;
-  }
+    if (!res.ok) {
+      return null;
+    }
 
-  const user = await res.json();
+    const user = await res.json();
 
-  if (user) {
-    return client ? JSON.stringify(user) : user;
+    if (user) {
+      return client ? JSON.stringify(user) : user;
+    }
   }
 
   return null;

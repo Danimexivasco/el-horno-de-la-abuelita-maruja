@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword as _signInWithEmailAndPassword,
   sendPasswordResetEmail as _sendPasswordResetEmail,
   sendEmailVerification,
+  signInWithCustomToken,
   getAuth
 } from "firebase/auth";
 import {
@@ -61,7 +62,7 @@ export async function signInWithGoogle() {
 
     if (!user) throw new Error("No hay usuario autenticado");
 
-    const token = await user.getIdToken();
+    const token = await user.getIdToken(true);
 
     await createSessionCookie(token);
 
@@ -81,17 +82,33 @@ export const signUpWithEmailAndPassword = async (formData: { username: string, e
 
   if (!validation.error) {
     try {
+      const { username, email, password } = formData;
+
       const res = await fetch(API_ROUTES.AUTH.SIGN_UP, {
         method:  "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          username,
+          email,
+          password
+        })
       });
 
-      if (!res.ok) throw new Error("El inicio de sesión ha fallado");
+      const data = await res.json();
 
-      return await res.json();
+      if (data.token) {
+        const auth = getAuth();
+        const userCredential = await signInWithCustomToken(auth, data.token);
+        const user = userCredential.user;
+
+        const idToken = await user.getIdToken(true);
+
+        await createSessionCookie(idToken);
+
+        return user.uid;
+      }
 
     } catch (error) {
       const message = (error instanceof Error) ? error.message : "Ha ocurrido un error inesperado";
@@ -117,7 +134,7 @@ export const signInWithEmailAndPassword = async (formData: { email: string; pass
 
       if (!user) throw new Error("No hay usuario autenticado");
 
-      const token = await user.getIdToken();
+      const token = await user.getIdToken(true);
 
       await createSessionCookie(token);
 
@@ -215,3 +232,12 @@ export async function getUserRole(token: string) {
     throw new Error("Ha ocurrido un error");
   }
 }
+
+// export async function getFreshIdToken() {
+//   const auth = getAuth();
+//   const user = auth.currentUser;
+
+//   if (!user) return null;
+
+//   return await user.getIdToken(true);
+// }

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminAuth, adminDb } from "@/libs/firebaseAdmin/config";
-import { createSessionCookie } from "@/actions/authActions";
 
 export async function POST(req: NextRequest) {
   try {
     const { username, email, password } = await req.json();
+
     if (!username || !email || !password) return NextResponse.json({
       error: "Todos los campos son requeridos"
     }, {
@@ -28,12 +28,12 @@ export async function POST(req: NextRequest) {
       emailVerified: false
     });
 
-    await createSessionCookie(token);
-
     return NextResponse.json({
       success: true,
-      uid:     userRecord.uid
+      uid:     userRecord.uid,
+      token
     });
+
   } catch {
     return NextResponse.json({
       error: "Internal Server Error"

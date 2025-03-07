@@ -12,6 +12,7 @@ import OrderProductsDataTable from "@/app/_components/dataTable/orderProducts";
 import {
   orderProductsColumn
 } from "@/app/_components/dataTable/orderProducts/columns";
+import { API_ROUTES } from "@/apiRoutes";
 
 type OrderDetailProps = {
   params: Promise<{
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
 export default async function OrderDetailPage({ params }: OrderDetailProps) {
   const { id } = await params;
 
-  const response = await fetch(`${getApiBaseUrl()}/api/order/${id}`);
+  const response = await fetch(`${getApiBaseUrl()}${API_ROUTES.ORDER.replace(":id", id)}`);
   const { data } = await response.json();
 
   const totals = data.products.reduce((acc: Record<string, number>, product: OrderProduct) => {

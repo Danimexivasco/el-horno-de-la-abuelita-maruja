@@ -21,6 +21,7 @@ import {
   ShoppingBag
 } from "lucide-react";
 import ThemeSwitchButton from "../themeSwitchButton";
+import { removeSession } from "@/actions/authActions";
 
 type UserActionsProps = {
     user: User
@@ -32,10 +33,16 @@ export default function UserActions({ user }: UserActionsProps) {
   const handleSignOut = async () => {
     try {
       await signOut();
+      router.refresh();
       showMsg("Sesión cerrada", "success");
     } catch {
       throw new Error("Ha ocurrido un error al cerrar la sesión");
     }
+  };
+
+  const handleSignInLink = async () => {
+    await removeSession(); // Trick to remove first session cookie if any
+    router.push(SIGN_IN_PATH);
   };
 
   // TODO: pedidos anteriores
@@ -117,7 +124,7 @@ export default function UserActions({ user }: UserActionsProps) {
                 <div className="border-t border-cake-500 my-2 w-full"></div>
                 <p className="whitespace-nowrap dark:text-white text-black">Todavía no has iniciado sesión</p>
                 <Button
-                  onClick={() => router.push(SIGN_IN_PATH)}
+                  onClick={handleSignInLink}
                 >
                   Inicia Sesión
                 </Button>

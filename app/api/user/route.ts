@@ -1,20 +1,7 @@
 
-import { NextResponse, NextRequest } from "next/server";
-import { getActualUser } from "@/libs/firebase/users";
+import { NextResponse } from "next/server";
 
 import { adminAuth, adminDb } from "@/app/_libs/firebaseAdmin/config";
-
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url);
-  const userId = searchParams.get("userId");
-  const user = await getActualUser(userId as string);
-
-  return NextResponse.json({
-    data: user
-  }, {
-    status: 200
-  });
-}
 
 export async function DELETE(req: Request) {
   try {

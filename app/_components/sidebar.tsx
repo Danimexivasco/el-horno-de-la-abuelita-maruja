@@ -52,8 +52,6 @@ export default function Sidebar({ routes = [], className = "" }: SidebarProps) {
         <li className="flex justify-center w-full relative">
           <Link
             href={PRODUCTS_PATH}
-            target="_blank"
-            noExternalIcon
             className="peer flex items-center "
           >
             <Store size={32}/>

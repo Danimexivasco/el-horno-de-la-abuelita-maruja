@@ -48,8 +48,10 @@ export default function Form({ inputs, initialState, onSubmit, redirectTo, submi
       await onSubmit(formData);
 
       if (redirectTo) {
+        router.refresh();
         router.push(redirectTo);
       } else {
+        router.refresh();
         router.back();
       }
     } catch (error) {

@@ -1,6 +1,5 @@
 "use client";
 
-import { createSession } from "@/actions/authActions";
 import Button from "@/components/button";
 import Form from "@/components/forms/form";
 import Headline from "@/components/headline";
@@ -42,10 +41,8 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
       setLoading(true);
       const user = await signInWithGoogle();
       if (user) {
-        const { id, isAdmin } = user;
-        if (id) {
-          await createSession(id);
-        }
+        const { isAdmin } = user;
+
         if(isAdmin) {
           router.push(ADMIN_DASHBOARD_PATH);
         } else {
@@ -53,10 +50,9 @@ export default function AuthenticationCard({ type }: AuthenticationCardProps) {
         }
         setLoading(false);
       }
-    } catch (error) {
+    } catch {
       setLoading(false);
       showMsg("Failed to sign in with Google", "error");
-      console.error(error);
     }
   };
 

@@ -6,7 +6,6 @@ import {
   setDoc,
   QuerySnapshot,
   DocumentData,
-  getDoc,
   updateDoc,
   getDocs
 } from "firebase/firestore";
@@ -51,12 +50,6 @@ export const getUsers = async (): Promise<User[]> => {
   } catch {
     throw new Error("Ha ocurrido un error al obtener los usuarios");
   }
-};
-
-export const getActualUser = async (id: string) => {
-  const userDoc = doc(db, "users", id);
-  const snapshot = await getDoc(userDoc);
-  return snapshot.data();
 };
 
 export const createUser = async (uid: string, data: User) => {

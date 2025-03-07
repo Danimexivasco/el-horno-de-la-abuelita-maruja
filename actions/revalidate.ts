@@ -1,10 +1,11 @@
 "use server";
 
+import { API_ROUTES } from "@/apiRoutes";
 import { getApiBaseUrl } from "@/app/_utils/getApiBaseUrl";
 
 export const revalidateCache = async () => {
   try {
-    await fetch(`${getApiBaseUrl()}/api/revalidate`, {
+    await fetch(`${getApiBaseUrl()}${API_ROUTES.REVALIDATE}`, {
       method:  "POST",
       headers: {
         "Content-Type": "application/json"

@@ -10,3 +10,8 @@ export const enum OrderStatus {
   PENDING = "pending",
   COMPLETED = "completed"
 }
+
+export const enum DataType {
+  ORDER = "order",
+  FAQ = "faq"
+}

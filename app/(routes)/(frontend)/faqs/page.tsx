@@ -1,6 +1,7 @@
 import Accordion from "@/app/_components/accordion";
 import Container from "@/app/_components/container";
 import Headline from "@/app/_components/headline";
+import { DataType } from "@/enums";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -62,7 +63,10 @@ export default async function FAQSPage() {
       <Headline>Preguntas Frequentes</Headline>
       <p className="mb-8 lg:mb-12">A continuación podrás resolver algunas de las preguntas más habituales, hechas por nuestros clientes</p>
       <section className="lg:w-2/3 mx-auto">
-        <Accordion items={FAQS}/>
+        <Accordion
+          items={FAQS}
+          dataType={DataType.FAQ}
+        />
       </section>
     </Container>
   );

@@ -4,9 +4,10 @@ export const API_ROUTES = {
     SIGN_UP:   "/api/auth/sign-up",
     USER:      "/api/auth/user"
   },
-  EMAIL:      "/api/email",
-  IMAGE:      "/api/image",
-  ORDER:      "api/order/:id",
-  REVALIDATE: "/api/revalidate",
-  USER:       "/api/user"
+  EMAIL:              "/api/email",
+  IMAGE:              "/api/image",
+  ORDER:              "/api/order/:id",
+  REVALIDATE:         "/api/revalidate",
+  USER:               "/api/user",
+  ORDERS_BY_CUSTOMER: "/api/orders/:customerId"
 };

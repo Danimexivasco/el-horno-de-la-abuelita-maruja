@@ -4,6 +4,7 @@ import { Squash as Hamburger } from "hamburger-react";
 import {
   ADMIN_DASHBOARD_PATH,
   HOME_PATH,
+  ORDERS_PATH,
   Route,
   SIGN_IN_PATH,
   USER_PROFILE_PATH
@@ -19,7 +20,11 @@ import Button from "../button";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "@/app/_libs/firebase/auth";
 import ThemeSwitchButton from "../themeSwitchButton";
-import { LayoutDashboard, User as LucideUserIcon } from "lucide-react";
+import {
+  LayoutDashboard,
+  User as LucideUserIcon,
+  ShoppingBag
+} from "lucide-react";
 import { WithIsClientCheck } from "../../_hocs/withIsClientCheck";
 import { removeSession } from "@/actions/authActions";
 
@@ -115,7 +120,12 @@ function MobileHeader({ navRoutes = [], activePathname, user, glassyHeader, setG
                       <Link
                         href={USER_PROFILE_PATH}
                         className="flex gap-2 mb-2 font-bold"
-                      ><LucideUserIcon size={20}/>Ir a mi perfil / Ajustes
+                      ><LucideUserIcon size={20}/>Mi perfil
+                      </Link>
+                      <Link
+                        href={ORDERS_PATH}
+                        className="flex gap-2 mb-2 font-bold"
+                      ><ShoppingBag size={20}/>Mis pedidos
                       </Link>
                       {user.role === "admin" ? (
                         <Link

@@ -4,8 +4,9 @@ import CheckoutForm from "@/app/_components/forms/checkout";
 import { stripe } from "@/app/_libs/stripe";
 import Container from "@/app/_components/container";
 import CheckoutOrderSummary from "@/app/_components/checkoutOrderSummary";
-import { getOrder } from "@/app/_libs/firebase/orders";
 import { Order } from "@/types";
+import { getApiBaseUrl } from "@/app/_utils/getApiBaseUrl";
+import { API_ROUTES } from "@/apiRoutes";
 // import Headline from "@/app/_components/headline";
 
 export const metadata: Metadata = {
@@ -29,10 +30,13 @@ type CheckoutPageProps = {
 
 export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {
 
-  // const { id } = await params;
   const { id } = await searchParams;
 
-  const order = await getOrder(id);
+  const orderPromise = await fetch(`${getApiBaseUrl()}${API_ROUTES.ORDER.replace(":id", id)}`, {
+    method: "GET"
+  });
+
+  const order = await orderPromise.json();
 
   const calculateOrderAmount = (items: Order["products"]) => {
     if (!items) return 0;
@@ -47,7 +51,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
   // Create PaymentIntent as soon as the page loads
   const { client_secret: clientSecret } = await stripe.paymentIntents.create({
-    amount:                    calculateOrderAmount(order.products),
+    amount:                    calculateOrderAmount(order.data.products),
     // amount: calculateOrderAmount([{
     //   id: "xl-tshirt"
     // }]),

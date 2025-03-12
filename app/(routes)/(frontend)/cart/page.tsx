@@ -24,7 +24,8 @@ function isUser(obj: any): obj is User {
 
 export default async function CartPage() {
   const user = await getLoggedUser();
-  const pendingOrder = await getPendingOrderByCustomerId(isUser(user) ? user?.id : "");
+
+  const pendingOrder = await getPendingOrderByCustomerId(isUser(user) ? user?.id : "") ?? [];
 
   // TODO: initialCheck with DB, check if product exist , if not delete, and if exist update the product on the localstorage
   return (

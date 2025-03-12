@@ -31,7 +31,8 @@ import Headline from "./headline";
 import { WithIsClientCheck } from "../_hocs/withIsClientCheck";
 import { useRouter } from "next/navigation";
 import { createOrder, updateOrder } from "../_libs/firebase/orders";
-import { OrderStatus } from "../../enums";
+import { DeliveryStatus, OrderStatus } from "../../enums";
+import { CreditCard } from "lucide-react";
 
 const INITIAL_ORDER: Partial<NewOrder> = {
   products: [],
@@ -71,9 +72,14 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
 
       return {
         id:         item.id,
+        name:       item.product.name,
+        image:      item.product.image,
         quantity:   quantity,
         unitPrice:  priceToPay / quantity,
-        priceToPay: priceToPay
+        priceToPay: priceToPay,
+        ...(item.variant && {
+          variant: item.variant
+        })
       };
     });
 
@@ -201,11 +207,12 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
       } else {
         orderId = await createOrder({
           ...order,
-          state:         OrderStatus.PENDING,
-          products:      order.products ?? [],
-          customerId:    parsedUser.id,
-          createdAt:     Date.now(),
-          customerEmail: parsedUser.email
+          state:          OrderStatus.PENDING,
+          products:       order.products ?? [],
+          customerId:     parsedUser.id,
+          createdAt:      Date.now(),
+          customerEmail:  parsedUser.email,
+          deliveryStatus: DeliveryStatus.FOR_DELIVERY
         });
       }
 
@@ -354,7 +361,7 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
               </Link>
             </div>
           </section>
-          <div className="sticky bottom-2 lg:top-44 gap-1 lg:gap-4 grid w-full dark:bg-cake-700/50 bg-cake-200 rounded-lg p-6 lg:p-8 lg:max-w-sm shadow-md">
+          <div className="sticky bottom-2 lg:top-44 gap-2 lg:gap-4 grid w-full dark:bg-cake-700/50 bg-cake-200 rounded-lg p-6 lg:p-8 lg:max-w-sm shadow-md">
             <p className="hidden lg:grid text-2xl font-bold">Resumen del pedido:</p>
             <div className="hidden lg:grid grid-cols-[2fr_1fr] gap-6 lg:gap-12">
               <p>Productos totales</p>
@@ -379,9 +386,10 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
             </div>
             {parsedUser ?
               <Button
-                className="w-full"
+                withIcon
+                className="w-full justify-center gap-3"
                 onClick={handleOrder}
-              >Realizar pedido
+              > <CreditCard /> Ir a detalles de pago
               </Button>
               :
               <Link

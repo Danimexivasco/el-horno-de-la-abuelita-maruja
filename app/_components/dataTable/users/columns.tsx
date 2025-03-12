@@ -40,7 +40,7 @@ const deleteUser = async (uid: string) => {
 
     if (!user) throw new Error("No hay usuario autenticado");
 
-    const token = await user.getIdToken();
+    const token = await user.getIdToken(true);
     const response = await fetch(API_ROUTES.USER, {
       method:  "DELETE",
       headers: {

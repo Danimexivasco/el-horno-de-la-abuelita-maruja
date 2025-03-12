@@ -68,7 +68,7 @@ export const updateOrder = async (id: string, data: Partial<Order>) => {
 
     if (!user) throw new Error("No hay usuario autenticado");
 
-    const token = await user.getIdToken();
+    const token = await user.getIdToken(true);
 
     const response = await fetch(API_ROUTES.ORDER.replace(":id", id), {
       method:  "PATCH",
@@ -102,7 +102,7 @@ export const deleteOrder = async (id: string) => {
 
     if (!user) throw new Error("No hay usuario autenticado");
 
-    const token = await user.getIdToken();
+    const token = await user.getIdToken(true);
 
     const response = await fetch(API_ROUTES.ORDER.replace(":id", id), {
       method:  "DELETE",

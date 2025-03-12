@@ -24,7 +24,9 @@ export async function middleware(request: NextRequest) {
 
   if (!sessionCookie && (protectedRoutes.includes(currentPathname) || currentPathname === ADMIN_PRODUCT_DETAIL_PATH.replace(":id", currentPathname.split("/").pop() ?? ""))) {
     return NextResponse.redirect(new URL(HOME_PATH, request.url));
-  } else if (sessionCookie && (requiredSignInRoutes.includes(currentPathname))) {
+  }
+
+  if (sessionCookie && (requiredSignInRoutes.includes(currentPathname))) {
     try {
       const userPromise = await fetch(`${getApiBaseUrl()}${API_ROUTES.AUTH.USER}`, {
         method:  "POST",
@@ -100,6 +102,7 @@ export async function middleware(request: NextRequest) {
       });
       return response;
     }
+
     try {
       const res = await fetch(`${getApiBaseUrl()}${API_ROUTES.AUTH.USER_ROLE}`, {
         method:  "POST",

@@ -122,13 +122,13 @@ export default function CheckoutForm({ clientSecret }: { clientSecret: string })
         <div>
           <p className="text-2xl mb-4">Método de pago</p>
           <PaymentForm />
-          <div className="relative flex pt-5 pb-3 items-center w-full">
+          {/* <div className="relative flex pt-5 pb-3 items-center w-full">
             <div className="flex-1 border-1 border-t border-cake-400"></div>
             <p className="text-base text-center mx-4 mb-0">
               o paga directamente con
             </p>
             <div className="flex-1 border-1 border-t border-cake-400"></div>
-          </div>
+          </div> */}
           {/* <div className="min-h-14">
             <ExpressCheckoutElement
               onConfirm={({ payment_method }) => console.log(payment_method)}

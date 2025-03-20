@@ -85,9 +85,9 @@ const STATUS_CONTENT_MAP = {
 };
 
 type SuccessPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     payment_intent: string;
-  };
+  }>
 };
 
 export default async function SuccessPage({ searchParams }: SuccessPageProps) {

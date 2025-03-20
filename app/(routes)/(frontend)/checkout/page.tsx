@@ -23,9 +23,9 @@ export const metadata: Metadata = {
 };
 
 type CheckoutPageProps = {
-  searchParams: {
+  searchParams: Promise<{
     id: string
-  }
+  }>
 };
 
 export default async function CheckoutPage({ searchParams }: CheckoutPageProps) {

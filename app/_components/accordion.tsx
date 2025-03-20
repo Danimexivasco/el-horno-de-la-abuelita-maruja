@@ -1,5 +1,5 @@
 import * as RadixAccordion from "@radix-ui/react-accordion";
-import { RightArrowIcon } from "@/app/_icons";
+import { LogoIcon, RightArrowIcon } from "@/app/_icons";
 import styles from "./accordion.module.css";
 import { combine } from "../_utils/combineClassnames";
 import { FAQ } from "../(routes)/(frontend)/faqs/page";
@@ -7,6 +7,9 @@ import { Order } from "@/types";
 import { DataType } from "@/enums";
 import { getFormatedDate } from "../_utils/getFormatedDate";
 import { formatNumber } from "../_utils/formatNumber";
+import { PRODUCT_DETAIL_PATH } from "@/routes";
+import Link from "./link";
+import Image from "next/image";
 
 type AccordionProps = {
   items: FAQ[] | Order[]
@@ -60,6 +63,7 @@ export default function Accordion({ items, dataType }: AccordionProps) {
       >
         {items?.map(item => {
           const { id, createdAt, deliveryStatus, products } = item as Order;
+
           return (
             <RadixAccordion.Item
               key={id}
@@ -79,27 +83,47 @@ export default function Accordion({ items, dataType }: AccordionProps) {
                 <div className="px-4 !py-6">
                   <div className="flex flex-wrap gap-4 justify-between mb-4">
                     <div>
-                      <p className="font-bold">ID de la orden:</p>
-                      <p>{id}</p>
-                    </div>
-                    <div>
-                      <p className="font-bold">Estado del envío:</p>
-                      <p>{deliveryStatus}</p>
+                      <p className="text-xl font-bold">Estado del envío:</p>
+                      <p className="capitalize">{deliveryStatus ?? "Desconocido"}</p>
                     </div>
                   </div>
                   <p className="text-2xl">Productos:</p>
-                  <div className="flex flex-wrap gap-8 px-4 justify-center lg:justify-start">
-                    {products?.map(product => (
-                      <div
-                        key={product.id}
-                        className="bg-white rounded-md"
-                      >
-                        <p><span className="font-bold">ID:</span> {product.id}</p>
-                        <p><span className="font-bold">Cantidad:</span> {product.quantity}</p>
-                        <p><span className="font-bold">Precio unitario:</span> {formatNumber(product.unitPrice)}</p>
-                        <p><span className="font-bold">Pagado:</span> {formatNumber(product.priceToPay)}</p>
-                      </div>
-                    ))}
+                  <div className="grid grid-cols-auto-fill-sm gap-4 px-4 py-2">
+                    {products?.map(product => {
+                      const { id, name, image, variantId, variantName, quantity, unitPrice, priceToPay } = product;
+
+                      return (
+                        <Link
+                          key={variantId ?? product.id}
+                          href={variantName ? `${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variantName}` : `${PRODUCT_DETAIL_PATH.replace(":id", id)}`}
+                          className="bg-white rounded-md p-6 no-underline !text-black hover:shadow-lg transition"
+                        >
+                          <div className="flex items-center mb-4">
+                            {image ?
+                              <Image
+                                src={image}
+                                alt={name}
+                                width={80}
+                                height={80}
+                                quality={90}
+                                loading="lazy"
+                                className="w-20 h-20 object-cover aspect-square rounded-lg"
+                              />
+                              :
+                              <LogoIcon className="w-20 h-20 "/>
+                            }
+                            <p className="text-lg font-bold">{name}</p>
+                          </div>
+                          <div><span className="font-bold">Precio unitario:</span> {formatNumber(unitPrice)}</div>
+                          {variantName ?
+                            <div><span className="font-bold">Opción:</span> {variantName}</div>
+                            : null
+                          }
+                          <div className="mb-4"><span className="font-bold">Cantidad:</span> {quantity}</div>
+                          <div><span className="font-bold">Pagado:</span> {formatNumber(priceToPay)}</div>
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               </RadixAccordion.Content>

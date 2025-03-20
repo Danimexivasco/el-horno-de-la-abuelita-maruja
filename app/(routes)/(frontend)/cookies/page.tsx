@@ -1,5 +1,3 @@
-/* eslint-disable @stylistic/js/max-len */
-
 import Container from "@/app/_components/container";
 import Headline from "@/app/_components/headline";
 

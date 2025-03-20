@@ -12,7 +12,7 @@ export default function Search() {
   const searchParams = useSearchParams();
   const [firstURLCheck, setFirstURLCheck] = useState(false);
   const [currentParams, setCurrentParams] = useState(new URLSearchParams(searchParams.toString()));
-  // eslint-disable-next-line
+
   const [_activeSearchStorage, setActiveSearchStorage, removeActiveFiltersStorage] = useSessionStorage("active-search", "");
 
   useEffect(() => {

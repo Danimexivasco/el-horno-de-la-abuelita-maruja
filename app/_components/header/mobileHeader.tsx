@@ -13,11 +13,10 @@ import Container from "../container";
 import { User } from "@/types";
 import { combine } from "@/app/_utils/combineClassnames";
 import { LogoIcon, SignOutIcon } from "@/app/_icons";
-import { useEffect, useState } from "react";
 import Link from "../link";
 import Cart from "../cart";
 import Button from "../button";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { signOut } from "@/app/_libs/firebase/auth";
 import ThemeSwitchButton from "../themeSwitchButton";
 import {
@@ -32,31 +31,13 @@ type MobileHeaderProps = {
     navRoutes: Route[]
     activePathname?: string
     user: User
-    glassyHeader: boolean
-    setGlassyHeader: (_b: boolean) => void
+    showMenu: boolean
+    setShowMenu: (_b: boolean) => void
     className?: string
 };
 
-function MobileHeader({ navRoutes = [], activePathname, user, glassyHeader, setGlassyHeader, className }: MobileHeaderProps) {
+function MobileHeader({ navRoutes = [], activePathname, user, showMenu, setShowMenu, className }: MobileHeaderProps) {
   const router = useRouter();
-  const pathanme = usePathname();
-  const [showMenu, setShowMenu] = useState(false);
-  const [previousHeaderState, setPreviousHeaderState] = useState(false);
-
-  useEffect(() => {
-    setShowMenu(false);
-  }, [pathanme]);
-
-  useEffect(() => {
-    if (showMenu && document) {
-      document.body.style.overflowY = "hidden";
-      setPreviousHeaderState(glassyHeader);
-      setGlassyHeader(false);
-    } else {
-      document.body.style.overflowY = "";
-      setGlassyHeader(previousHeaderState);
-    }
-  }, [showMenu]);
 
   const handleLogin = async () => {
     setShowMenu(false);

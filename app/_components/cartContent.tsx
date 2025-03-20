@@ -1,11 +1,24 @@
 "use client";
 
-import { Cart, CartItem, OfferTypes } from "@/types";
+import {
+  Cart,
+  CartItem,
+  NewOrder,
+  OfferTypes,
+  Order,
+  ProductVariant
+} from "@/types";
+import { useEffect, useState } from "react";
 import { useLocalStorage } from "usehooks-ts";
 import { getTotals } from "../_utils/getTotals";
 import { formatNumber } from "../_utils/formatNumber";
 import Link from "./link";
-import { CHECKOUT_PATH, PRODUCT_DETAIL_PATH, PRODUCTS_PATH } from "@/routes";
+import {
+  CHECKOUT_PATH,
+  PRODUCT_DETAIL_PATH,
+  PRODUCTS_PATH,
+  SIGN_IN_PATH
+} from "@/routes";
 import Image from "next/image";
 import Button from "./button";
 import { LogoIcon, NoResultIcon, TrashIcon } from "../_icons";
@@ -16,30 +29,98 @@ import { getPrices } from "../_utils/getPrices";
 import { showMsg } from "../_utils/showMsg";
 import Headline from "./headline";
 import { WithIsClientCheck } from "../_hocs/withIsClientCheck";
+import { useRouter } from "next/navigation";
+import { createOrder, updateOrder } from "../_libs/firebase/orders";
+import { DeliveryStatus, OrderStatus } from "../../enums";
+import { CreditCard } from "lucide-react";
 
-function CartContent() {
+const INITIAL_ORDER: Partial<NewOrder> = {
+  products: [],
+  state:    OrderStatus.PENDING
+};
+
+type CartContentProps = {
+  user: string;
+  pendingOrder: Order
+};
+
+function CartContent({ user, pendingOrder }: CartContentProps) {
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
   const [items, setItems, removeItems] = useLocalStorage<Cart>("cart", []);
+  const [order, setOrder] = useState(INITIAL_ORDER);
+
+  const parsedUser = JSON.parse(user);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (items?.length > 0) {
+      prepareOrder(items);
+    }
+  }, [items]);
+
+  const prepareOrder = (items: Cart) => {
+    if (!items?.length) return;
+    const orderProducts = items.map(item => {
+      const { quantity, price } = item;
+      const { base, offer, discount } = price;
+
+      const priceToPay = discount && offer ? offer * quantity : base * quantity;
+
+      return {
+        id:         item.id,
+        name:       item.product.name,
+        image:      item.product.image,
+        quantity:   quantity,
+        unitPrice:  priceToPay / quantity,
+        priceToPay: priceToPay,
+        ...(item.variantId && {
+          variantId: item.variantId
+        }),
+        ...(item.variantName && {
+          variantName: item.variantName
+        })
+      };
+    });
+
+    setOrder({
+      ...order,
+      products: orderProducts
+    });
+  };
 
   const totals = getTotals(items);
 
-  const handleRemove = (id: CartItem["id"]) => () => {
+  const handleRemove = (id: CartItem["id"], variant: boolean = false) => () => {
     if (!id) return;
 
-    setItems(items?.filter(item => item.id !== id));
+    const updatedItems = variant ?
+      items?.filter(item => item.variantId !== id)
+      :
+      items?.filter(item => item.id !== id);
+
+    setItems(updatedItems);
+
     showMsg("Producto eliminado", "success");
   };
 
-  const setQuantity = (id: CartItem["id"], product: CartItem["product"], variant: CartItem["variant"]) => (quantity: number) => {
+  const setQuantity = (id: CartItem["id"], product: CartItem["product"], variant: ProductVariant | null) => (quantity: number) => {
     try {
       const { base, offer, discount } = getPrices(product, quantity, variant);
 
       setItems(prevItems => {
         let updatedCart = prevItems ?? [];
 
-        if (prevItems?.some(item => item.id === id)) {
-          updatedCart = items.map(item =>
-            item.id === id
-              ? {
+        const match = variant ? prevItems?.some(item => item.id === product.id && item.variantId === variant?.id) : prevItems?.some(item => item.id === product.id);
+
+        if (match) {
+          updatedCart = items.map(item => {
+            const itemMatch = variant ? item.id === product.id && item.variantId === variant?.id : item.id === product.id;
+            if (itemMatch) {
+              return {
                 ...item,
                 quantity: Math.min(Math.max(1, quantity), MAXIMUM_PRODUCTS_PURCHASE),
                 price:    {
@@ -50,13 +131,15 @@ function CartContent() {
                   ...(discount && {
                     discount: {
                       type:  discount.type as OfferTypes,
-                      label: discount.label
+                      label: discount.label as string
                     }
                   })
                 }
-              }
-              : item
-          );
+              };
+            }
+
+            return item;
+          });
         }
 
         // TODO: UPDATE USER CART ON DB
@@ -71,7 +154,7 @@ function CartContent() {
   };
 
   const renderPrices = (item: CartItem) => {
-    const { quantity, variant, price } = item;
+    const { quantity, variantName, price } = item;
     const { base, offer, discount } = price;
 
     const priceToPay = discount && offer ? offer * quantity : base * quantity;
@@ -101,8 +184,8 @@ function CartContent() {
             }
           </>
         )}
-        {variant ?
-          <p className="text-sm">Opción: <span className="font-bold">{variant}</span></p>
+        {variantName ?
+          <p className="text-sm">Opción: <span className="font-bold">{variantName}</span></p>
           : null}
       </>
     );
@@ -125,6 +208,38 @@ function CartContent() {
     );
   };
 
+  const handleOrder = async () => {
+    try {
+      let orderId;
+      if (pendingOrder) {
+        orderId = await updateOrder(pendingOrder.id ?? "", {
+          ...pendingOrder,
+          ...order,
+          state:     "pending",
+          updatedAt: Date.now()
+        });
+      } else {
+        orderId = await createOrder({
+          ...order,
+          state:          OrderStatus.PENDING,
+          products:       order.products ?? [],
+          customerId:     parsedUser.id,
+          createdAt:      Date.now(),
+          customerEmail:  parsedUser.email,
+          deliveryStatus: DeliveryStatus.FOR_DELIVERY
+        });
+      }
+
+      if (orderId) {
+        router.push(`${CHECKOUT_PATH}?id=${orderId}`);
+      }
+    } catch {
+      throw new Error("Error al realizar el pedido");
+    }
+  };
+
+  if (!isClient) return null;
+
   return items && items?.length > 0 ? (
     <div className="flex flex-col lg:flex-row items-start mb-4 lg:mb-8 justify-center lg:px-8">
       <div className="w-full">
@@ -134,21 +249,21 @@ function CartContent() {
           <section className="w-full flex-1">
             <div className="grid gap-6 w-full">
               {items && items?.map(item => {
-                const { quantity, variant, product } = item;
+                const { quantity, variantId, variantName, product } = item;
                 const { id, name, image } = product;
 
-                const variantProduct = variant ? product.variants?.find(el => el.name === variant) : null;
+                const variantProduct = variantId ? product.variants?.find(el => el.name === variantName) : null;
 
                 return (
                   <div
-                    key={item.id}
+                    key={variantId ?? item.id}
                     className="w-full border border-cake-500 rounded-lg p-6"
                   >
                     <div className="flex gap-6 flex-wrap">
-                      {variant ?
+                      {variantId ?
                         <>
                           <Link
-                            href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variant}`}
+                            href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variantName}`}
                             className="grid place-items-center dark:bg-cake-700/50 bg-cake-200 w-20 lg:w-28 h-w-20 lg:h-28 min-w-20 lg:min-w-28 rounded-lg"
                           >
                             {image ?
@@ -167,7 +282,7 @@ function CartContent() {
                           </Link>
                           <div>
                             <Link
-                              href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variant}`}
+                              href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variantName}`}
                               className="font-bold no-underline"
                             >{name}
                             </Link>
@@ -218,13 +333,13 @@ function CartContent() {
                           cancelElement={<Button>Cancelar</Button>}
                           actionElement={<Button
                             isRed
-                            onClick={handleRemove(item.id)}
+                            onClick={variantId ? handleRemove(variantId, true) : handleRemove(item.id)}
                           >Sí, eliminar
                           </Button>}
                         />
                         <Counter
                           value={quantity}
-                          setValue={setQuantity(item.id, product, variantProduct)}
+                          setValue={setQuantity(item.id, product, variantProduct ?? null)}
                         />
                       </div>
                     </div>
@@ -260,7 +375,7 @@ function CartContent() {
               </Link>
             </div>
           </section>
-          <div className="sticky bottom-2 lg:top-44 gap-1 lg:gap-4 grid w-full dark:bg-cake-700/50 bg-cake-200 rounded-lg p-6 lg:p-8 lg:max-w-sm shadow-md">
+          <div className="sticky bottom-2 lg:top-44 gap-2 lg:gap-4 grid w-full dark:bg-cake-700/50 bg-cake-200 rounded-lg p-6 lg:p-8 lg:max-w-sm shadow-md">
             <p className="hidden lg:grid text-2xl font-bold">Resumen del pedido:</p>
             <div className="hidden lg:grid grid-cols-[2fr_1fr] gap-6 lg:gap-12">
               <p>Productos totales</p>
@@ -283,13 +398,21 @@ function CartContent() {
               <p>Total (IVA incluido)</p>
               <p className="font-bold">{formatNumber(totals.price)}</p>
             </div>
-            <Link
-              href={CHECKOUT_PATH}
-              asButton
-              className="w-full text-center mt-4"
-            >
-              Realizar pedido
-            </Link>
+            {parsedUser ?
+              <Button
+                withIcon
+                className="w-full justify-center gap-3"
+                onClick={handleOrder}
+              > <CreditCard /> Ir a detalles de pago
+              </Button>
+              :
+              <Link
+                href={SIGN_IN_PATH}
+                asButton
+                className="w-full"
+              >Inicia sesión para realizar el pedido
+              </Link>
+            }
           </div>
         </div>
       </div>

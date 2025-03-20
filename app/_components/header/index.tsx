@@ -17,6 +17,8 @@ export default function Header({ user }: HeaderProps) {
   const pathname = usePathname();
   const parsedUser = JSON.parse(user);
   const [glassyHeader, setGlassyHeader] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [previousHeaderState, setPreviousHeaderState] = useState(false);
 
   const hideHeader = useHideLayoutElements();
 
@@ -32,13 +34,29 @@ export default function Header({ user }: HeaderProps) {
     }
   }, [scrollY]);
 
+  useEffect(() => {
+    setShowMenu(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (showMenu && document) {
+      document.body.style.overflowY = "hidden";
+      setPreviousHeaderState(glassyHeader);
+      setGlassyHeader(false);
+    } else {
+      document.body.style.overflowY = "";
+      setGlassyHeader(previousHeaderState);
+    }
+  }, [showMenu]);
+
   return (
     <>
       <header
         className={combine(
-          "fixed w-full top-0 left-0 z-50 lg:py-4 lg:px-8 flex items-center min-h-16 lg:h-36 bg-opacity-98 dark:bg-cake-950 bg-cake-200 lg:!transition-none",
-          (glassyHeader) && "glass !bg-opacity-80 shadow-md shadow-black/10",
-          hideHeader && "hidden"
+          "fixed w-full top-0 left-0 z-50 lg:py-4 lg:px-8 flex items-center min-h-16 lg:h-36 bg-opacity-98 dark:bg-cake-950 bg-cake-200 transition-all ease-linear duration-200",
+          glassyHeader && "glass !bg-opacity-80 shadow-md shadow-black/10",
+          hideHeader && "hidden",
+          showMenu && "transition-none"
         )}
       >
         <DesktopHeader
@@ -52,8 +70,8 @@ export default function Header({ user }: HeaderProps) {
           activePathname={pathname}
           user={parsedUser}
           className="flex lg:hidden"
-          glassyHeader={glassyHeader}
-          setGlassyHeader={setGlassyHeader}
+          showMenu={showMenu}
+          setShowMenu={setShowMenu}
         />
       </header>
       {

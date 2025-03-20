@@ -23,8 +23,9 @@ type CartPreviewProps = {
 export default function CartPreview({ opened, user, cartItems, setItems, setCartOpened }: CartPreviewProps) {
   const pathname = usePathname();
   const [totals, setTotals] = useState({
-    units: 0,
-    price: 0
+    units:                0,
+    price:                0,
+    priceBeforeDiscounts: 0
   });
 
   useEffect(() => {
@@ -34,10 +35,13 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
     }
   }, [cartItems]);
 
-  const handleDeleteItem = (id: string) => async () => {
+  const handleDeleteItem = (id: string, variant: boolean = false) => async () => {
     if (!id) return null;
     try {
-      const updatedCart = cartItems?.filter(item => item.id !== id);
+      const updatedCart = variant ?
+        cartItems?.filter(item => item.variantId !== id)
+        :
+        cartItems?.filter(item => item.id !== id);
 
       setItems(updatedCart);
       if (user) {
@@ -76,13 +80,13 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
               <>
                 <ul className="grid gap-6 mb-8">
                   {cartItems.map(item => {
-                    const { quantity, variant, product, price } = item;
+                    const { quantity, variantId, variantName, product, price } = item;
                     const { id, name, image } = product;
                     const { base, offer, discount } = price;
 
                     return (
                       <li
-                        key={item.id}
+                        key={variantId ?? item.id}
                         className="flex gap-4 items-center"
                       >
                         {image ?
@@ -104,15 +108,15 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                           </div>
                         }
                         <div className="flex flex-col flex-1 items-start text-start">
-                          {variant ?
+                          {variantId ?
                             <>
                               <Link
-                                href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variant}`}
+                                href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variantName}`}
                                 className="font-bold no-underline"
                                 onClick={() => setCartOpened(false)}
                               >{name}
                               </Link>
-                              <p className="text-sm">Opción: <span className="font-bold">{variant}</span></p>
+                              <p className="text-sm">Opción: <span className="font-bold">{variantName}</span></p>
                             </>
                             :
                             <Link
@@ -135,7 +139,7 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                         <TrashIcon
                           className="w-5 h-5 self-start"
                           role="button"
-                          onClick={handleDeleteItem(item.id)}
+                          onClick={variantId ? handleDeleteItem(variantId, true) : handleDeleteItem(item.id)}
                         />
                       </li>
                     );
@@ -143,9 +147,22 @@ export default function CartPreview({ opened, user, cartItems, setItems, setCart
                 </ul>
                 <div className="grid gap-4 mb-8">
                   <div className="flex justify-between items-center">
-                    <p>Cantidad Total</p>
+                    <p>Productos totales</p>
                     <p className="font-bold">{totals.units}</p>
                   </div>
+                  {totals.priceBeforeDiscounts !== totals.price ? (
+                    <div className="grid gap-4">
+                      <div className="flex justify-between items-center">
+                        <p>Total sin descuento</p>
+                        <p className="font-bold text-red-500 line-through">{formatNumber(totals.priceBeforeDiscounts)}</p>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <p>Descuento</p>
+                        <p className="font-bold">-{formatNumber(totals.priceBeforeDiscounts - totals.price)}</p>
+                      </div>
+                      <div className="border-t border-cake-500"></div>
+                    </div>
+                  ) : null}
                   <div className="flex justify-between items-center font-bold">
                     <p>Total (IVA incluido)</p>
                     <p>{formatNumber(totals.price)}</p>

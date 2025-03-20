@@ -6,8 +6,8 @@ import {
   useStripe,
   useElements,
   Elements,
-  AddressElement,
-  ExpressCheckoutElement
+  AddressElement
+  // ExpressCheckoutElement
 } from "@stripe/react-stripe-js";
 import {
   Appearance,
@@ -16,24 +16,20 @@ import {
 } from "@stripe/stripe-js";
 import Button from "../button";
 
-// Make sure to call loadStripe outside of a component’s render to avoid
-// recreating the Stripe object on every render.
-// This is your test publishable API key.
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "");
 
+// TODO: WIP, finish it when payment logic is discussed with Rocio
 function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js hasn't yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
       return null;
     }
 
@@ -42,7 +38,7 @@ function PaymentForm() {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        // Make sure to change this to your payment completion page
+        // TODO: change this to payment completion page
         return_url: "http://localhost:3000/checkout/success"
       }
     });
@@ -53,7 +49,7 @@ function PaymentForm() {
     // be redirected to an intermediate site first to authorize the payment, then
     // redirected to the `return_url`.
     if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message);
+      setMessage(error.message ?? "An error ocurred.");
     } else {
       setMessage("An unexpected error occurred.");
     }
@@ -92,7 +88,6 @@ function PaymentForm() {
           </span>
         </Button> : null
       }
-      {/* Show any error or success messages */}
       {message && <div id="payment-message">{message}</div>}
     </form>
   );
@@ -134,11 +129,11 @@ export default function CheckoutForm({ clientSecret }: { clientSecret: string })
             </p>
             <div className="flex-1 border-1 border-t border-cake-400"></div>
           </div>
-          <div className="min-h-14">
+          {/* <div className="min-h-14">
             <ExpressCheckoutElement
               onConfirm={({ payment_method }) => console.log(payment_method)}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </Elements>

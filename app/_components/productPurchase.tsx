@@ -66,9 +66,8 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
   const [editingReview, setEditingReview] = useState<Review | null>(null);
   const [linkWithPrevSearch, setLinkWithPrevSearch] = useState("");
   const router = useRouter();
-  // eslint-disable-next-line
+
   const [_items, setItems] = useLocalStorage<Cart>("cart", []);
-  // eslint-disable-next-line
   const [activeSearchStorage, _setActiveSearchStorage, removeActiveFiltersStorage] = useSessionStorage("active-search", "");
 
   useEffect(() => {
@@ -183,11 +182,11 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
 
       setItems(prevItems => {
         let updatedCart = prevItems ?? [];
-
-        if (prevItems?.some(item => item.id === product.id || item.id === variant?.id)) {
+        const match = variant ? prevItems?.some(item => item.id === product.id && item.variantId === variant?.id) : prevItems?.some(item => item.id === product.id);
+        if (match) {
           updatedCart = updatedCart.map(item => {
-
-            if (item.id === product.id || item.id === variant?.id) {
+            const itemMatch = variant ? item.id === product.id && item.variantId === variant?.id : item.id === product.id;
+            if (itemMatch) {
               return {
                 ...item,
                 quantity: item.quantity + quantity
@@ -198,10 +197,13 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
           });
         } else {
           updatedCart = [...updatedCart, {
-            id:      variant?.id ?? product.id,
+            id: product.id,
             quantity,
-            variant: variant?.name ?? null,
-            price:   {
+            ...(variant && {
+              variantId:   variant.id,
+              variantName: variant.name
+            }),
+            price: {
               base: base ?? 0,
               ...(offer && {
                 offer: offer
@@ -209,7 +211,7 @@ export default function ProductPurchase({ product, user }: ProductPruchaseProps)
               ...(discount && {
                 discount: {
                   type:  discount.type as OfferTypes,
-                  label: discount.label
+                  label: discount.label as string
                 }
               })
             },

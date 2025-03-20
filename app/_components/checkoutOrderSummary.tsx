@@ -38,13 +38,13 @@ export default function CheckoutOrderSummary() {
           <>
             <ul className="grid gap-6 mb-8">
               {cartItems.map(item => {
-                const { quantity, variant, product, price } = item;
+                const { quantity, variantId, variantName, product, price } = item;
                 const { id, name, image } = product;
                 const { base, offer, discount } = price;
 
                 return (
                   <li
-                    key={item.id}
+                    key={variantId ?? item.id}
                     className="flex gap-4 items-center"
                   >
                     {image ?
@@ -66,14 +66,14 @@ export default function CheckoutOrderSummary() {
                       </div>
                     }
                     <div className="flex flex-col flex-1 items-start text-start">
-                      {variant ?
+                      {variantName ?
                         <>
                           <Link
-                            href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variant}`}
+                            href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variantName}`}
                             className="font-bold no-underline"
                           >{name}
                           </Link>
-                          <p className="text-sm">Opción: <span className="font-bold">{variant}</span></p>
+                          <p className="text-sm">Opción: <span className="font-bold">{variantName}</span></p>
                         </>
                         :
                         <Link
@@ -103,7 +103,7 @@ export default function CheckoutOrderSummary() {
                 <p>Productos totales</p>
                 <p className="font-bold">{totals.units}</p>
               </div>
-              {totals.priceBeforeDiscounts !== totals.price? (
+              {totals.priceBeforeDiscounts !== totals.price ? (
                 <div className="grid gap-4">
                   <div className="flex justify-between items-center">
                     <p>Total sin descuento</p>
@@ -111,7 +111,7 @@ export default function CheckoutOrderSummary() {
                   </div>
                   <div className="flex justify-between items-center">
                     <p>Descuento</p>
-                    <p className="font-bold">-{formatNumber(totals.priceBeforeDiscounts- totals.price)}</p>
+                    <p className="font-bold">-{formatNumber(totals.priceBeforeDiscounts - totals.price)}</p>
                   </div>
                   <div className="border-t border-cake-500"></div>
                 </div>

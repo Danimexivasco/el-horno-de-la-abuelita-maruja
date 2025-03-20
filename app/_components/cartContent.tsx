@@ -77,8 +77,11 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
         quantity:   quantity,
         unitPrice:  priceToPay / quantity,
         priceToPay: priceToPay,
-        ...(item.variant && {
-          variant: item.variant
+        ...(item.variantId && {
+          variantId: item.variantId
+        }),
+        ...(item.variantName && {
+          variantName: item.variantName
         })
       };
     });
@@ -91,10 +94,16 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
 
   const totals = getTotals(items);
 
-  const handleRemove = (id: CartItem["id"]) => () => {
+  const handleRemove = (id: CartItem["id"], variant: boolean = false) => () => {
     if (!id) return;
 
-    setItems(items?.filter(item => item.id !== id));
+    const updatedItems = variant ?
+      items?.filter(item => item.variantId !== id)
+      :
+      items?.filter(item => item.id !== id);
+
+    setItems(updatedItems);
+
     showMsg("Producto eliminado", "success");
   };
 
@@ -105,10 +114,13 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
       setItems(prevItems => {
         let updatedCart = prevItems ?? [];
 
-        if (prevItems?.some(item => item.id === id)) {
-          updatedCart = items.map(item =>
-            item.id === id
-              ? {
+        const match = variant ? prevItems?.some(item => item.id === product.id && item.variantId === variant?.id) : prevItems?.some(item => item.id === product.id);
+
+        if (match) {
+          updatedCart = items.map(item => {
+            const itemMatch = variant ? item.id === product.id && item.variantId === variant?.id : item.id === product.id;
+            if (itemMatch) {
+              return {
                 ...item,
                 quantity: Math.min(Math.max(1, quantity), MAXIMUM_PRODUCTS_PURCHASE),
                 price:    {
@@ -123,9 +135,11 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
                     }
                   })
                 }
-              }
-              : item
-          );
+              };
+            }
+
+            return item;
+          });
         }
 
         // TODO: UPDATE USER CART ON DB
@@ -140,7 +154,7 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
   };
 
   const renderPrices = (item: CartItem) => {
-    const { quantity, variant, price } = item;
+    const { quantity, variantName, price } = item;
     const { base, offer, discount } = price;
 
     const priceToPay = discount && offer ? offer * quantity : base * quantity;
@@ -170,8 +184,8 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
             }
           </>
         )}
-        {variant ?
-          <p className="text-sm">Opción: <span className="font-bold">{variant}</span></p>
+        {variantName ?
+          <p className="text-sm">Opción: <span className="font-bold">{variantName}</span></p>
           : null}
       </>
     );
@@ -235,21 +249,21 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
           <section className="w-full flex-1">
             <div className="grid gap-6 w-full">
               {items && items?.map(item => {
-                const { quantity, variant, product } = item;
+                const { quantity, variantId, variantName, product } = item;
                 const { id, name, image } = product;
 
-                const variantProduct = variant ? product.variants?.find(el => el.name === variant) : null;
+                const variantProduct = variantId ? product.variants?.find(el => el.name === variantName) : null;
 
                 return (
                   <div
-                    key={item.id}
+                    key={variantId ?? item.id}
                     className="w-full border border-cake-500 rounded-lg p-6"
                   >
                     <div className="flex gap-6 flex-wrap">
-                      {variant ?
+                      {variantId ?
                         <>
                           <Link
-                            href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variant}`}
+                            href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variantName}`}
                             className="grid place-items-center dark:bg-cake-700/50 bg-cake-200 w-20 lg:w-28 h-w-20 lg:h-28 min-w-20 lg:min-w-28 rounded-lg"
                           >
                             {image ?
@@ -268,7 +282,7 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
                           </Link>
                           <div>
                             <Link
-                              href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variant}`}
+                              href={`${PRODUCT_DETAIL_PATH.replace(":id", id)}?var=${variantName}`}
                               className="font-bold no-underline"
                             >{name}
                             </Link>
@@ -319,7 +333,7 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
                           cancelElement={<Button>Cancelar</Button>}
                           actionElement={<Button
                             isRed
-                            onClick={handleRemove(item.id)}
+                            onClick={variantId ? handleRemove(variantId, true) : handleRemove(item.id)}
                           >Sí, eliminar
                           </Button>}
                         />

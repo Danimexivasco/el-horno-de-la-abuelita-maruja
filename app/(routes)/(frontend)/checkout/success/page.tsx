@@ -1,5 +1,6 @@
 import Container from "@/app/_components/container";
 import { stripe } from "@/app/_libs/stripe";
+import { HOME_PATH } from "@/routes";
 import { redirect } from "next/navigation";
 
 const SuccessIcon =
@@ -83,18 +84,26 @@ const STATUS_CONTENT_MAP = {
   }
 };
 
-export default async function SuccessPage({ searchParams }) {
+type SuccessPageProps = {
+  searchParams: {
+    payment_intent: string;
+  };
+};
+
+export default async function SuccessPage({ searchParams }: SuccessPageProps) {
   // TODO: If success, send email to admin to notice that
   // the order has been successful and she has to cook!
   const { payment_intent: paymentIntentId } = await searchParams;
 
-  if (!paymentIntentId) redirect("/");
+  if (!paymentIntentId) redirect(HOME_PATH);
 
   const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 
-  if (!paymentIntent) redirect("/");
+  if (!paymentIntent) redirect(HOME_PATH);
 
   const { status } = paymentIntent;
+
+  const statusContent = STATUS_CONTENT_MAP[status as keyof typeof STATUS_CONTENT_MAP] || STATUS_CONTENT_MAP.default;
 
   return (
     <Container>
@@ -103,16 +112,16 @@ export default async function SuccessPage({ searchParams }) {
           <div
             id="status-icon"
             style={{
-              backgroundColor: STATUS_CONTENT_MAP[status].iconColor
+              backgroundColor: statusContent.iconColor
             }}
             className="w-fit p-2 grid place-content-center"
           >
-            {STATUS_CONTENT_MAP[status].icon}
+            {statusContent.icon}
           </div>
           <p
             className="text-3xl"
             id="status-text"
-          >{STATUS_CONTENT_MAP[status].text}
+          >{statusContent.text}
           </p>
         </div>
         {paymentIntent && <div id="details-table">
@@ -142,7 +151,7 @@ export default async function SuccessPage({ searchParams }) {
           id="view-details"
           target="_blank"
           rel="noreferrer"
-        >View details
+        >Ver detalles
           <svg
             width="15"
             height="14"
@@ -167,8 +176,8 @@ export default async function SuccessPage({ searchParams }) {
         </a>}
         <a
           id="retry-button"
-          href="/"
-        >Test another
+          href={HOME_PATH}
+        >Reintentar
         </a>
       </div>
     </Container>

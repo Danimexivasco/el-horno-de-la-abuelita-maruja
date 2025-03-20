@@ -93,7 +93,8 @@ export type MinOrder = {
 type CartItem = {
   id: Product["id"] | ProductVariant["id"]
   quantity: number
-  variant?: ProductVariant["name"]
+  variantId?: ProductVariant["id"]
+  variantName?: ProductVariant["name"]
   price: {
     base: number,
     offer?: number,
@@ -112,7 +113,8 @@ type OrderProduct = {
   id: Product["id"],
   name: Product["name"],
   image?: Product["image"],
-  variant?: Productvariant["name"]
+  variantId?: ProductVariant["id"]
+  variantName?: ProductVariant["name"]
   quantity: number
   unitPrice: number
   priceToPay: number
@@ -132,13 +134,13 @@ type Order = {
   customerId: User["id"]
   products: OrderProduct[]
   state: OrderStatus
-  deliveryStatus: DeliveryStatus //TODO: Add when create the order
+  deliveryStatus: DeliveryStatus
   paidAt?: number
   customerEmail: string
   createdAt: number
   updatedAt?: number
   trackingNumber?: string
-  customerEmail: User["email"] //TODO: Add when create the order
+  customerEmail: User["email"]
   [key: string]: any
 };
 

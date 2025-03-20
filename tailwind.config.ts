@@ -104,8 +104,10 @@ const config: Config = {
         contentShow: "contentShow 0.3s cubic-bezier(0.16, 1, 0.3, 1)"
       },
       gridTemplateColumns: {
-        "auto-fill": "repeat(auto-fill, minmax(300px, 1fr))",
-        "auto-fit":  "repeat(auto-fit, minmax(300px, 1fr))"
+        "auto-fill":    "repeat(auto-fill, minmax(300px, 1fr))",
+        "auto-fit":     "repeat(auto-fit, minmax(300px, 1fr))",
+        "auto-fill-sm": "repeat(auto-fill, minmax(250px, 1fr))",
+        "auto-fit-sm":  "repeat(auto-fit, minmax(250px, 1fr))"
       },
       maxWidth: {
         "8xl": "96rem"

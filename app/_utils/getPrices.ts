@@ -1,4 +1,3 @@
-/* eslint-disable @stylistic/js/max-len */
 import { Product, ProductVariant } from "@/types";
 import { formatNumber } from "./formatNumber";
 

@@ -28,8 +28,9 @@ export default [
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": ["warn", {argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
       "camelcase": "warn",
-      "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "no-unused-vars": ["error", { argsIgnorePattern: "^_",  varsIgnorePattern: "^_" }],
       "no-undef": "off",
 
       "@stylistic/js/indent": ["error", 2],
@@ -49,7 +50,6 @@ export default [
       "@stylistic/js/no-multi-spaces": [2],
       "@stylistic/js/no-trailing-spaces": ["error", { skipBlankLines: false, ignoreComments: false }],
       "@stylistic/js/rest-spread-spacing": ["error", "never"],
-      "@stylistic/js/max-len": ["warn", { "code": 80 }],
       "@stylistic/js/key-spacing": ["error", { align: "value" }],
 
       "@stylistic/type-annotation-spacing": [2],

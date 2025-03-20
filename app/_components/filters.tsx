@@ -31,7 +31,7 @@ export default function Filters({ availableFilters }: FiltersProps) {
   const [filters, setFilters] = useState<FiltersState>(FILTERS_INITIAL_STATE);
   const [activeFilters, setActiveFilters] = useState(0);
   const [currentParams, setCurrentParams] = useState(new URLSearchParams(searchParams.toString()));
-  //eslint-disable-next-line
+
   const [_activeFiltersStorage, setActiveFiltersStorage, removeActiveFiltersStorage] = useSessionStorage<FiltersState | null>("active-filters", null);
 
   useEffect(() => {

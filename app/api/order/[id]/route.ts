@@ -29,7 +29,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
     return NextResponse.json({
       success: true,
-      data:    orderData
+      data:    {
+        ...orderData,
+        id
+      }
     });
 
   } catch (error: any) {

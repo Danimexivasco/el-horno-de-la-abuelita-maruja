@@ -22,12 +22,14 @@ import { createUser, updateUser } from "./users";
 import { validateSignUpForm } from "@/app/_schemas/signUp";
 import { validateSignInForm } from "@/app/_schemas/signIn";
 import { API_ROUTES } from "@/apiRoutes";
+import { UserRoles } from "@/types";
 
 // returns [user, loading, error]
 export const useAuthState = () => _useAuthState(firebaseAuth);
 
+// TODO: Remove after test properly
 // returns [deleteUser, loading, error];
-export const useDeleteUser = () => _useDeleteUser(firebaseAuth);
+// export const useDeleteUser = () => _useDeleteUser(firebaseAuth);
 
 export function onAuthStateChanged(callback: (_authUser: User | null) => void) {
   return _onAuthStateChanged(firebaseAuth, callback);
@@ -209,5 +211,27 @@ export const resendEmailVerification = async (user: User) => {
       throw new Error("Ocurrio un error al reenviar el email de verificacion");
 
     }
+  }
+};
+
+export const setUserRole = async (uid: string, role: UserRoles = "customer") => {
+  try {
+    const res = await fetch(API_ROUTES.AUTH.SET_USER_ROLE, {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body:   JSON.stringify({
+        uid,
+        role
+      })
+    });
+
+    const data = await res.json();
+
+    return data;
+
+  } catch {
+    throw new Error("Ocurrió un error al hacer admin al usuario");
   }
 };

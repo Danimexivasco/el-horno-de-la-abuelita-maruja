@@ -38,7 +38,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
   },
   {
     accessorKey: "state",
-    header:      "Estado",
+    header:      "Estado de pago",
     cell:        ({ row }) => {
       const order = row.original;
       const [status, setStatus] = useState(order.state);
@@ -153,6 +153,7 @@ export const ordersColumns: ColumnDef<Order>[] = [
     enableHiding: false,
     cell:         ({ row }) => {
       const order = row.original;
+      const router = useRouter();
 
       return (
         <DropdownMenu>
@@ -212,7 +213,10 @@ export const ordersColumns: ColumnDef<Order>[] = [
                 actionElement={
                   <Button
                     isRed
-                    onClick={() => deleteOrder(order.id)}
+                    onClick={async () => {
+                      await deleteOrder(order.id);
+                      router.refresh();
+                    }}
                   >Sí, eliminar
                   </Button>
                 }

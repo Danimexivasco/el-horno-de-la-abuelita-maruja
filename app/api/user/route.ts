@@ -29,7 +29,7 @@ export async function DELETE(req: Request) {
 
     const userData = userDoc.data();
 
-    if (userData?.role !== "admin") {
+    if (requesterUid !== uid && userData?.role !== "admin") {
       return NextResponse.json({
         success: false,
         message: "Acción prohibida: Solo los admins pueden eliminar usuarios"

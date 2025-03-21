@@ -9,14 +9,14 @@ import {
 } from "@/routes";
 import { Metadata } from "next";
 import { getLoggedUser } from "@/actions/authActions";
-import { User } from "@/types";
-import { getUsers } from "@/app/_libs/firebase/users";
-import { getOrders } from "@/app/_libs/firebase/orders";
+import { Order, User } from "@/types";
 import { groupBy } from "@/app/_utils/groupBy";
 import { DeliveryStatus } from "@/enums";
 import OrdersChart from "@/app/_components/charts/orders";
 import SalesChart from "@/app/_components/charts/sales";
 import CountUp from "@/app/_components/countUp";
+import { getApiBaseUrl } from "@/app/_utils/getApiBaseUrl";
+import { API_ROUTES } from "@/apiRoutes";
 
 export const metadata: Metadata = {
   title:       "Panel de Control",
@@ -34,9 +34,13 @@ export const metadata: Metadata = {
 export default async function Dashboard() {
   const products = await getProducts();
   const user = await getLoggedUser() as User;
-  const users = await getUsers();
+
+  const usersPromise = await fetch(`${getApiBaseUrl()}${API_ROUTES.USERS}`);
+  const { users }: {users: User[]} = await usersPromise.json();
   const showingUsers = users.filter(dbUser => dbUser.id !== user.id);
-  const orders = await getOrders();
+
+  const ordersPromise = await fetch(`${getApiBaseUrl()}${API_ROUTES.ORDERS}`);
+  const { orders }: {orders: Order[]} = await ordersPromise.json();
   const ordersByState = groupBy(orders, "deliveryStatus");
 
   return (

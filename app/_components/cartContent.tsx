@@ -41,7 +41,7 @@ const INITIAL_ORDER: Partial<NewOrder> = {
 
 type CartContentProps = {
   user: string;
-  pendingOrder: Order
+  pendingOrder: Order | null;
 };
 
 function CartContent({ user, pendingOrder }: CartContentProps) {

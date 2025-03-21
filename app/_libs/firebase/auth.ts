@@ -104,6 +104,7 @@ export const signUpWithEmailAndPassword = async (formData: { username: string, e
         const auth = getAuth();
         const userCredential = await signInWithCustomToken(auth, data.token);
         const user = userCredential.user;
+        await sendEmailVerification(user);
 
         const idToken = await user.getIdToken(true);
 

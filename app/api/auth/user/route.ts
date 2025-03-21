@@ -16,7 +16,8 @@ export async function POST(req: NextRequest) {
     const decodedToken = await adminAuth.verifyIdToken(token);
     const uid = decodedToken.uid;
 
-    const userDoc = await adminDb.collection("users").doc(uid).get();
+    const userRef = adminDb.collection("users").doc(uid);
+    const userDoc = await userRef.get();
 
     if (!userDoc.exists) {
       return NextResponse.json({
@@ -25,14 +26,23 @@ export async function POST(req: NextRequest) {
         status: 404
       });
     }
+
     const userData = userDoc.data();
+
+    const emailVerificationUpdated = decodedToken.email_verified && !userData?.emailVerified;
+
+    if (emailVerificationUpdated) {
+      await userRef.update({
+        emailVerified: true
+      });
+    }
 
     return NextResponse.json({
       id:            userData?.id,
       email:         userData?.email,
       username:      userData?.username,
       photoURL:      userData?.photoURL,
-      emailVerified: userData?.emailVerified,
+      emailVerified: emailVerificationUpdated ? true : userData?.emailVerified,
       role:          userData?.role
     });
   } catch {

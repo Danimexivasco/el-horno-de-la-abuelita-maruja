@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminDb } from "@/libs/firebaseAdmin/config";
+import { OrderStatus } from "@/enums";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ customerId: string }> }) {
   try {
@@ -14,7 +15,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ cust
     const querySnapshot = await adminDb
       .collection("orders")
       .where("customerId", "==", customerId)
-      .where("state", "==", "pending")
+      .where("state", "==", OrderStatus.PENDING)
       .get();
 
     const orders = querySnapshot.docs.map((doc) => ({

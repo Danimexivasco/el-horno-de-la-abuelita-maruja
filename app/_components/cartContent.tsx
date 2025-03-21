@@ -215,7 +215,7 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
         orderId = await updateOrder(pendingOrder.id ?? "", {
           ...pendingOrder,
           ...order,
-          state:     "pending",
+          state:     OrderStatus.PENDING,
           updatedAt: Date.now()
         });
       } else {

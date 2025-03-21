@@ -7,7 +7,9 @@ import CheckoutOrderSummary from "@/app/_components/checkoutOrderSummary";
 import { Order } from "@/types";
 import { getApiBaseUrl } from "@/app/_utils/getApiBaseUrl";
 import { API_ROUTES } from "@/apiRoutes";
-// import Headline from "@/app/_components/headline";
+import { TriangleAlert } from "lucide-react";
+import Link from "@/app/_components/link";
+import { CONTACT_PATH } from "@/routes";
 
 export const metadata: Metadata = {
   title:       "Comprar",
@@ -64,6 +66,17 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
 
   return clientSecret ? (
     <Container>
+      <div className="p-6 rounded-md bg-yellow-400 mb-8 prose-base text-black">
+        <p className="flex items-center gap-2 font-bold"><TriangleAlert /> ¡ATENCIÓN! </p>
+        <p>¡Nos gustaría agradecerte mucho el que hayas llegado hasta aquí! 🚀</p>
+        <p>Actualmente estamos empezando nuestro proyecto y estamos en fase de desarrollo para poder formalizar los pagos de acuerdo con la normativa vigente. Es por ello que hasta que esto no esté terminado, no podremos aceptar pagos. Para cualquier otra cosa, no dudes en ponerte en contacto con nosotros en nuestra <Link
+          href={CONTACT_PATH}
+          className="!text-black font-bold"
+        >página de contacto
+        </Link>
+        </p>
+        <small>* El formulario se ha dejado a modo de demostración. La validación está desactivada y no es posible realizar ningún tipo de transacción desde el mismo.</small>
+      </div>
       <p className="text-4xl lg:text-5xl mb-8">Compra Segura</p>
       <div className="grid lg:flex gap-12 lg:gap-40 lg:justify-center items-start">
         <div className="lg:flex-1">

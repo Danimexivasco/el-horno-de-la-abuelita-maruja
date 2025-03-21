@@ -217,7 +217,7 @@ function CartContent({ user, pendingOrder }: CartContentProps) {
           ...order,
           state:     OrderStatus.PENDING,
           updatedAt: Date.now()
-        });
+        }, false);
       } else {
         orderId = await createOrder({
           ...order,

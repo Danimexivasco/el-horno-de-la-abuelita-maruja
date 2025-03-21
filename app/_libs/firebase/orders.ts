@@ -59,6 +59,7 @@ export const createOrder = async (data: NewOrder) => {
     }
 
     const result = await response.json();
+
     return result.orderId;
   } catch {
     showMsg("Algo ha ido mal", "error");
@@ -66,7 +67,7 @@ export const createOrder = async (data: NewOrder) => {
   }
 };
 
-export const updateOrder = async (id: string, data: Partial<Order>) => {
+export const updateOrder = async (id: string, data: Partial<Order>, withMsg: boolean = true) => {
   try {
     const auth = getAuth();
     const user = auth.currentUser;
@@ -88,12 +89,12 @@ export const updateOrder = async (id: string, data: Partial<Order>) => {
 
     const resData = await response.json();
 
-    if (!resData.success) {
+    if (!resData.success && withMsg) {
       showMsg(resData.message, "error");
       return;
     }
 
-    showMsg(resData.message, "success");
+    if (withMsg) showMsg(resData.message, "success");
 
     return id;
 

@@ -15,6 +15,7 @@ import {
   StripePaymentElementOptions
 } from "@stripe/stripe-js";
 import Button from "../button";
+import { showMsg } from "@/app/_utils/showMsg";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "");
 
@@ -23,7 +24,7 @@ function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -35,24 +36,24 @@ function PaymentForm() {
 
     setIsLoading(true);
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        // TODO: change this to payment completion page
-        return_url: "http://localhost:3000/checkout/success"
-      }
-    });
+    // const { error } = await stripe.confirmPayment({
+    //   elements,
+    //   confirmParams: {
+    //     // TODO: change this to payment completion page
+    //     return_url: "http://localhost:3000/checkout/success"
+    //   }
+    // });
 
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
-      setMessage(error.message ?? "An error ocurred.");
-    } else {
-      setMessage("An unexpected error occurred.");
-    }
+    // // This point will only be reached if there is an immediate error when
+    // // confirming the payment. Otherwise, your customer will be redirected to
+    // // your `return_url`. For some payment methods like iDEAL, your customer will
+    // // be redirected to an intermediate site first to authorize the payment, then
+    // // redirected to the `return_url`.
+    // if (error.type === "card_error" || error.type === "validation_error") {
+    //   setMessage(error.message ?? "An error ocurred.");
+    // } else {
+    //   setMessage("An unexpected error occurred.");
+    // }
 
     setIsLoading(false);
   };
@@ -78,6 +79,7 @@ function PaymentForm() {
           type="submit"
           ariaLabel="Realizar pago"
           className="w-full"
+          onClick={() => showMsg("¡Gracias por llegar hasta aquí! 🙌🏽", "success")}
         >
           <span id="button-text">
             {isLoading ? <div
@@ -88,7 +90,7 @@ function PaymentForm() {
           </span>
         </Button> : null
       }
-      {message && <div id="payment-message">{message}</div>}
+      {/* {message && <div id="payment-message">{message}</div>} */}
     </form>
   );
 }

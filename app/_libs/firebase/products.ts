@@ -58,7 +58,7 @@ export const getProducts = async (): Promise<Product[]> => {
 
     return products as Product[];
   } catch {
-    showMsg("Error fetching products", "error");
+    showMsg("Error al obtener los productos", "error");
     return [];
   }
 };
@@ -69,9 +69,9 @@ export const createProduct = async (data: Product) => {
 
     await revalidateCache();
 
-    showMsg("Product created", "success");
+    showMsg("Producto creado", "success");
   } catch {
-    showMsg("Something went wrong", "error");
+    showMsg("Algo ha ido mal", "error");
   }
 };
 
@@ -107,8 +107,8 @@ export const deleteProduct = async (id: string) => {
 
     await revalidateCache();
 
-    showMsg("Product deleted", "success");
+    showMsg("Producto eliminado", "success");
   } catch {
-    showMsg("Something went wrong", "error");
+    showMsg("Algo ha ido mal", "error");
   }
 };

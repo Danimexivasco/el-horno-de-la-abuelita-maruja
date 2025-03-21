@@ -2,11 +2,9 @@ import {
   collection,
   doc,
   query,
-  deleteDoc,
   setDoc,
   QuerySnapshot,
   DocumentData,
-  getDoc,
   updateDoc,
   getDocs
 } from "firebase/firestore";
@@ -17,7 +15,8 @@ import {
 } from "react-firebase-hooks/firestore";
 import { User } from "@/types";
 import { showMsg } from "@/utils/showMsg";
-import { removeSession } from "@/actions/authActions";
+import { getAuth } from "firebase/auth";
+import { API_ROUTES } from "@/apiRoutes";
 
 const _collection = collection(db, "users");
 
@@ -53,12 +52,6 @@ export const getUsers = async (): Promise<User[]> => {
   }
 };
 
-export const getActualUser = async (id: string) => {
-  const userDoc = doc(db, "users", id);
-  const snapshot = await getDoc(userDoc);
-  return snapshot.data();
-};
-
 export const createUser = async (uid: string, data: User) => {
   try {
     await setDoc(doc(db, "users", uid), data);
@@ -82,15 +75,30 @@ export const updateUser = async (id: string, data: User | DocumentData, withMsg:
   }
 };
 
-export const deleteUser = async (id: string) => {
-  const userDoc = doc(db, "users", id);
-
+export const deleteUser = async (uid: string) => {
   try {
-    await deleteDoc(userDoc);
-    await removeSession();
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-    showMsg("Usuario eliminado", "success");
-  } catch {
-    showMsg("Algo ha fallado eliminando el usuario", "error");
+    if (!user) throw new Error("No hay usuario autenticado");
+
+    const token = await user.getIdToken(true);
+    const response = await fetch(API_ROUTES.USER, {
+      method:  "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        uid,
+        token
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Error al eliminar al usuario");
+
+    showMsg(data.message, "success");
+  } catch (error: any) {
+    showMsg(error.message, "error");
   }
 };

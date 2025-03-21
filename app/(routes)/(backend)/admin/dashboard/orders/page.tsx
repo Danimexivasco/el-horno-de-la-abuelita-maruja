@@ -1,8 +1,11 @@
+import { API_ROUTES } from "@/apiRoutes";
 import OrdersChart from "@/app/_components/charts/orders";
+import SalesChart from "@/app/_components/charts/sales";
 import OrdersDataTable from "@/app/_components/dataTable/orders";
 import { ordersColumns } from "@/app/_components/dataTable/orders/columns";
 import Headline from "@/app/_components/headline";
-import { getOrders } from "@/app/_libs/firebase/orders";
+import { getApiBaseUrl } from "@/app/_utils/getApiBaseUrl";
+import { Order } from "@/types";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,7 +22,8 @@ export const metadata: Metadata = {
 };
 
 export default async function OrdersDashboardPage() {
-  const orders = await getOrders();
+  const ordersPromise = await fetch(`${getApiBaseUrl()}${API_ROUTES.ORDERS}`);
+  const { orders }: {orders: Order[]} = await ordersPromise.json();
 
   const ordersWithTotals = orders?.map(order => {
     const totals = order.products.reduce((acc, product) => {
@@ -41,10 +45,14 @@ export default async function OrdersDashboardPage() {
   return (
     <>
       <Headline>Pedidos</Headline>
-      <OrdersChart
-        orders={orders}
-        className="lg:w-2/3 mb-16 mt-8"
-      />
+      <div className="grid lg:flex items-center mb-16 mt-8 gap-16">
+        <OrdersChart
+          orders={orders}
+        />
+        <SalesChart
+          orders={orders}
+        />
+      </div>
       <OrdersDataTable
         data={ordersWithTotals}
         columns={ordersColumns}

@@ -3,23 +3,19 @@
 import { cookies } from "next/headers";
 
 import { HOME_PATH } from "@/routes";
-import {
-  ONE_DAY,
-  SESSION_COOKIE_NAME,
-  USER_CHECKED_COOKIE_NAME
-} from "@/constants";
-import { getActualUser } from "@/app/_libs/firebase/users";
+import { ONE_DAY, SESSION_COOKIE_NAME } from "@/constants";
+import { getApiBaseUrl } from "@/app/_utils/getApiBaseUrl";
+import { API_ROUTES } from "@/apiRoutes";
 
-export async function createSession(uid: string) {
+export async function createSessionCookie(token: string) {
   const cookieStore = await cookies();
-  cookieStore.set({
-    name:     SESSION_COOKIE_NAME,
-    value:    uid,
+
+  cookieStore.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     secure:   process.env.NODE_ENV === "production",
-    maxAge:   ONE_DAY,
+    sameSite: "strict",
     path:     HOME_PATH,
-    sameSite: "lax"
+    maxAge:   ONE_DAY
   });
 
   return {
@@ -36,40 +32,32 @@ export async function removeSession() {
   };
 }
 
-export async function setAdminUserCheck() {
-  const cookieStore = await cookies();
-  cookieStore.set({
-    name:     USER_CHECKED_COOKIE_NAME,
-    value:    "true",
-    httpOnly: true,
-    secure:   process.env.NODE_ENV === "production",
-    maxAge:   ONE_DAY,
-    path:     HOME_PATH,
-    sameSite: "lax"
-  });
-
-  return {
-    success: true
-  };
-}
-
-export async function removeAdminUserCheck() {
-  const cookieStore = await cookies();
-  cookieStore.delete(USER_CHECKED_COOKIE_NAME);
-
-  return {
-    success: true
-  };
-}
-
 export async function getLoggedUser (client = false) {
   const cookieStore = await cookies();
-  const sessionId = cookieStore.get("user_session")?.value as string;
+  const token = cookieStore.get(SESSION_COOKIE_NAME);
 
-  if (sessionId) {
-    const user = await getActualUser(sessionId);
+  if (token) {
+    const res = await fetch(`${getApiBaseUrl()}${API_ROUTES.AUTH.USER}`, {
+      method:  "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body:        JSON.stringify({
+        token: token?.value
+      })
+    });
 
-    return client ? JSON.stringify(user) : user;
+    if (!res.ok) {
+      return null;
+    }
+
+    const user = await res.json();
+
+    if (user) {
+      return client ? JSON.stringify(user) : user;
+    }
   }
+
   return null;
 };

@@ -1,16 +1,10 @@
-import {
-  collection,
-  doc,
-  addDoc,
-  getDoc,
-  query,
-  where,
-  getDocs
-} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "@/libs/firebase/config";
 import { NewOrder, Order } from "@/types";
 import { showMsg } from "@/utils/showMsg";
 import { getAuth } from "firebase/auth";
+import { API_ROUTES } from "@/apiRoutes";
+import { getApiBaseUrl } from "@/app/_utils/getApiBaseUrl";
 
 const _collection = collection(db, "orders");
 
@@ -34,42 +28,55 @@ export const getOrders = async (): Promise<Order[]> => {
   }
 };
 
-export const getPendingOrderByCustomerId = async (customerId: string): Promise<Order[]> => {
-  const ordersRef = collection(db, "orders");
-  const q = query(
-    ordersRef,
-    where("customerId", "==", customerId),
-    where("state", "==", "pending") // Filtering only pending orders
-  );
+export const getPendingOrderByCustomerId = async (customerId: string): Promise<Order[] | null> => {
+  try {
+    const response = await fetch(`${getApiBaseUrl()}${API_ROUTES.PENDING_ORDER.replace(":customerId", customerId)}`, {
+      method: "GET"
+    });
 
-  const querySnapshot = await getDocs(q);
+    if (!response.ok) {
+      throw new Error("Error al obtener ordenes pendientes");
+    }
 
-  return querySnapshot.docs.map((doc) => ({
-    ...doc.data(),
-    id: doc.id
-  })) as Order[];
+    return await response.json();
+  } catch {
+    throw new Error("Error al obtener ordenes pendientes");
+  }
 };
 
 export const createOrder = async (data: NewOrder) => {
   try {
-    const newDocRef = await addDoc(_collection, data);
+    const response = await fetch(API_ROUTES.CREATE_ORDER, {
+      method:  "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
 
-    return newDocRef?.id;
+    if (!response.ok) {
+      throw new Error("Failed to create order");
+    }
+
+    const result = await response.json();
+
+    return result.orderId;
   } catch {
     showMsg("Algo ha ido mal", "error");
+    return null;
   }
 };
 
-export const updateOrder = async (id: string, data: Partial<Order>) => {
+export const updateOrder = async (id: string, data: Partial<Order>, withMsg: boolean = true) => {
   try {
     const auth = getAuth();
     const user = auth.currentUser;
 
-    if (!user) throw new Error("No hay pedido autenticado");
+    if (!user) throw new Error("No hay usuario autenticado");
 
-    const token = await user.getIdToken();
+    const token = await user.getIdToken(true);
 
-    const response = await fetch(`/api/order/${id}`, {
+    const response = await fetch(API_ROUTES.ORDER.replace(":id", id), {
       method:  "PATCH",
       headers: {
         "Content-Type": "application/json"
@@ -82,12 +89,15 @@ export const updateOrder = async (id: string, data: Partial<Order>) => {
 
     const resData = await response.json();
 
-    if (!resData.success) {
+    if (!resData.success && withMsg) {
       showMsg(resData.message, "error");
       return;
     }
 
-    showMsg(resData.message, "success");
+    if (withMsg) showMsg(resData.message, "success");
+
+    return id;
+
   } catch {
     showMsg("Hubo un error actualizando la orden", "error");
     throw new Error("Hubo un error actualizando la orden");
@@ -99,11 +109,11 @@ export const deleteOrder = async (id: string) => {
     const auth = getAuth();
     const user = auth.currentUser;
 
-    if (!user) throw new Error("No hay pedido autenticado");
+    if (!user) throw new Error("No hay usuario autenticado");
 
-    const token = await user.getIdToken();
+    const token = await user.getIdToken(true);
 
-    const response = await fetch(`/api/order/${id}`, {
+    const response = await fetch(API_ROUTES.ORDER.replace(":id", id), {
       method:  "DELETE",
       headers: {
         "Content-Type": "application/json"
@@ -119,7 +129,6 @@ export const deleteOrder = async (id: string) => {
       showMsg(data.message, "error");
       return;
     }
-    console.log("🚀");
     showMsg(data.message, "success");
   } catch {
     showMsg("Hubo un error eliminando la orden", "error");

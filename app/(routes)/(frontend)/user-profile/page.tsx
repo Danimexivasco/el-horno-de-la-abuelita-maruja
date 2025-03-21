@@ -9,8 +9,8 @@ import { LogoIcon, TrashIcon } from "@/app/_icons";
 import {
   checkVerification,
   resendEmailVerification,
-  useAuthState,
-  useDeleteUser
+  signOut,
+  useAuthState
 } from "@/app/_libs/firebase/auth";
 import {
   deleteUser,
@@ -30,7 +30,6 @@ import React, { useEffect, useState } from "react";
 export default function UserProfilePage() {
   const router = useRouter();
   const [user, loading] = useAuthState();
-  const [deleteAuthUser, loadingDeleteUser] = useDeleteUser();
   const [dbUser, loadingDbUser] = useSingleUserData(user?.uid ?? "not existing");
 
   const [userData, setUserData] = useState({
@@ -133,7 +132,7 @@ export default function UserProfilePage() {
 
     try {
       await deleteUser(id);
-      await deleteAuthUser();
+      await signOut();
 
       router.push(HOME_PATH);
     } catch {
@@ -141,8 +140,6 @@ export default function UserProfilePage() {
     }
   };
 
-  if (loadingDeleteUser) return <Container>Eliminando usuario...</Container>;
-  // TODO: After delete user you can see for a second the below loading state, fix it
   if (loading || loadingDbUser) return <Container>Cargando perfil...</Container>;
 
   return dbUser && (

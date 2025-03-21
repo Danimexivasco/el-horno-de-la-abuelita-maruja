@@ -4,6 +4,7 @@ import { Squash as Hamburger } from "hamburger-react";
 import {
   ADMIN_DASHBOARD_PATH,
   HOME_PATH,
+  ORDERS_PATH,
   Route,
   SIGN_IN_PATH,
   USER_PROFILE_PATH
@@ -12,49 +13,42 @@ import Container from "../container";
 import { User } from "@/types";
 import { combine } from "@/app/_utils/combineClassnames";
 import { LogoIcon, SignOutIcon } from "@/app/_icons";
-import { useEffect, useState } from "react";
 import Link from "../link";
 import Cart from "../cart";
 import Button from "../button";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { signOut } from "@/app/_libs/firebase/auth";
 import ThemeSwitchButton from "../themeSwitchButton";
-import { LayoutDashboard, User as LucideUserIcon } from "lucide-react";
+import {
+  LayoutDashboard,
+  User as LucideUserIcon,
+  ShoppingBag
+} from "lucide-react";
 import { WithIsClientCheck } from "../../_hocs/withIsClientCheck";
+import { removeSession } from "@/actions/authActions";
 
 type MobileHeaderProps = {
     navRoutes: Route[]
     activePathname?: string
     user: User
-    glassyHeader: boolean
-    setGlassyHeader: (_b: boolean) => void
+    showMenu: boolean
+    setShowMenu: (_b: boolean) => void
     className?: string
 };
 
-function MobileHeader({ navRoutes = [], activePathname, user, glassyHeader, setGlassyHeader, className }: MobileHeaderProps) {
+function MobileHeader({ navRoutes = [], activePathname, user, showMenu, setShowMenu, className }: MobileHeaderProps) {
   const router = useRouter();
-  const pathanme = usePathname();
-  const [showMenu, setShowMenu] = useState(false);
-  const [previousHeaderState, setPreviousHeaderState] = useState(false);
 
-  useEffect(() => {
+  const handleLogin = async () => {
     setShowMenu(false);
-  }, [pathanme]);
-
-  useEffect(() => {
-    if (showMenu && document) {
-      document.body.style.overflowY = "hidden";
-      setPreviousHeaderState(glassyHeader);
-      setGlassyHeader(false);
-    } else {
-      document.body.style.overflowY = "";
-      setGlassyHeader(previousHeaderState);
-    }
-  }, [showMenu]);
-
-  const handleLogin = () => {
-    setShowMenu(false);
+    await removeSession(); // Trick to remove first session cookie if any
     router.push(SIGN_IN_PATH);
+  };
+
+  const handleLogout = async () => {
+    setShowMenu(false);
+    await signOut();
+    router.refresh();
   };
 
   return (
@@ -107,7 +101,12 @@ function MobileHeader({ navRoutes = [], activePathname, user, glassyHeader, setG
                       <Link
                         href={USER_PROFILE_PATH}
                         className="flex gap-2 mb-2 font-bold"
-                      ><LucideUserIcon size={20}/>Ir a mi perfil / Ajustes
+                      ><LucideUserIcon size={20}/>Mi perfil
+                      </Link>
+                      <Link
+                        href={ORDERS_PATH}
+                        className="flex gap-2 mb-2 font-bold"
+                      ><ShoppingBag size={20}/>Mis pedidos
                       </Link>
                       {user.role === "admin" ? (
                         <Link
@@ -127,7 +126,7 @@ function MobileHeader({ navRoutes = [], activePathname, user, glassyHeader, setG
                       <Button
                         withIcon
                         isRed
-                        onClick={async () => signOut()}
+                        onClick={handleLogout}
                         className="whitespace-nowrap mt-4"
                       >
                         Cerrar Sesión <SignOutIcon className="w-4 h-4"/>

@@ -8,10 +8,30 @@ import Link from "./link";
 import Headline from "./headline";
 import { InstagramIcon, YoutubeIcon } from "../_icons";
 import useHideLayoutElements from "../_hooks/useHideLayoutElements";
+import { useAuth } from "../_hooks/useAuth";
+import { useEffect } from "react";
+import { createSessionCookie } from "@/actions/authActions";
+import { showMsg } from "../_utils/showMsg";
 
 export default function Footer() {
-
   const hideFooter = useHideLayoutElements();
+  const { user: authUser } = useAuth();
+
+  useEffect(() => {
+    // Trick to refresh ID token
+    const fetchToken = async () => {
+      if (authUser) {
+        try {
+          const token = await authUser.getIdToken(true);
+          await createSessionCookie(token);
+        } catch {
+          showMsg("Algo ha fallado actualizando el token", "error");
+        }
+      }
+    };
+
+    fetchToken();
+  }, [authUser]);
 
   return (
     <footer className={combine("dark:bg-cake-950 bg-cake-200 border-t-2 border-cake-500 transition-colors", hideFooter && "hidden")}>

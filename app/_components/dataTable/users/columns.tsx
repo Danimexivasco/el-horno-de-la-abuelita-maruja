@@ -12,49 +12,22 @@ import {
   DropdownMenuTrigger
 } from "@/components/shadcn/dropdown-menu";
 import { ArrowUpDown, MoreHorizontal, Trash } from "lucide-react";
-import { User } from "@/types";
+import { User, UserRoles } from "@/types";
 import { getFormatedDate } from "@/app/_utils/getFormatedDate";
 import { showMsg } from "@/app/_utils/showMsg";
 import Select from "../../select";
-import { updateUser } from "@/app/_libs/firebase/users";
+import { deleteUser, updateUser } from "@/app/_libs/firebase/users";
 import Alert from "../../alert";
-import { getAuth } from "firebase/auth";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { setUserRole } from "@/app/_libs/firebase/auth";
 
+// TODO: refactor this as service in app\_libs\firebase\users.ts
 const updateDbUser = async (id: string, data: {role: string}) => {
   try {
     await updateUser(id, data, true);
   } catch {
     throw new Error("Hubo un error actualizando al usuario");
-  }
-};
-
-const deleteUser = (uid: string) => async () => {
-  try {
-    const auth = getAuth();
-    const user = auth.currentUser;
-
-    if (!user) throw new Error("No hay usuario autenticado");
-
-    const token = await user.getIdToken();
-    const response = await fetch("/api/user", {
-      method:  "DELETE",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        uid,
-        token
-      })
-    });
-
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Error al eliminar al usuario");
-
-    showMsg(data.message, "success");
-    setTimeout(() => window.location.reload(), 1500);
-  } catch (error: any) {
-    showMsg(error.message, "error");
   }
 };
 
@@ -104,12 +77,15 @@ export const columns: ColumnDef<User>[] = [
         value={role}
         onChange={async (e) => {
           const newState = e.currentTarget.value;
+
+          await setUserRole(user.id, newState === "admin" ? "admin" : "customer");
+
           await updateDbUser(user.id, {
-            role: e.currentTarget.value
+            role: newState
           });
-          setRole(newState as "customer" | "admin");
-        }
-        }
+
+          setRole(newState as UserRoles);
+        }}
       />;
     }
   },
@@ -138,6 +114,7 @@ export const columns: ColumnDef<User>[] = [
     id:   "actions",
     cell: ({ row }) => {
       const user = row.original;
+      const router = useRouter();
 
       return (
         <DropdownMenu>
@@ -188,7 +165,10 @@ export const columns: ColumnDef<User>[] = [
                 actionElement={
                   <Button
                     isRed
-                    onClick={deleteUser(user.id)}
+                    onClick={async () => {
+                      await deleteUser(user.id);
+                      router.refresh();
+                    }}
                   >Sí, eliminar
                   </Button>
                 }

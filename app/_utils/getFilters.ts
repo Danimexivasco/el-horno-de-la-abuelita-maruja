@@ -1,4 +1,3 @@
-/* eslint-disable @stylistic/js/max-len */
 import { Product } from "@/types";
 import { FiltersState } from "../_components/filters";
 

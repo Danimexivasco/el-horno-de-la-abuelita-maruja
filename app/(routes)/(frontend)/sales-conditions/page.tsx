@@ -15,9 +15,9 @@ export default function SalesConditionsPage() {
         Al hacer uso de esta página web o la solicitud de compra del cliente constituye la aceptación de las condiciones de compra y nuestra política de Protección de Datos, que el cliente debe consultar y aceptar con carácter previo a la
         compra del producto. Estas condiciones de compra pueden variar. Es responsabilidad del cliente leerlas periódicamente, ya que se aplicaran en el momento de la compra las que estén vigentes. Para cualquier duda sobre las condiciones
         o la protección de datos rellene el formulario de contacto o contacte con nuestro departamento online en el correo electrónico <Link
-          href="mailto:info@elhornodelaabuelitamaruja.es"
+          href="mailto:elhornodelaabuelitamaruja@gmail.com"
           external
-        >info@elhornodelaabuelitamaruja.es
+        >elhornodelaabuelitamaruja@gmail.com
         </Link>
       </p>
       <div>
@@ -148,9 +148,9 @@ export default function SalesConditionsPage() {
             Al recibir los productos deberás firmar la hoja de recepción presentada por la persona que realiza la entrega, en la que podrá incluir todas las observaciones que considere necesarias. Mediante la firma de la hoja de recepción, el
             cliente reconoce haber recibido el número de bultos indicados en la misma. Si el cliente observa productos estropeados o la falta de productos, deberá realizar una reclamación por e-mail a{" "}
             <Link
-              href="mailto:info@elhornodelaabuelitamaruja.es"
+              href="mailto:elhornodelaabuelitamaruja@gmail.com"
               external
-            >info@elhornodelaabuelitamaruja.es
+            >elhornodelaabuelitamaruja@gmail.com
             </Link> en un plazo máximo de 24 horas para poder dar parte al seguro de la compañía de transporte. Sin que por ello se limiten los derechos del consumidor.
           </p>
           <p>
@@ -182,9 +182,9 @@ export default function SalesConditionsPage() {
           <p>
             No obstante, si cualquier cliente desea tramitar una queja o reclamación, bien podrá escribirnos al correo{" "}
             <Link
-              href="mailto:info@elhornodelaabuelitamaruja.es"
+              href="mailto:elhornodelaabuelitamaruja@gmail.com"
               external
-            >info@elhornodelaabuelitamaruja.es
+            >elhornodelaabuelitamaruja@gmail.com
             </Link> para relatar lo sucedido para buscar una solución
             satisfactoria, o podrá acceder al enlace a la plataforma ODR de resolución de litigios en línea que se encuentra establecido en el punto 15 de las presentes condiciones.
           </p>
@@ -205,9 +205,9 @@ export default function SalesConditionsPage() {
             En cualquier caso, todos los usuarios tienen derecho a ejercitar, en cualquier momento, los derechos de acceso, rectificación, limitación del tratamiento, supresión, oposición, limitación del tratamiento, y portabilidad de
             datos que le asisten, mediante escrito dirigido a, EL HORNO DE LA ABUELITA MARUJA en la dirección electrónica{" "}
             <Link
-              href="mailto:info@elhornodelaabuelitamaruja.es"
+              href="mailto:elhornodelaabuelitamaruja@gmail.com"
               external
-            >info@elhornodelaabuelitamaruja.es
+            >elhornodelaabuelitamaruja@gmail.com
             </Link>, acreditando su identidad. En el caso de que considere, puede presentar
             una reclamación ante la Agencia Española de Protección de Datos.
           </p>

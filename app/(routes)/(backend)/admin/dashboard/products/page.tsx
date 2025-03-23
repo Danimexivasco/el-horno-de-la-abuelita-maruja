@@ -28,7 +28,7 @@ export default async function Products() {
         href={ADMIN_NEW_PRODUCT_PATH}
         asButton
         className="mb-8"
-      >+ Nuevo Producto
+      >Nuevo Producto
       </Link>
       <ProductList
         products={products}

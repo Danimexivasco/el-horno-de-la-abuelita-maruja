@@ -1,12 +1,6 @@
 import { Product, ProductVariant } from "@/types";
 import { formatNumber } from "./formatNumber";
-
-const roundNumber = (number: number) => {
-  if (!number) throw new Error("No se ha pasado un parametro");
-  if (typeof number !== "number") throw new Error("No se ha pasado un numero");
-
-  return Math.round(number * 100) / 100;
-};
+import { roundNumber } from "./roundNumber";
 
 export const getPrices = (product: Partial<Product>, quantity: number = 1, variant: Partial<ProductVariant> | null = null) => {
   if (!product) throw new Error("No se ha pasado un producto");

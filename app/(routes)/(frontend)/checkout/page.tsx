@@ -10,6 +10,7 @@ import { API_ROUTES } from "@/apiRoutes";
 import { TriangleAlert } from "lucide-react";
 import Link from "@/app/_components/link";
 import { CONTACT_PATH } from "@/routes";
+import { roundNumber } from "@/app/_utils/roundNumber";
 
 export const metadata: Metadata = {
   title:       "Comprar",
@@ -48,7 +49,7 @@ export default async function CheckoutPage({ searchParams }: CheckoutPageProps) 
     // Replace this constant with a calculation of the order's amount
     // Calculate the order total on the server to prevent
     // people from directly manipulating the amount on the client
-    return amount * 100;
+    return roundNumber(amount * 100);
   };
 
   // Create PaymentIntent as soon as the page loads

@@ -88,7 +88,7 @@ export default function PrivacyPage() {
           <Headline as="h3">6. Derechos de los usuarios</Headline>
           <p>
             Todos los usuarios pueden ejercitar cualquier de los derechos otorgados por la normativa de protección de datos, como el derecho de acceso, rectificación, limitación del tratamiento, supresión, portabilidad de datos y
-            oposición que le asisten mediante escrito dirigido a la dirección electrónica a nuestro delegado de protección de datos info@elhornodelaabuelitamaruja.es. Y en el caso de que lo estime oportuno podrá presentar reclamación ante la Agencia
+            oposición que le asisten mediante escrito dirigido a la dirección electrónica a nuestro delegado de protección de datos elhornodelaabuelitamaruja@gmail.com. Y en el caso de que lo estime oportuno podrá presentar reclamación ante la Agencia
             Española de Protección.
           </p>
         </div>
@@ -96,7 +96,7 @@ export default function PrivacyPage() {
           <Headline as="h3">7. ¿No desea recibir información de nosotros o desea revocar su consentimiento?</Headline>
           <p>
             Cualquier usuario puede oponerse al uso de su información para fines publicitarios, investigaciones de mercado o desarrollo de encuestas de satisfacción, así como revocar su consentimiento en cualquier momento (sin efecto
-            retroactivo). Para ello, deberá enviar un correo electrónico a la dirección info@elhornodelaabuelitamaruja.es. Cuando reciba publicidad por correo electrónico, también podrá oponer desde dicho correo electrónico, pinchando en el enlace incluido
+            retroactivo). Para ello, deberá enviar un correo electrónico a la dirección elhornodelaabuelitamaruja@gmail.com. Cuando reciba publicidad por correo electrónico, también podrá oponer desde dicho correo electrónico, pinchando en el enlace incluido
             en el mismo y siguiendo las instrucciones que le sean facilitadas.
           </p>
         </div>
@@ -109,7 +109,7 @@ export default function PrivacyPage() {
           </p>
           <p>
             Si durante la lectura le ha surgido alguna duda o cuestión sobre nuestra Política de Privacidad o quiere ejercitar algún derecho o acción relativa a sus datos personales, por favor póngase en contacto con nosotros en la siguiente
-            dirección de correo electrónico info@elhornodelaabuelitamaruja.es.
+            dirección de correo electrónico elhornodelaabuelitamaruja@gmail.com.
           </p>
         </div>
       </div>

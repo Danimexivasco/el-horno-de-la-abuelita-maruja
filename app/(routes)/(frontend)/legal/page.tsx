@@ -14,7 +14,7 @@ export default function LegalPage() {
             href="https://maps.app.goo.gl/RPeHkckEyHXTQwPW9"
             external
           >Calle La Luz
-          </Link>, código postal 02434 de Letur (Albacete) e inscrita en el registro mercantil de Albacete en el Tomo 10.583, Libro 7864, Folio 204, Sección 8, Hoja V184.873. (en adelante El Horno de la Abuelita Maruja), pudiendo contactar en el correo electrónico info@elhornodelaabuelitamaruja.es
+          </Link>, código postal 02434 de Letur (Albacete) e inscrita en el registro mercantil de Albacete en el Tomo 10.583, Libro 7864, Folio 204, Sección 8, Hoja V184.873. (en adelante El Horno de la Abuelita Maruja), pudiendo contactar en el correo electrónico elhornodelaabuelitamaruja@gmail.com
           </p>
         </div>
         <div>
@@ -79,9 +79,9 @@ export default function LegalPage() {
           <p>De acuerdo con lo establecido en la normativa de protección de datos, le informamos de que los datos personales que nos facilite a través de nuestro sitio web o mediante envíos de correos electrónicos, serán tratados por LAGUTERCRECE S.L en su calidad de responsable del tratamiento, bajo la legitimidad otorgada por el consentimiento prestado por el usuario para las finalidades descritas en la <Link href={PRIVACY_PATH}>política de privacidad</Link>, la cual debe ser leída, comprendida y aceptada para la utilización del presente portal web.</p>
           <p>El usuario responderá, en cualquier caso, de la veracidad de los datos facilitados y podrá ejercitar los derechos de acceso, supresión, rectificación, oposición, limitación del tratamiento y portabilidad, mediante escrito dirigido a la empresa, bien a su domicilio social, bien a través de correo electrónico a{" "}
             <Link
-              href="info@elhornodelaabuelitamaruja.es"
+              href="elhornodelaabuelitamaruja@gmail.com"
               external
-            >info@elhornodelaabuelitamaruja.es
+            >elhornodelaabuelitamaruja@gmail.com
             </Link> siempre y cuando acredite su identidad. Y en el caso de que lo estime oportuno, podrá acudir a la Agencia Española de Protección de Datos.
           </p>
           <p>Por su parte, El Horno de la Abuelita Maruja se compromete al cumplimiento de la obligación de secreto de los datos de carácter personal, por ello ha adoptado las medidas necesarias para evitar su alteración, pérdida, tratamiento o acceso no autorizado, habida cuenta en todo momento del estado de la tecnología.</p>

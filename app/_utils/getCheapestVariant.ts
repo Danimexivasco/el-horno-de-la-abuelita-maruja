@@ -13,6 +13,6 @@ export default function getCheapestVariant(variants: ProductVariant[]) {
     onOffer:          returningVariant?.offerData?.onOffer,
     offerType:        returningVariant?.offerData?.offerType,
     discount:         returningVariant?.offerData?.discountPercentage,
-    multiplierAmount: returningVariant?.offerData?.discountPercentage
+    multiplierAmount: returningVariant?.offerData?.multiplierAmount
   };
 }

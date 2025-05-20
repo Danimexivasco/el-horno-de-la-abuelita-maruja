@@ -3,8 +3,6 @@
 Full-stack e-commerce app created from scratch to help my girlfriend sell her products, which include cookies, tiramisus, cakes, and other baked goods.
 It has been developed with **Next.js**, **TypeScript**, **Zod**, **Shadcn UI**, and **Tailwind CSS**, using **Vitest** for TDD and **Firebase** as the database.
 
----
-
 ## 🛠️ Tech Stack
 
 - **Framework:** [Next.js](https://nextjs.org/) (App Router)
@@ -15,8 +13,6 @@ It has been developed with **Next.js**, **TypeScript**, **Zod**, **Shadcn UI**, 
 - **State & Logic:** Custom React hooks
 - **API:** Uses built-in Next.js API routes
 
----
-
 ## 🚀 Features
 
 - 🍰 Fully modular structure with reusable components
@@ -26,8 +22,6 @@ It has been developed with **Next.js**, **TypeScript**, **Zod**, **Shadcn UI**, 
 - 🧩 Built using custom hooks for logic reuse and separation of concerns
 - 🎨 Clean UI with Tailwind CSS
 - ⚡ Optimized for performance and developer experience
-
----
 
 ## 📦 Getting Started
 
@@ -41,9 +35,7 @@ pnpm install
 
 # Run the dev server
 pnpm dev
-```
-
---- 
+``` 
 
 ## 🧪 Running Tests
 This project uses Vitest for unit testing:
